@@ -77,5 +77,11 @@
             <artifactId>guava</artifactId>
             <version>31.1-jre</version>
         </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-base</artifactId>
+            <version>18</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>
