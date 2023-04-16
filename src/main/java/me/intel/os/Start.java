@@ -42,9 +42,15 @@ public class Start {
                      Plugin plugin = (Plugin) clazz.newInstance();
                      if (OS.nameToPlugin.containsKey(plugin.getName())) {
                         System.out.println("A plugin by the name %name% is already registered!".replace("%name%", plugin.getName()));
-                     } else if (plugin.onEnable()) {
-                        System.out.println("Loaded plugin " + clazz.getCanonicalName() + " successfully");
-                        OS.nameToPlugin.put(plugin.getName(), plugin);
+                     } else {
+                        try {
+                           plugin.onEnable();
+                           System.out.println("Loaded plugin " + clazz.getCanonicalName() + " successfully");
+                           OS.nameToPlugin.put(plugin.getName(), plugin);
+                        } catch (Exception err) {
+                           System.out.println("Failed to load plugin");
+                           err.printStackTrace();
+                        }
                      }
                      break;
                   }
