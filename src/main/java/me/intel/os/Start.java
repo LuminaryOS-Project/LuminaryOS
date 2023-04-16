@@ -21,61 +21,38 @@ public class Start {
       if (!pluginFolder.exists() && pluginFolder.mkdirs()) {
          System.out.println("Created plugin folder");
       }
-
-      File[] files = pluginFolder.listFiles((dir, name) -> {
-         return name.endsWith(".jar");
-      });
-      ArrayList urls = new ArrayList();
-      ArrayList<String> classes = new ArrayList();
+      File[] files = pluginFolder.listFiles((dir, name) -> name.endsWith(".jar"));
+      List<URL> urls = new ArrayList<>();
+      List<String> classes = new ArrayList<>();
       if (files != null) {
-         Arrays.stream(files).forEach((file) -> {
+         Arrays.stream(files).forEach(file -> {
             try {
                JarFile jarFile = new JarFile(file);
                urls.add(new URL("jar:file:plugins/" + file.getName() + "!/"));
-               jarFile.stream().forEach((jarEntry) -> {
-                  if (jarEntry.getName().endsWith(".class")) {
-                     classes.add(jarEntry.getName());
-                  }
-
-               });
-            } catch (IOException var4) {
-               var4.printStackTrace();
-            }
-
+               jarFile.stream().filter(jarEntry -> jarEntry.getName().endsWith(".class")).forEach(jarEntry -> classes.add(jarEntry.getName()));
+            } catch (IOException e) { e.printStackTrace(); }
          });
-         URLClassLoader pluginLoader = new URLClassLoader((URL[])urls.toArray(new URL[urls.size()]));
-         classes.forEach((s) -> {
+         URLClassLoader pluginLoader = new URLClassLoader(urls.toArray(new URL[urls.size()]));
+         classes.forEach(className -> {
             try {
-               Class classs = pluginLoader.loadClass(s.replaceAll("/", ".").replace(".class", ""));
-               Class[] interfaces = classs.getInterfaces();
-               Class[] var4 = interfaces;
-               int var5 = interfaces.length;
-
-               for(int var6 = 0; var6 < var5; ++var6) {
-                  Class anInterface = var4[var6];
+               Class<?> clazz = pluginLoader.loadClass(className.replaceAll("/", ".").replace(".class", ""));
+               Class<?>[] interfaces = clazz.getInterfaces();
+               for (Class<?> anInterface : interfaces) {
                   if (anInterface == Plugin.class) {
-                     Plugin plugin = (Plugin)classs.newInstance();
-
-                     try {
-                        if (OS.nameToPlugin.containsKey(plugin.getName())) {
-                           System.out.println("A plugin by the name %name% is already registered!".replace("%name%", plugin.getName()));
-                        } else if (plugin.onEnable()) {
-                           System.out.println("Loaded plugin " + classs.getCanonicalName() + " successfully");
-                           OS.nameToPlugin.put(plugin.getName(), plugin);
-                        }
-                        break;
-                     } catch (Exception var10) {
-                        System.out.println("Error occurred while enabling plugin!");
-                        var10.printStackTrace();
-                        plugin.onDisable();
+                     Plugin plugin = (Plugin) clazz.newInstance();
+                     if (OS.nameToPlugin.containsKey(plugin.getName())) {
+                        System.out.println("A plugin by the name %name% is already registered!".replace("%name%", plugin.getName()));
+                     } else if (plugin.onEnable()) {
+                        System.out.println("Loaded plugin " + clazz.getCanonicalName() + " successfully");
+                        OS.nameToPlugin.put(plugin.getName(), plugin);
                      }
+                     break;
                   }
                }
-            } catch (InstantiationException | IllegalAccessException | ClassNotFoundException var11) {
+            } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
                System.out.println("Exception occurred during instancing...");
-               var11.printStackTrace();
+               e.printStackTrace();
             }
-
          });
       }
 
