@@ -38,3 +38,4 @@ jobs:
       with:
         path: target/IntelOS-1.0-SNAPSHOT.jar
         retention-days: 14
+        name: IntelOS
