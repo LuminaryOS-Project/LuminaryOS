@@ -1,5 +1,7 @@
 package me.intel.os.commands;
 
+import me.intel.os.OS;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -16,17 +18,21 @@ public class CommandManager {
    }
 
    public void executeCommand(String command, String[] args) {
-      Command cmd = (Command)this.commands.get(command);
-      if (cmd != null) {
-         cmd.execute(args);
-      } else {
-         cmd = this.findCommandByAlias(command);
+      Thread t = new Thread(() -> {
+         Command cmd = (Command)this.commands.get(command);
          if (cmd != null) {
             cmd.execute(args);
          } else {
-            System.out.println("Command not found: " + command);
+            cmd = this.findCommandByAlias(command);
+            if (cmd != null) {
+               cmd.execute(args);
+            } else {
+               System.out.println("Command not found: " + command);
+            }
          }
-      }
+      });
+      t.start();
+      OS.getProcessManager().add(t, 15000);
 
    }
    public TabCompleter getTabCompleter(Command command) {

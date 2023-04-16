@@ -4,25 +4,22 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.List;
 import java.util.logging.Logger;
 
-import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
 import lombok.Getter;
-import me.intel.os.commands.Command;
 import me.intel.os.commands.CommandManager;
 import me.intel.os.commands.impl.*;
+import me.intel.os.core.ProcessManager;
+import me.intel.os.core.User;
 import me.intel.os.plugin.Plugin;
-import me.intel.os.utils.JSON;
-
-import javax.script.ScriptEngineFactory;
-import javax.script.ScriptEngineManager;
 
 public class OS {
    private final CommandManager CommandManager = new CommandManager();
    public static HashMap<String, Plugin> nameToPlugin = new HashMap<>();
    private static final HashMap<String, Object> config = new HashMap<>();
+   @Getter
+   private static final ProcessManager ProcessManager = me.intel.os.core.ProcessManager.getProcessManager();
    private static final Logger logger = Logger.getLogger("[OS]");
    private static OS instance;
    @Getter

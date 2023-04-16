@@ -1,4 +1,4 @@
-package me.intel.os;
+package me.intel.os.core;
 
 import org.mindrot.jbcrypt.BCrypt;
 

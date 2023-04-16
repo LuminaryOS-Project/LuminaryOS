@@ -1,4 +1,4 @@
-package me.intel.os;
+package me.intel.os.core;
 
 public class Exceptions {
    public static class NotACommunicator extends Exception {
