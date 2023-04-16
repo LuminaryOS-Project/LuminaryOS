@@ -17,7 +17,6 @@ public class HelpCommand extends Command {
             System.out.println(usage);
          }
       }
-
    }
 
    public PermissionLevel getPremission() {

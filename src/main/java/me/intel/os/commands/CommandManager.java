@@ -31,6 +31,7 @@ public class CommandManager {
             }
          }
       });
+      t.setName(command);
       t.start();
       OS.getProcessManager().add(t, 15000);
 

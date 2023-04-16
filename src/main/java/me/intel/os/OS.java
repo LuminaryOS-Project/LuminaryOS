@@ -7,11 +7,14 @@ import java.util.*;
 import java.util.logging.Logger;
 
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import lombok.Getter;
 import me.intel.os.commands.CommandManager;
 import me.intel.os.commands.impl.*;
 import me.intel.os.core.ProcessManager;
 import me.intel.os.core.User;
+import me.intel.os.events.ProcessTimeoutEvent;
+import me.intel.os.events.UserEvent;
 import me.intel.os.plugin.Plugin;
 
 public class OS {
@@ -48,7 +51,6 @@ public class OS {
    private void setUser(User user) {
       this.currentUser = user;
    }
-
    public void Start(String[] args) throws InterruptedException, IOException {
 
       //programBar.setProgressValue(50);
@@ -63,10 +65,13 @@ public class OS {
       CommandManager.registerCommand(new RmCommand());
       CommandManager.registerCommand(new CDCommand());
       CommandManager.registerCommand(new ExitCommand());
+
+      // Register events
+
+      // END REGISTER EVENTS
       Scanner scanner = new Scanner(System.in);
       System.out.println("Welcome To IntelOS");
       //
-
       //programBar.setProgressValue(100);
       while(true) {
          try {
@@ -74,11 +79,15 @@ public class OS {
             String input = scanner.nextLine();
             String[] splitInput = input.split(" ");
             String command = splitInput[0];
-            String[] arg = new String[splitInput.length - 1];
-            System.arraycopy(splitInput, 1, arg, 0, splitInput.length - 1);
-            this.CommandManager.executeCommand(command, arg);
+            if(!Objects.equals(command, "")){
+               String[] arg = new String[splitInput.length - 1];
+               System.arraycopy(splitInput, 1, arg, 0, splitInput.length - 1);
+               this.CommandManager.executeCommand(command, arg);
+            }
          } catch (NoSuchElementException e) {
             System.out.println("Detected Ctrl + C, Shutting Down!");
+            System.out.println("Stopping Processes...");
+            OS.getProcessManager().shutdown();
             System.exit(0);
          }
       }
