@@ -2,12 +2,16 @@ package me.intel.os.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import java.io.File;
-import java.io.IOException;
+import com.google.gson.reflect.TypeToken;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.*;
 import java.util.Map;
 
 public class JSONConfig {
-   private Gson gson = (new GsonBuilder()).setPrettyPrinting().create();
+   private static Gson gson = (new GsonBuilder()).setPrettyPrinting().create();
    private Map internalMap;
    private String internalString;
 
@@ -20,7 +24,7 @@ public class JSONConfig {
             internalFile.createNewFile();
          }
 
-         this.internalMap = JSON.readJSONFromFile(file);
+         this.internalMap = readJSONFromFile(file);
       } catch (Exception var4) {
       }
 
@@ -36,9 +40,42 @@ public class JSONConfig {
 
    public void close() {
       try {
-         JSON.writeJSONToFile(this.internalString, this.internalMap);
+         writeJSONToFile(this.internalString, this.internalMap);
       } catch (IOException var2) {
       }
+   }
+   public static void writeJSONToFile(String filename, Map data) throws IOException {
+      if (!(new File(filename)).exists()) {
+         (new File(filename)).createNewFile();
+      }
 
+      FileWriter writer = new FileWriter(filename);
+      writer.write(gson.toJson(data));
+      writer.close();
+   }
+
+   public static JSONObject readJSONFromFile(String filename) throws IOException {
+      JSONParser parser = new JSONParser();
+
+      try (Reader reader = new FileReader(filename)) {
+
+         return (JSONObject) parser.parse(reader);
+
+      } catch (IOException e) {
+         e.printStackTrace();
+      } catch (ParseException e) {
+         e.printStackTrace();
+      }
+      return null;
+   }
+
+   public static String toString(Map data) {
+      return gson.toJson(data);
+   }
+
+   public static Map fromJSONString(String json) {
+      TypeToken token = new TypeToken() {
+      };
+      return (Map)gson.fromJson(json, token.getType());
    }
 }
