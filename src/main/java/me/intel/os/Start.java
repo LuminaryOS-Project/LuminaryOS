@@ -33,14 +33,12 @@ public class Start {
          });
 
          URLClassLoader pluginLoader = new URLClassLoader((URL[])urls.toArray(new URL[urls.size()]));
-         System.out.println(classes.toString());
          classes.forEach((s) -> {
             try {
                Class<?> classs = pluginLoader.loadClass(s.replaceAll("/", ".").replace(".class", ""));
                Class<?>[] interfaces = classs.getInterfaces();
                if (Plugin.class.isAssignableFrom(classs)) {
                   Plugin plugin = (Plugin)classs.newInstance();
-                  System.out.println("Plugin found.");
                   try {
                      if (OS.nameToPlugin.containsKey(plugin.getName())) {
                         System.out.println("A plugin by the name %name% is already registered!".replace("%name%", plugin.getName()));
