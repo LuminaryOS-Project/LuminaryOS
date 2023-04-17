@@ -7,10 +7,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="IntelOS" />
+        <module name="intelos" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="IntelOS" target="17" />
       <module name="os" target="1.8" />
     </bytecodeTargetLevel>
   </component>

@@ -6,7 +6,6 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.jar.JarFile;
 import me.intel.os.plugin.Plugin;
@@ -15,15 +14,15 @@ public class Start {
    static final String PLUGIN_FOLDER = "plugins";
 
    public static void main(String[] args) throws InterruptedException, IOException {
-      System.out.println("Starting...");
       long startNS = System.nanoTime();
       File pluginFolder = new File("plugins");
       if (!pluginFolder.exists() && pluginFolder.mkdirs()) {
          System.out.println("Created plugin folder");
       }
+
       File[] files = pluginFolder.listFiles((dir, name) -> name.endsWith(".jar"));
-      List<URL> urls = new ArrayList<>();
-      List<String> classes = new ArrayList<>();
+      ArrayList urls = new ArrayList();
+      ArrayList<String> classes = new ArrayList();
       if (files != null) {
          Arrays.stream(files).forEach(file -> {
             try {
@@ -32,33 +31,39 @@ public class Start {
                jarFile.stream().filter(jarEntry -> jarEntry.getName().endsWith(".class")).forEach(jarEntry -> classes.add(jarEntry.getName()));
             } catch (IOException e) { e.printStackTrace(); }
          });
-         URLClassLoader pluginLoader = new URLClassLoader(urls.toArray(new URL[urls.size()]));
-         classes.forEach(className -> {
+
+         URLClassLoader pluginLoader = new URLClassLoader((URL[])urls.toArray(new URL[urls.size()]));
+         System.out.println(classes.toString());
+         classes.forEach((s) -> {
             try {
-               Class<?> clazz = pluginLoader.loadClass(className.replaceAll("/", ".").replace(".class", ""));
-               Class<?>[] interfaces = clazz.getInterfaces();
-               for (Class<?> anInterface : interfaces) {
-                  if (anInterface == Plugin.class) {
-                     Plugin plugin = (Plugin) clazz.newInstance();
+               Class<?> classs = pluginLoader.loadClass(s.replaceAll("/", ".").replace(".class", ""));
+               Class<?>[] interfaces = classs.getInterfaces();
+               if (Plugin.class.isAssignableFrom(classs)) {
+                  Plugin plugin = (Plugin)classs.newInstance();
+                  System.out.println("Plugin found.");
+                  try {
                      if (OS.nameToPlugin.containsKey(plugin.getName())) {
                         System.out.println("A plugin by the name %name% is already registered!".replace("%name%", plugin.getName()));
-                     } else {
-                        try {
-                           plugin.onEnable();
-                           System.out.println("Loaded plugin " + clazz.getCanonicalName() + " successfully");
-                           OS.nameToPlugin.put(plugin.getName(), plugin);
-                        } catch (Exception err) {
-                           System.out.println("Failed to load plugin");
-                           err.printStackTrace();
-                        }
+                     } try {
+                        plugin.onEnable();
+                        System.out.println("Loaded plugin " + classs.getCanonicalName() + " successfully");
+                        OS.nameToPlugin.put(plugin.getName(), plugin);
+
+                     } catch (Exception e) {
+                        e.printStackTrace();
                      }
-                     break;
+
+                  } catch (Exception e) {
+                     System.out.println("Error occurred while enabling plugin!");
+                     e.printStackTrace();
+                     plugin.onDisable();
                   }
                }
-            } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+            } catch (InstantiationException | IllegalAccessException | ClassNotFoundException var11) {
                System.out.println("Exception occurred during instancing...");
-               e.printStackTrace();
+               var11.printStackTrace();
             }
+
          });
       }
 

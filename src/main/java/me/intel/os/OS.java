@@ -14,7 +14,6 @@ import me.intel.os.commands.impl.*;
 import me.intel.os.core.Color;
 import me.intel.os.core.ProcessManager;
 import me.intel.os.core.User;
-import me.intel.os.kotlin.Kotlin;
 import me.intel.os.plugin.Plugin;
 import me.intel.os.utils.JSONConfig;
 import me.intel.os.utils.Requests;
@@ -94,6 +93,9 @@ public class OS {
       System.out.println("Shutting Down!");
       System.out.println("Stopping Processes...");
       OS.getProcessManager().shutdown();
+      nameToPlugin.forEach((k, v) -> {
+         v.onDisable();
+      });
       config.close();
       System.exit(0);
    }
