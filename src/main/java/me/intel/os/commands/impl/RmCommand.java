@@ -22,7 +22,7 @@ public class RmCommand extends Command {
          System.out.print("Aliases:  " + String.join(" ", this.getAliases()));
          return;
       }
-      File f = new File(args[0]);
+      File f = new File(args.get(0));
       if (!f.exists()) {
          Log.info("[!] File does not exist");
       } else {
