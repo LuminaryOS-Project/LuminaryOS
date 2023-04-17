@@ -1,17 +1,33 @@
 package me.intel.os;
 
 import me.intel.os.utils.Log;
+import me.intel.os.utils.Requests;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.security.MessageDigest;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 public class Recovery {
-    private final HashMap<File, String> Filehashes = new HashMap<>();
+    private final HashMap<String, File> fileHashes = new HashMap<>();
     public void start() {
         System.out.println("Recovery starting...");
+    }
+    public void check(String path) {
+        File folder = new File(path + "/");
+        ArrayList<File> files = new ArrayList<>(Arrays.asList(folder.listFiles()));;
+        files.stream().filter(f -> f.isFile()).forEach(file -> {
+            try {
+                fileHashes.put(computeHashAsync(file).get(), file);
+            } catch (InterruptedException | ExecutionException ignored) {}
+        });
+        //System.out.println(fileHashes.toString());
+
     }
     public static CompletableFuture<String> computeHashAsync(File file) {
         return CompletableFuture.supplyAsync(() -> {

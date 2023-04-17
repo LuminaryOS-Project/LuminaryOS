@@ -63,7 +63,7 @@ public class OS {
       CommandManager.registerCommand(new RmCommand());
       CommandManager.registerCommand(new CDCommand());
       CommandManager.registerCommand(new ExitCommand());
-
+      new Recovery().check(currentDir);
       // Register events
 
       // END REGISTER EVENTS
