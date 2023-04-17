@@ -1,5 +1,6 @@
 package me.intel.os.core;
 
+import me.intel.os.events.LoginEvent;
 import me.intel.os.permissions.PermissionLevel;
 
 public class User {

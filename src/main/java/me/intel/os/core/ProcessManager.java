@@ -43,9 +43,7 @@ public class ProcessManager {
     }
 
     public void shutdown() {
-        runningProcesses.forEach((k, v) -> {
-            v.interrupt();
-        });
+        runningProcesses.forEach((k, v) -> { v.interrupt(); });
         runningProcesses.clear();
     }
     private ProcessManager() {}

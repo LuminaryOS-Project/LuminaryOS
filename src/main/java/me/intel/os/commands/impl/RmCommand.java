@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import me.intel.os.commands.Command;
 import me.intel.os.permissions.PermissionLevel;
+import me.intel.os.utils.Log;
 import me.intel.os.utils.Prompts;
 import me.intel.os.utils.Utils;
 
@@ -22,10 +23,10 @@ public class RmCommand extends Command {
       }
       File f = new File(args[0]);
       if (!f.exists()) {
-         Utils.printerr("File does not exist");
+         Log.info("[!] File does not exist");
       } else {
          if(Prompts.YNPrompt()) { f.delete(); } else { return; }
-         Utils.println("[-] File removed.");
+         Log.info("[-] File removed.");
       }
 
    }
