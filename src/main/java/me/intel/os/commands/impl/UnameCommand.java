@@ -15,7 +15,7 @@ public class UnameCommand extends Command {
    public void execute(List<String> args) {
       if(args.size() != 0 && Objects.equals(args.get(0), "/?")) {
          System.out.println(this.getUsage());
-         System.out.print("Aliases:  " + String.join(" ", this.getAliases()));
+         System.out.println("Aliases:  " + String.join(" ", this.getAliases()));
          return;
       }
       switch(args.get(0)) {
