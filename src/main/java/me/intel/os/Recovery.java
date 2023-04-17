@@ -16,7 +16,7 @@ public class Recovery {
     public static CompletableFuture<String> computeHashAsync(File file) {
         return CompletableFuture.supplyAsync(() -> {
             try (FileInputStream inputStream = new FileInputStream(file)) {
-                MessageDigest digest = MessageDigest.getInstance("SHA-256");
+                MessageDigest digest = MessageDigest.getInstance("MD5");
                 byte[] buffer = new byte[8192];
                 int bytesRead;
                 while ((bytesRead = inputStream.read(buffer)) != -1) {
