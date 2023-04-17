@@ -51,7 +51,6 @@
                     </execution>
                 </executions>
             </plugin>
-<<<<<<< HEAD
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -83,8 +82,6 @@
                     </execution>
                 </executions>
             </plugin>
-=======
->>>>>>> 2c0d219b0671b9de0ddd5c738a57b7767d2441eb
         </plugins>
     </build>
     <dependencies>
