@@ -24,13 +24,8 @@ public class ProcessManager {
                 t.join(timeout);
                 if (t.isAlive()) {
                     t.interrupt();
-                    runningProcesses.forEach((k, v) -> {
-                        if (Objects.equals(t, v)) {
-                            ProcessTimeoutEvent pTimeoutEvent = new ProcessTimeoutEvent(t, k);
-                            OS.getEventHandler().post(pTimeoutEvent);
-                        }
-                    });
-                    runningProcesses.entrySet().removeIf(entry -> Objects.equals(t, entry.getValue()));
+                    OS.getEventHandler().post(new ProcessTimeoutEvent(t, currID));
+                    runningProcesses.remove(currID);
                 }
             }
             catch (InterruptedException ignored) {}
@@ -38,11 +33,10 @@ public class ProcessManager {
         runningProcesses.put(currID, t);
         currID++;
     }
-    public String getProcess(int id) {
-        return runningProcesses.get(id).getName();
+    public Thread getProcess(int id) {
+        return runningProcesses.get(id);
 
     }
-
     @SuppressWarnings({"deprecation"})
     public void kill(int id) {
         runningProcesses.get(id).stop();
@@ -50,14 +44,11 @@ public class ProcessManager {
 
     public void shutdown() {
         runningProcesses.forEach((k, v) -> {
-            runningProcesses.get(k).interrupt();
+            v.interrupt();
         });
         runningProcesses.clear();
     }
-    private ProcessManager() {
-
-
-    }
+    private ProcessManager() {}
     public static ProcessManager getProcessManager() {
         if(procManager == null) {
             procManager = new ProcessManager();

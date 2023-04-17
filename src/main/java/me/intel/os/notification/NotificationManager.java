@@ -1,6 +1,4 @@
-package me.intel.os.Notification;
-
-import me.intel.os.OS;
+package me.intel.os.notification;
 
 import java.awt.*;
 import java.util.logging.Logger;
