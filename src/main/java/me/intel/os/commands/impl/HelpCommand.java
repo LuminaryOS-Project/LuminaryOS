@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import me.intel.os.OS;
 import me.intel.os.commands.Command;
+import me.intel.os.commands.CommandManager;
 import me.intel.os.permissions.PermissionLevel;
 
 public class HelpCommand extends Command {
@@ -18,6 +19,12 @@ public class HelpCommand extends Command {
          System.out.println(this.getUsage());
          System.out.print("Aliases:  " + String.join(" ", this.getAliases()));
          return;
+      } else if(args.size() == 0){
+         OS.getInstance().getCommandManager().commands.forEach((k,v) -> {
+            System.out.println(v.getName() + " - " + v.getUsage());
+            System.out.println("Aliases: " + String.join(" ",v.getAliases()));
+            System.out.println("\n");
+         });
       }
    }
 
