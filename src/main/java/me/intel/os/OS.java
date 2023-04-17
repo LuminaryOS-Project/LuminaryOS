@@ -14,8 +14,10 @@ import me.intel.os.commands.impl.*;
 import me.intel.os.core.Color;
 import me.intel.os.core.ProcessManager;
 import me.intel.os.core.User;
+import me.intel.os.kotlin.Kotlin;
 import me.intel.os.plugin.Plugin;
 import me.intel.os.utils.JSONConfig;
+import me.intel.os.utils.Requests;
 
 public class OS {
    private final CommandManager CommandManager = new CommandManager();
@@ -54,9 +56,6 @@ public class OS {
       this.currentUser = user;
    }
    public void Start(String[] args) throws InterruptedException, IOException {
-      System.out.println("Debug");
-      config.set("IntelOS_Ver", 1.2);
-      System.out.println(config.getInternalMap().toString());
       System.out.println("Initialising IntelOS (Java)");
       instance = this;
       CommandManager.registerCommand(new HelpCommand());
@@ -70,13 +69,6 @@ public class OS {
       // END REGISTER EVENTS
       Scanner scanner = new Scanner(System.in);
       System.out.println("Welcome To IntelOS");
-      System.out.println(Color.RED + "Red" + Color.RESET);
-      System.out.println(Color.GREEN + "Green" + Color.RESET);
-      System.out.println(Color.BLUE + "Blue" + Color.RESET);
-      System.out.println(Color.CYAN + "Cyan" + Color.RESET);
-      System.out.println(Color.YELLOW + "Yellow" + Color.RESET);
-      System.out.println(Color.PURPLE + "Purple" + Color.RESET);
-      System.out.println(Color.BLACK + "Black" + Color.RESET);
       //
       //programBar.setProgressValue(100);
       while(true) {
