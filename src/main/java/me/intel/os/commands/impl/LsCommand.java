@@ -16,10 +16,10 @@ public class LsCommand extends Command implements TabCompleter {
       super("ls", "Lists all files in a directory", Arrays.asList("dir", "listdir"));
    }
 
-   public void execute(String[] args) {
-      if(args.length != 0 && Objects.equals(args[0], "/?")) {
+   public void execute(List<String> args) {
+      if(args.size() != 0 && Objects.equals(args.get(0), "/?")) {
          System.out.println(this.getUsage());
-         System.out.print("Aliases:  " + String.join(" ", this.getAliases()) + "\n");
+         System.out.print("Aliases:  " + String.join(" ", this.getAliases()));
          return;
       }
       File folder = new File(OS.currentDir);
@@ -41,15 +41,6 @@ public class LsCommand extends Command implements TabCompleter {
 
    @Override
    public List<String> getCompletions(String[] args, int position) {
-      if (position == 0) {
-         // Return completions for the first argument position
-         return Arrays.asList("arg1", "arg2", "arg3");
-      } else if (position == 1) {
-         // Return completions for the second argument position
-         return Arrays.asList("value1", "value2", "value3");
-      } else {
-         // No completions for other argument positions
-         return Collections.emptyList();
-      }
+      return null;
    }
 }

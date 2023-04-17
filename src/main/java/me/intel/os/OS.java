@@ -4,6 +4,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
 import java.util.logging.Logger;
 
 import com.google.common.eventbus.EventBus;
@@ -87,7 +88,7 @@ public class OS {
             if(!Objects.equals(command, "")){
                String[] arg = new String[splitInput.length - 1];
                System.arraycopy(splitInput, 1, arg, 0, splitInput.length - 1);
-               this.CommandManager.executeCommand(command, arg);
+               this.CommandManager.executeCommand(command, List.of(arg));
             }
          } catch (NoSuchElementException e) {
             shutdown();

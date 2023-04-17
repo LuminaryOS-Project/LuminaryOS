@@ -6,6 +6,7 @@ import me.intel.os.permissions.PermissionLevel;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 public class DummyCommand extends Command {
@@ -13,10 +14,10 @@ public class DummyCommand extends Command {
       super("dummy", "dummy", Arrays.asList("dum", "my"));
    }
 
-   public void execute(String[] args) {
-      if(args.length != 0 && Objects.equals(args[0], "/?")) {
+   public void execute(List<String> args) {
+      if(args.size() != 0 && Objects.equals(args.get(0), "/?")) {
          System.out.println(this.getUsage());
-         System.out.print("Aliases:  " + String.join(" ", this.getAliases()) + "\n");
+         System.out.print("Aliases:  " + String.join(" ", this.getAliases()));
          return;
       }
    }

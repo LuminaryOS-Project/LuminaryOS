@@ -2,6 +2,7 @@ package me.intel.os.commands.impl;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 import me.intel.os.OS;
@@ -13,16 +14,16 @@ public class CDCommand extends Command {
       super("cd", "Changes your current directory", Arrays.asList("cd", "cdir"));
    }
 
-   public void execute(String[] args) {
-      if(args.length != 0 && Objects.equals(args[0], "/?")) {
+   public void execute(List<String> args) {
+      if(args.size() != 0 && Objects.equals(args.get(0), "/?")) {
          System.out.println(this.getUsage());
          System.out.print("Aliases:  " + String.join(" ", this.getAliases()));
          return;
       }
-      if (!(new File(OS.currentDir + "\\" + args[0])).exists()) {
+      if (!(new File(OS.currentDir + "\\" + args.get(0))).exists()) {
          System.out.println("Directory does not exist!");
       } else {
-         OS.currentDir = OS.currentDir + "\\" + args[0];
+         OS.currentDir = OS.currentDir + "\\" + args.get(0);
       }
 
    }

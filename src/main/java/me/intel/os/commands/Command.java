@@ -8,7 +8,7 @@ public abstract class Command {
    private List aliases;
    public String usage;
 
-   public Command(String name, String usage, List aliases) {
+   public Command(String name, String usage, List<String> aliases) {
       this.name = name;
       this.usage = usage;
       this.aliases = aliases;
@@ -26,7 +26,7 @@ public abstract class Command {
       return this.aliases;
    }
 
-   public abstract void execute(String[] var1);
+   public abstract void execute(List<String> args);
 
    public abstract PermissionLevel getPremission();
 }

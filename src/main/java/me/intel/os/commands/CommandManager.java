@@ -17,7 +17,7 @@ public class CommandManager {
       return this.commands.get(command) != null ? ((Command)this.commands.get(command)).getUsage() : "Unknown Command";
    }
 
-   public void executeCommand(String command, String[] args) {
+   public void executeCommand(String command, List<String> args) {
       Thread t = new Thread(() -> {
          Command cmd = (Command)this.commands.get(command);
          if (cmd != null) {
