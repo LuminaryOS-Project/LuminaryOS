@@ -56,7 +56,8 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.2.2</version>
                 <configuration>
-                    <outputDirectory>P:\IntelOS\Debug</outputDirectory>
+                    <!--- <outputDirectory>P:\IntelOS\Debug</outputDirectory> -->
+                    <outputDirectory>${pom.basedir}\Debug</outputDirectory>
                 </configuration>
             </plugin>
             <plugin>
