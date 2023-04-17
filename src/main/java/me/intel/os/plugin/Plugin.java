@@ -30,7 +30,7 @@ public abstract class Plugin {
 
    public abstract void onEnable();
 
-   abstract void onDisable();
+   public abstract void onDisable();
 
    public String getName() {
       return getClass().getName();
