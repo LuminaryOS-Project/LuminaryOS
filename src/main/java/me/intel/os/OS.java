@@ -63,6 +63,9 @@ public class OS {
       CommandManager.registerCommand(new RmCommand());
       CommandManager.registerCommand(new CDCommand());
       CommandManager.registerCommand(new ExitCommand());
+      CommandManager.registerCommand(new UnameCommand());
+      CommandManager.registerCommand(new VerCommand());
+      CommandManager.registerCommand(new PWDCommand());
       new Recovery().check(currentDir);
       // Register events
 
