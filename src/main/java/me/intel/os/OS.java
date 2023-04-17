@@ -7,24 +7,23 @@ import java.util.*;
 import java.util.logging.Logger;
 
 import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
 import lombok.Getter;
 import me.intel.os.commands.CommandManager;
 import me.intel.os.commands.impl.*;
 import me.intel.os.core.Color;
 import me.intel.os.core.ProcessManager;
 import me.intel.os.core.User;
-import me.intel.os.events.ProcessTimeoutEvent;
-import me.intel.os.events.UserEvent;
 import me.intel.os.plugin.Plugin;
-import me.intel.os.utils.Log;
+import me.intel.os.utils.JSONConfig;
 
 public class OS {
    private final CommandManager CommandManager = new CommandManager();
    public static HashMap<String, Plugin> nameToPlugin = new HashMap<>();
-   private static final HashMap<String, Object> config = new HashMap<>();
    @Getter
    private static final ProcessManager ProcessManager = me.intel.os.core.ProcessManager.getProcessManager();
+   //private static final KeybindListener keybindListener = new KeybindListener();
+   @Getter
+   private static final JSONConfig config = new JSONConfig("os.json");
    private static final Logger logger = Logger.getLogger("[OS]");
    private static OS instance;
    @Getter
@@ -54,13 +53,10 @@ public class OS {
       this.currentUser = user;
    }
    public void Start(String[] args) throws InterruptedException, IOException {
-
-      //programBar.setProgressValue(50);
-      //NotificationManager.sendNotification("OS Startup", "IntelOS has successfully started up", "Successful_startup", TrayIcon.MessageType.INFO);
+      System.out.println("Debug");
+      config.set("IntelOS_Ver", 1.2);
+      System.out.println(config.getInternalMap().toString());
       System.out.println("Initialising IntelOS (Java)");
-      //config.put("dev.enabled", false);
-      // logger.info(JSON.readJSONFromFile("os.json").get("data").toString());
-      // logger.info("Test!");
       instance = this;
       CommandManager.registerCommand(new HelpCommand());
       CommandManager.registerCommand(new LsCommand());
@@ -94,14 +90,17 @@ public class OS {
                this.CommandManager.executeCommand(command, arg);
             }
          } catch (NoSuchElementException e) {
-            System.out.println("Detected Ctrl + C, Shutting Down!");
-            System.out.println("Stopping Processes...");
-            OS.getProcessManager().shutdown();
-            System.exit(0);
+            shutdown();
          }
       }
    }
-
+   public void shutdown() {
+      System.out.println("Shutting Down!");
+      System.out.println("Stopping Processes...");
+      OS.getProcessManager().shutdown();
+      config.close();
+      System.exit(0);
+   }
    public File getConfigFile() throws IOException {
       File config = new File(".config");
       if (!config.exists()) {
@@ -113,9 +112,6 @@ public class OS {
       return config;
    }
 
-   public static Map getConfig() {
-      return config;
-   }
 
    public static OS getInstance() {
       return instance;
