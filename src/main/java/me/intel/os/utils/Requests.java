@@ -2,9 +2,7 @@ package me.intel.os.utils;
 
 import com.google.gson.Gson;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
@@ -21,6 +19,18 @@ public class Requests {
 
     public static String post(String url, Map<String, String> data) throws IOException {
         return request("POST", url, null, data);
+    }
+    public static void download(String url, String path) throws IOException {
+        URL u = new URL(url);
+        InputStream in = u.openStream();
+        OutputStream out = new FileOutputStream(path);
+        byte[] buffer = new byte[4096];
+        int bytesRead;
+        while ((bytesRead = in.read(buffer)) != -1) {
+            out.write(buffer, 0, bytesRead);
+        }
+        in.close();
+        out.close();
     }
 
     public static String post(String url, Map<String, String> params, Map<String, String> data) throws IOException {
