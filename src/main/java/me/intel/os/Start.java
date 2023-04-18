@@ -6,15 +6,20 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.jar.JarFile;
+
+import joptsimple.OptionParser;
+import joptsimple.OptionSet;
 import me.intel.os.plugin.Plugin;
 
 public class Start {
-   static final String PLUGIN_FOLDER = "plugins";
-
+   public static Map<String, Object> OSoptions = new HashMap<>();
    public static void main(String[] args) throws InterruptedException, IOException {
       long startNS = System.nanoTime();
+      // Plugins
       File pluginFolder = new File("plugins");
       if (!pluginFolder.exists() && pluginFolder.mkdirs()) {
          System.out.println("Created plugin folder");
@@ -64,7 +69,15 @@ public class Start {
 
          });
       }
-
+      //
+      OptionParser parser = new OptionParser();
+      parser.accepts("debug", "Enables OS debugging")
+              .withOptionalArg();
+      OptionSet options = parser.parse(args);
+      if(options.has("debug")) {
+         OSoptions.put("debug", true);
+      }
+      //
       OS os = new OS();
       System.out.println("Finished booting.");
       System.out.println("Completed in " + TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNS) + "ms");
