@@ -16,6 +16,7 @@ import me.intel.os.core.ProcessManager;
 import me.intel.os.core.User;
 import me.intel.os.plugin.Plugin;
 import me.intel.os.utils.JSONConfig;
+import me.intel.os.utils.Log;
 import me.intel.os.utils.Requests;
 
 public class OS {
@@ -26,7 +27,6 @@ public class OS {
    //private static final KeybindListener keybindListener = new KeybindListener();
    @Getter
    private static final JSONConfig config = new JSONConfig("os.json");
-   private static final Logger logger = Logger.getLogger("[OS]");
    private static OS instance;
    @Getter
    private static final EventBus EventHandler = new EventBus("OS");
