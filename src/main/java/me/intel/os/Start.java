@@ -73,6 +73,7 @@ public class Start {
       OptionParser parser = new OptionParser();
       parser.accepts("debug", "Enables OS debugging")
               .withOptionalArg();
+
       OptionSet options = parser.parse(args);
       if(options.has("debug")) {
          OSoptions.put("debug", true);

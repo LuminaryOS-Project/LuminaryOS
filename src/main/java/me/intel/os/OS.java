@@ -60,12 +60,10 @@ public class OS {
       System.out.println("Initialising IntelOS (Java)");
       instance = this;
       // JVM Things
-      Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
-      SignalHandler handler = sig -> {
-         System.out.println("Detected shutdown signal");
+      Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+         System.out.println("Shutdown Hook triggered");
          shutdown();
-      };
-      Signal.handle(new Signal("TERM"), handler);
+      }));
       // Commands
       CommandManager.registerCommand(new HelpCommand());
       CommandManager.registerCommand(new LsCommand());
@@ -80,6 +78,17 @@ public class OS {
       // END REGISTER EVENTS
       Scanner scanner = new Scanner(System.in);
       System.out.println("Welcome To IntelOS");
+      try {
+         if((boolean) Start.OSoptions.getOrDefault("debug", false) ) {
+            //System.out.println("Running on Debug Mode, OS: " + System.getProperty("os.name") + " Version: " + System.getProperty("os.version")
+            //
+            //);
+            System.out.println("Running on Debug Mode, OS: " + System.getProperty("os.name") +
+                    " Version: " + System.getProperty("os.version") +
+                    " Compiled on Java 17, Running on " + System.getProperty("java.version")
+            );
+         }
+      } catch (ClassCastException ignored) {}
       while(true) {
          try {
             System.out.print("$ ");
@@ -92,7 +101,7 @@ public class OS {
                this.CommandManager.executeCommand(command, List.of(arg));
             }
          } catch (NoSuchElementException e) {
-            shutdown();
+            System.exit(0);
          }
       }
    }
@@ -105,10 +114,6 @@ public class OS {
          v.onDisable();
       });
       //File f = new File("output.bin");
-      try {
-         Thread.sleep(1000L);
-      } catch (InterruptedException ignored) {
-      }
       config.close();
       System.exit(0);
    }
