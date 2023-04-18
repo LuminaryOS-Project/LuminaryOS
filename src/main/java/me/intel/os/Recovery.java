@@ -20,7 +20,7 @@ public class Recovery {
     }
     public void check(String path) {
         File folder = new File(path + "/");
-        ArrayList<File> files = new ArrayList<>(Arrays.asList(folder.listFiles()));;
+        ArrayList<File> files = new ArrayList<>(Arrays.asList(folder.listFiles()));
         files.stream().filter(f -> f.isFile()).forEach(file -> {
             try {
                 fileHashes.put(computeHashAsync(file).get(), file);

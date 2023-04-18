@@ -5,7 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
-import java.util.logging.Logger;
+import sun.misc.Signal;
+import sun.misc.SignalHandler;
 
 import com.google.common.eventbus.EventBus;
 import lombok.Getter;
@@ -18,6 +19,7 @@ import me.intel.os.plugin.Plugin;
 import me.intel.os.utils.JSONConfig;
 import me.intel.os.utils.Log;
 import me.intel.os.utils.Requests;
+import me.intel.os.utils.Utils;
 
 public class OS {
    private final CommandManager CommandManager = new CommandManager();
@@ -57,6 +59,14 @@ public class OS {
    public void Start(String[] args) throws InterruptedException, IOException {
       System.out.println("Initialising IntelOS (Java)");
       instance = this;
+      // JVM Things
+      Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
+      SignalHandler handler = sig -> {
+         System.out.println("Detected shutdown signal");
+         shutdown();
+      };
+      Signal.handle(new Signal("TERM"), handler);
+      // Commands
       CommandManager.registerCommand(new HelpCommand());
       CommandManager.registerCommand(new LsCommand());
       CommandManager.registerCommand(new RmCommand());
@@ -67,12 +77,9 @@ public class OS {
       CommandManager.registerCommand(new PWDCommand());
       new Recovery().check(currentDir);
       // Register events
-
       // END REGISTER EVENTS
       Scanner scanner = new Scanner(System.in);
       System.out.println("Welcome To IntelOS");
-      //
-      //programBar.setProgressValue(100);
       while(true) {
          try {
             System.out.print("$ ");
@@ -90,12 +97,18 @@ public class OS {
       }
    }
    public void shutdown() {
+
       System.out.println("Shutting Down!");
       System.out.println("Stopping Processes...");
       OS.getProcessManager().shutdown();
       nameToPlugin.forEach((k, v) -> {
          v.onDisable();
       });
+      //File f = new File("output.bin");
+      try {
+         Thread.sleep(1000L);
+      } catch (InterruptedException ignored) {
+      }
       config.close();
       System.exit(0);
    }
