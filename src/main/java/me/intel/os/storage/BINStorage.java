@@ -37,23 +37,42 @@ public class BINStorage {
             }
         }
     }
+    private static void writeString(String data, DataOutputStream outputStream) throws IOException {
+        byte[] buffer = data.getBytes();
+        outputStream.writeUTF("string");
+        outputStream.writeInt(buffer.length);
+        outputStream.write(buffer);
+    }
 
-    private static byte[] readFromFile(DataInputStream inputStream, String fileName) throws IOException {
+    private static Object readFromFile(DataInputStream inputStream, String fileName) throws IOException {
         boolean fileFound = false;
-        byte[] buffer = null;
+        Object result = null;
         while (!fileFound) {
             try {
                 String currentFileName = inputStream.readUTF();
                 int length = inputStream.readInt();
                 if (currentFileName.equals(fileName)) {
-                    buffer = new byte[length];
-                    inputStream.readFully(buffer);
+                    if (currentFileName.equals("string")) {
+                        byte[] buffer = new byte[length];
+                        inputStream.readFully(buffer);
+                        result = new String(buffer);
+                    } else {
+                        byte[] buffer = new byte[length];
+                        inputStream.readFully(buffer);
+                        result = buffer;
+                    }
                     fileFound = true;
-                } else { inputStream.skipBytes(length); }
-            } catch (EOFException e) { break; }
+                } else {
+                    inputStream.skipBytes(length);
+                }
+            } catch (EOFException e) {
+                break;
+            }
         }
-        if (!fileFound) { throw new FileNotFoundException("File not found: " + fileName); }
-        return buffer;
+        if (!fileFound) {
+            throw new FileNotFoundException("File not found: " + fileName);
+        }
+        return result;
     }
 }
 

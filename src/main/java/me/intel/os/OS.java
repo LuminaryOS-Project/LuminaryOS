@@ -5,6 +5,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
+
+import me.intel.os.commands.SimpleCommand;
+import me.intel.os.permissions.PermissionLevel;
+import me.intel.os.utils.*;
 import sun.misc.Signal;
 import sun.misc.SignalHandler;
 
@@ -16,10 +20,6 @@ import me.intel.os.core.Color;
 import me.intel.os.core.ProcessManager;
 import me.intel.os.core.User;
 import me.intel.os.plugin.Plugin;
-import me.intel.os.utils.JSONConfig;
-import me.intel.os.utils.Log;
-import me.intel.os.utils.Requests;
-import me.intel.os.utils.Utils;
 
 public class OS {
    private final CommandManager CommandManager = new CommandManager();
@@ -61,7 +61,6 @@ public class OS {
       instance = this;
       // JVM Things
       Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-         System.out.println("Shutdown Hook triggered");
          shutdown();
       }));
       // Commands
@@ -73,6 +72,7 @@ public class OS {
       CommandManager.registerCommand(new UnameCommand());
       CommandManager.registerCommand(new VerCommand());
       CommandManager.registerCommand(new PWDCommand());
+      CommandManager.registerCommand(new SimpleCommand("whoami", "whoami", List.of("mne"), PermissionLevel.USER ,(cargs) -> { System.out.println(currentUser.getName()); }));
       new Recovery().check(currentDir);
       // Register events
       // END REGISTER EVENTS
@@ -84,7 +84,7 @@ public class OS {
             //
             //);
             System.out.println("Running on Debug Mode, OS: " + System.getProperty("os.name") +
-                    " Version: " + System.getProperty("os.version") +
+                    " Build: " + System.getProperty("os.build", "UNKNOWN") +
                     " Compiled on Java 17, Running on " + System.getProperty("java.version")
             );
          }
@@ -106,7 +106,6 @@ public class OS {
       }
    }
    public void shutdown() {
-
       System.out.println("Shutting Down!");
       System.out.println("Stopping Processes...");
       OS.getProcessManager().shutdown();
@@ -115,7 +114,6 @@ public class OS {
       });
       //File f = new File("output.bin");
       config.close();
-      System.exit(0);
    }
    public File getConfigFile() throws IOException {
       File config = new File(".config");

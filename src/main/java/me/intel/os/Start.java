@@ -48,9 +48,11 @@ public class Start {
                      if (OS.nameToPlugin.containsKey(plugin.getName())) {
                         System.out.println("A plugin by the name %name% is already registered!".replace("%name%", plugin.getName()));
                      } try {
-                        plugin.onEnable();
-                        System.out.println("Loaded plugin " + classs.getCanonicalName() + " successfully");
-                        OS.nameToPlugin.put(plugin.getName(), plugin);
+                        new Thread(() -> {
+                           plugin.onEnable();
+                           System.out.println("Loaded plugin " + classs.getCanonicalName() + " successfully");
+                           OS.nameToPlugin.put(plugin.getName(), plugin);
+                        }, "PLUGINLOAD_" + plugin.getName()).start();
 
                      } catch (Exception e) {
                         e.printStackTrace();

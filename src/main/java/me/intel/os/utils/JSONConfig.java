@@ -9,6 +9,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.*;
+import java.util.HashMap;
 import java.util.Map;
 
 public class JSONConfig {
@@ -33,11 +34,29 @@ public class JSONConfig {
    }
 
    public Object get(String path) {
-      return this.internalMap.get(path);
+      String[] keys = path.split("\\."); // split the path by dot notation
+      Object value = this.internalMap;
+      for (String key : keys) {
+         if (value instanceof Map) {
+            value = ((Map) value).get(key);
+         } else {
+            value = null;
+            break;
+         }
+      }
+      return value;
    }
 
    public void set(String path, Object value) {
-      this.internalMap.put(path, value);
+      String[] keys = path.split("\\.");
+      Map map = this.internalMap;
+      for (int i = 0; i < keys.length - 1; i++) {
+         if (!map.containsKey(keys[i])) {
+            map.put(keys[i], new HashMap<>());
+         }
+         map = (Map) map.get(keys[i]);
+      }
+      map.put(keys[keys.length - 1], value);
    }
 
    public void close() {

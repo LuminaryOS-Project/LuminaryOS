@@ -5,9 +5,10 @@ import me.intel.os.OS;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CommandManager {
-   public HashMap<String, Command> commands = new HashMap<>();
+   public ConcurrentHashMap<String, Command> commands = new ConcurrentHashMap<>();
 
    public void registerCommand(Command command) {
       this.commands.put(command.getName(), command);
