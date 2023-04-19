@@ -39,19 +39,21 @@ public class ProcessManager {
                     process.setId(currID);
                     currID++;
                     // Watcher
-                    new Thread(() -> {
-                        try {
-                            thread.join(process.getTimeoutMillis());
-                            if (thread.isAlive()) {
-                                thread.interrupt();
-                                OS.getEventHandler().post(new ProcessTimeoutEvent(thread, process.getId()));
-                                runningProcesses.remove(process.getId());
-                            } else {
-                                runningProcesses.remove(process.getId());
+                    if(!(process instanceof Service)) {
+                        new Thread(() -> {
+                            try {
+                                thread.join(process.getTimeoutMillis());
+                                if (thread.isAlive()) {
+                                    thread.interrupt();
+                                    OS.getEventHandler().post(new ProcessTimeoutEvent(thread, process.getId()));
+                                    runningProcesses.remove(process.getId());
+                                } else {
+                                    runningProcesses.remove(process.getId());
+                                }
                             }
-                        }
-                        catch (InterruptedException ignored) {}
-                    }).start();
+                            catch (InterruptedException ignored) {}
+                        }).start();
+                    }
                 }
             }
         }, 0, 1, TimeUnit.SECONDS);

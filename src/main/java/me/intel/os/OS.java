@@ -63,6 +63,7 @@ public class OS {
       Runtime.getRuntime().addShutdownHook(new Thread(() -> {
          shutdown();
       }));
+      ProcessManager.start();
       // Commands
       CommandManager.registerCommand(new HelpCommand());
       CommandManager.registerCommand(new LsCommand());
