@@ -4,7 +4,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.security.MessageDigest;
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -39,5 +46,45 @@ public class Utils {
     }
     public static File[] listFilesInDirectory(final File folder) {
         return folder.listFiles(File::isFile);
+    }
+    public static void deleteDirectory(File directory) {
+        if (directory.isDirectory()) {
+            Arrays.stream(Objects.requireNonNull(directory.listFiles())).forEach(Utils::deleteDirectory);
+        }
+        directory.delete();
+    }
+    public static String MD5Hash(String file) {
+        try {
+            byte[] data = Files.readAllBytes(Paths.get(file));
+            byte[] hash = MessageDigest.getInstance("MD5").digest(data);
+            return new BigInteger(1, hash).toString(16);
+        } catch (Exception ignored) {}
+        return null;
+    }
+    public static void createDisk(int i) throws IOException {
+        Path diskPath = Paths.get("IntelOS", "disks", String.valueOf(i));
+        if (Files.notExists(diskPath)) {
+            Files.createDirectories(diskPath);
+            Path binPath = diskPath.resolve("disk.bin");
+            Path jsonPath = diskPath.resolve("disk.json");
+            try {
+                Files.createFile(binPath);
+                Files.createFile(jsonPath);
+                System.out.println("Successfully created disk!");
+                String hash = MD5Hash(jsonPath.toString());
+                try (JSONConfig cfg = new JSONConfig(jsonPath.toString())) {
+                    cfg.set("lastHash", hash);
+                    cfg.set("lastAccess", System.currentTimeMillis());
+                    cfg.set("INTELOS_DATA.version", 1.0);
+                }
+                try(JSONConfig cfg = new JSONConfig(Paths.get("IntelOS", "cache", "cache.json").toString())) {
+                    cfg.set("disks.0.hash", hash);
+                }
+            } catch (IOException e) {
+                throw new IllegalArgumentException("Disk cannot be created!", e);
+            }
+        } else {
+            throw new IllegalArgumentException("Disk already exists!");
+        }
     }
 }

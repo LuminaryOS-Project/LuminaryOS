@@ -14,6 +14,7 @@ import java.util.jar.JarFile;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import me.intel.os.plugin.Plugin;
+import me.intel.os.utils.Utils;
 
 public class Start {
    public static Map<String, Object> OSoptions = new HashMap<>();
@@ -24,7 +25,25 @@ public class Start {
       if (!pluginFolder.exists() && pluginFolder.mkdirs()) {
          System.out.println("Created plugin folder");
       }
+      /*
+      First startup
 
+       */
+      File mainf = new File("IntelOS");
+      if (!mainf.exists() && mainf.mkdirs()) {
+         System.out.println("Running setup...");
+         System.out.println("Created main folder!");
+         if(new File("IntelOS/disks").mkdirs() && new File("IntelOS/users").mkdirs() && new File("IntelOS/cache").mkdirs() && new File("IntelOS/config").mkdirs() && new File("IntelOS/temp").mkdirs()) {
+            System.out.println("Successfully created files!");
+            new File("IntelOS/cache/cache.json").createNewFile();
+            new File("IntelOS/config/config.json");
+            Utils.createDisk(0);
+         } else {
+            System.out.println("Failed to create the needed OS files...");
+            Utils.deleteDirectory(new File("IntelOS"));
+         }
+      }
+      //
       File[] files = pluginFolder.listFiles((dir, name) -> name.endsWith(".jar"));
       ArrayList urls = new ArrayList();
       ArrayList<String> classes = new ArrayList();

@@ -12,10 +12,10 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JSONConfig {
+public class JSONConfig implements AutoCloseable {
    private static Gson gson = (new GsonBuilder()).setPrettyPrinting().create();
    @Getter
-   private Map internalMap;
+   private Map<String, Object> internalMap = new HashMap<>();
    private String internalString;
 
    public JSONConfig(String file) {
@@ -49,16 +49,16 @@ public class JSONConfig {
 
    public void set(String path, Object value) {
       String[] keys = path.split("\\.");
-      Map map = this.internalMap;
+      Map<String, Object> map = this.internalMap;
       for (int i = 0; i < keys.length - 1; i++) {
          if (!map.containsKey(keys[i])) {
             map.put(keys[i], new HashMap<>());
          }
-         map = (Map) map.get(keys[i]);
+         map = (Map<String, Object>) map.get(keys[i]);
       }
       map.put(keys[keys.length - 1], value);
    }
-
+   @Override
    public void close() {
       try {
          writeJSONToFile(this.internalString, this.internalMap);
@@ -77,13 +77,12 @@ public class JSONConfig {
 
    public static JSONObject readJSONFromFile(String filename) throws IOException {
       JSONParser parser = new JSONParser();
-
+      File file = new File(filename);
+      if (!file.exists() || file.length() == 0) {
+         return new JSONObject();
+      }
       try (Reader reader = new FileReader(filename)) {
-
          return (JSONObject) parser.parse(reader);
-
-      } catch (IOException e) {
-         e.printStackTrace();
       } catch (ParseException e) {
          e.printStackTrace();
       }
