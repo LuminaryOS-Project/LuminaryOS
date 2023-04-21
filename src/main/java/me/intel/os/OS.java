@@ -7,6 +7,8 @@ import java.util.*;
 import java.util.List;
 
 import me.intel.os.commands.SimpleCommand;
+import me.intel.os.core.Process;
+import me.intel.os.core.Service;
 import me.intel.os.permissions.PermissionLevel;
 import me.intel.os.utils.*;
 import sun.misc.Signal;
@@ -73,6 +75,7 @@ public class OS {
       CommandManager.registerCommand(new UnameCommand());
       CommandManager.registerCommand(new VerCommand());
       CommandManager.registerCommand(new PWDCommand());
+      CommandManager.registerCommand(new KillCommand());
       CommandManager.registerCommand(new SimpleCommand("whoami", "whoami", List.of("mne"), PermissionLevel.USER ,(cargs) -> { System.out.println(currentUser.getName()); }));
       new Recovery().check(currentDir);
       // Register events

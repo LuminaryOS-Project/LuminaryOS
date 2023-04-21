@@ -1,6 +1,7 @@
 package me.intel.os.commands;
 
 import me.intel.os.OS;
+import me.intel.os.core.Process;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -19,7 +20,7 @@ public class CommandManager {
    }
 
    public void executeCommand(String command, List<String> args) {
-      Thread t = new Thread(() -> {
+      Process p  = new Process(new Thread(() -> {
          Command cmd = (Command)this.commands.get(command);
          if (cmd != null) {
             cmd.execute(args);
@@ -31,10 +32,8 @@ public class CommandManager {
                System.out.println("Command not found: " + command);
             }
          }
-      });
-      t.setName(command);
-      t.start();
-      OS.getProcessManager().add(t, 15000);
+      }), 15000L);
+      OS.getProcessManager().add(p);
 
    }
    public TabCompleter getTabCompleter(Command command) {

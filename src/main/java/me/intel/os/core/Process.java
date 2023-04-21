@@ -19,7 +19,7 @@ public class Process {
     @Setter
     private int id;
     public Thread start() {
-        thread.setPriority(priority.getPriorityValue());
+        thread.setPriority(1);
         thread.start();
         return thread;
     }

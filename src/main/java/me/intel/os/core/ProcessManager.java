@@ -1,15 +1,19 @@
 package me.intel.os.core;
 
+import lombok.Getter;
 import me.intel.os.OS;
 import me.intel.os.events.ProcessTimeoutEvent;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.concurrent.*;
 
 public class ProcessManager {
     private int currID = 0;
     private static ProcessManager procManager;
     private Thread manager;
-    private final ConcurrentLinkedQueue<Process> queuedProcess = new ConcurrentLinkedQueue<>();
+    private final Deque<Process> queuedProcess = new ArrayDeque<>();
+    @Getter
     private final ConcurrentHashMap<Integer, Process> runningProcesses = new ConcurrentHashMap<>();
     private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
     public void add(Process t) {
@@ -22,7 +26,14 @@ public class ProcessManager {
     }
     @SuppressWarnings({"deprecation"})
     public void kill(int id) {
-        runningProcesses.get(id).getThread().stop();
+        Process proc = runningProcesses.get(id);
+        if(proc != null) {
+            currID--;
+            proc.stop();
+            runningProcesses.remove(id);
+        } else {
+            System.out.println("Unknown Process ID...");
+        }
     }
 
     public void shutdown() {
