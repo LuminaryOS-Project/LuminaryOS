@@ -7,24 +7,24 @@ import java.util.*;
 import java.util.List;
 
 import me.intel.os.commands.SimpleCommand;
-import me.intel.os.core.Process;
-import me.intel.os.core.Service;
+import me.intel.os.core.services.Service;
+import me.intel.os.core.services.ServiceManager;
+import me.intel.os.events.AfterShellEvent;
+import me.intel.os.events.BeforeCommandRegisterEvent;
 import me.intel.os.permissions.PermissionLevel;
 import me.intel.os.utils.*;
-import sun.misc.Signal;
-import sun.misc.SignalHandler;
 
 import com.google.common.eventbus.EventBus;
 import lombok.Getter;
 import me.intel.os.commands.CommandManager;
 import me.intel.os.commands.impl.*;
-import me.intel.os.core.Color;
 import me.intel.os.core.ProcessManager;
 import me.intel.os.core.User;
 import me.intel.os.plugin.Plugin;
 
 public class OS {
    private final CommandManager CommandManager = new CommandManager();
+   private final ServiceManager ServiceManager = new ServiceManager();
    public static HashMap<String, Plugin> nameToPlugin = new HashMap<>();
    @Getter
    private static final ProcessManager ProcessManager = me.intel.os.core.ProcessManager.getProcessManager();
@@ -47,6 +47,8 @@ public class OS {
       return this.CommandManager;
    }
 
+   public ServiceManager getServiceManager(){return this.ServiceManager;}
+
    public void updateUser(User u) {
       this.setUser(u);
    }
@@ -58,6 +60,12 @@ public class OS {
    private void setUser(User user) {
       this.currentUser = user;
    }
+
+   Runnable test(){
+      System.out.println("hi!");
+      return null;
+   }
+
    public void Start(String[] args) throws InterruptedException, IOException {
       System.out.println("Initialising IntelOS (Java)");
       instance = this;
@@ -66,6 +74,12 @@ public class OS {
          shutdown();
       }));
       ProcessManager.start();
+      Thread tTest = new Thread(test());
+      tTest.setName("Test");
+      Service stTest = new Service(tTest,true,0);
+      getServiceManager().registerEvents();
+      getServiceManager().RegisterService(stTest);
+      getEventHandler().post(new BeforeCommandRegisterEvent());
       // Commands
       CommandManager.registerCommand(new HelpCommand());
       CommandManager.registerCommand(new LsCommand());
@@ -80,8 +94,13 @@ public class OS {
       new Recovery().check(currentDir);
       // Register events
       // END REGISTER EVENTS
+      getServiceManager().startService(stTest);
+      getServiceManager().stopService(stTest);
+      getServiceManager().stopService(stTest);
       Scanner scanner = new Scanner(System.in);
       System.out.println("Welcome To IntelOS");
+      getEventHandler().post(new AfterShellEvent());
+      getServiceManager().startService(stTest);
       try {
          if((boolean) Start.OSoptions.getOrDefault("debug", false) ) {
             //System.out.println("Running on Debug Mode, OS: " + System.getProperty("os.name") + " Version: " + System.getProperty("os.version")
