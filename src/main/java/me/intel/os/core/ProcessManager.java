@@ -2,6 +2,7 @@ package me.intel.os.core;
 
 import lombok.Getter;
 import me.intel.os.OS;
+import me.intel.os.core.services.Service;
 import me.intel.os.events.ProcessTimeoutEvent;
 
 import java.util.ArrayDeque;
