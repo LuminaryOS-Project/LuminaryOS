@@ -74,11 +74,8 @@ public class OS {
          shutdown();
       }));
       ProcessManager.start();
-      Thread tTest = new Thread(test());
-      tTest.setName("Test");
-      Service stTest = new Service(tTest,true,0);
       getServiceManager().registerEvents();
-      getServiceManager().RegisterService(stTest);
+     // getServiceManager().RegisterService(stTest);
       getEventHandler().post(new BeforeCommandRegisterEvent());
       // Commands
       CommandManager.registerCommand(new HelpCommand());
@@ -94,13 +91,9 @@ public class OS {
       new Recovery().check(currentDir);
       // Register events
       // END REGISTER EVENTS
-      getServiceManager().startService(stTest);
-      getServiceManager().stopService(stTest);
-      getServiceManager().stopService(stTest);
       Scanner scanner = new Scanner(System.in);
       System.out.println("Welcome To IntelOS");
       getEventHandler().post(new AfterShellEvent());
-      getServiceManager().startService(stTest);
       try {
          if((boolean) Start.OSoptions.getOrDefault("debug", false) ) {
             //System.out.println("Running on Debug Mode, OS: " + System.getProperty("os.name") + " Version: " + System.getProperty("os.version")
@@ -147,6 +140,9 @@ public class OS {
       }
 
       return config;
+   }
+   public void registerSubscriber(Object o) {
+      getEventHandler().register(o);
    }
 
 

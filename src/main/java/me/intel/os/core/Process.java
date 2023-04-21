@@ -19,9 +19,12 @@ public class Process {
     @Setter
     private int id;
     public Thread start() {
-        thread.setPriority(1);
-        thread.start();
+        if(!thread.isAlive()) {
+            thread.setPriority(1);
+            thread.start();
+        }
         return thread;
+
     }
     public void stop() {
         if(thread.isAlive()) {

@@ -2,7 +2,6 @@ package me.intel.os.core.services;
 
 import com.google.common.eventbus.Subscribe;
 import me.intel.os.OS;
-import me.intel.os.core.ProcessManager;
 import me.intel.os.events.AfterShellEvent;
 import me.intel.os.events.BeforeCommandRegisterEvent;
 
@@ -12,7 +11,7 @@ public class ServiceManager {
     private static ServiceManager serviceManager;
 
     // Integer: sID, Service: service instance
-    private static ConcurrentHashMap<Integer,Service> services = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Integer,Service> services = new ConcurrentHashMap<>();
 
     private static int sIDcntr = 0;
 
@@ -22,7 +21,7 @@ public class ServiceManager {
     }
 
     public void registerEvents(){
-        OS.getEventHandler().register(this);
+        OS.getInstance().registerSubscriber(this);
     }
 
     @Subscribe
@@ -44,25 +43,26 @@ public class ServiceManager {
     }
 
     private boolean isRegistered(Service service){
-        return services.contains(service);
+        return services.containsValue(service) || services.containsKey(service);
     }
 
-    public boolean startService(Service service ){
-        if(isRegistered(service) && !service.getThread().isAlive()){
-            System.out.println("Starting service " + service.getThread().getName());
-            try {
-                service.start();
-            } catch (IllegalThreadStateException e ){
-                e.printStackTrace();
-                return false;
+    public void startService(Service service) {
+        if (isRegistered(service)) {
+            Thread thread = service.getThread();
+            if (!thread.isAlive()) {
+                System.out.println("Starting service " + thread.getName());
+                try {
+                    System.out.println("debug");
+                    System.out.println(thread.getState());
+                    thread.start();
+                } catch (IllegalThreadStateException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                System.out.println("Failed to start service (Service is already running)");
             }
-            return true;
-        } else if(service.getThread().isAlive()) {
-            System.out.println("Failed to start service (Service is already running)");
-            return false;
         } else {
             System.out.println("Failed to start service (No such service)");
-            return false;
         }
     }
     public boolean stopService(Service service) {
