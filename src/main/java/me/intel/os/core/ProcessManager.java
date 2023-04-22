@@ -25,7 +25,6 @@ public class ProcessManager {
         return runningProcesses.get(id).getThread();
 
     }
-    @SuppressWarnings({"deprecation"})
     public void kill(int id) {
         Process proc = runningProcesses.get(id);
         if(proc != null) {
@@ -57,7 +56,7 @@ public class ProcessManager {
                                 thread.join(process.getTimeoutMillis());
                                 if (thread.isAlive()) {
                                     thread.interrupt();
-                                    OS.getEventHandler().post(new ProcessTimeoutEvent(thread, process.getId()));
+                                    OS.getEventHandler().post(new ProcessTimeoutEvent(process, process.getId()));
                                     runningProcesses.remove(process.getId());
                                 } else {
                                     runningProcesses.remove(process.getId());

@@ -8,6 +8,7 @@ import lombok.Getter;
 
 import me.intel.os.commands.SimpleCommand;
 import me.intel.os.core.*;
+import me.intel.os.core.Process;
 import me.intel.os.core.exceptions.InvalidLanguageException;
 import me.intel.os.core.services.ServiceManager;
 import me.intel.os.events.AfterShellEvent;
@@ -74,7 +75,13 @@ public class OS {
       getServiceManager().registerEvents();
       getEventHandler().post(new BeforeCommandRegisterEvent());
       //
-
+      Process p = new Process(new Thread(() -> {
+         try { Thread.sleep(1500L); } catch (Exception ignored) {}
+      }), 1000);
+      p.setCallback((code) -> {
+         System.out.println("The callback code was " + code.getCode());
+      });
+      getProcessManager().add(p);
 
       // Commands
       CommandManager.registerCommand(new HelpCommand());
