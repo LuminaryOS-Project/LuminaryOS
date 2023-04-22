@@ -8,7 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class Language {
-    JSONConfig cfg;
+    private JSONConfig cfg;
     public Language(String language) throws InvalidLanguageException {
         Path LPath = Paths.get("IntelOS", "langs", language + ".json");
         if(!new File(LPath.toString()).exists() || new File(LPath.toString()).length() == 0) {
@@ -17,12 +17,12 @@ public class Language {
             cfg = new JSONConfig(LPath.toString());
         }
     }
-    public String get(String path, String defaultvalue)  {
+    public String get(String path)  {
         Object translated = cfg.get(path);
         try {
             return (String) translated;
         } catch (ClassCastException e) {
-            return defaultvalue;
+            return null;
         }
     }
 }

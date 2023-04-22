@@ -1,21 +1,19 @@
 package me.intel.os;
 
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 import java.util.*;
 import java.util.List;
+import com.google.common.eventbus.EventBus;
+import lombok.Getter;
 
 import me.intel.os.commands.SimpleCommand;
-import me.intel.os.core.services.Service;
+import me.intel.os.core.Language;
+import me.intel.os.core.exceptions.InvalidLanguageException;
 import me.intel.os.core.services.ServiceManager;
 import me.intel.os.events.AfterShellEvent;
 import me.intel.os.events.BeforeCommandRegisterEvent;
 import me.intel.os.permissions.PermissionLevel;
 import me.intel.os.utils.*;
-
-import com.google.common.eventbus.EventBus;
-import lombok.Getter;
 import me.intel.os.commands.CommandManager;
 import me.intel.os.commands.impl.*;
 import me.intel.os.core.ProcessManager;
@@ -23,59 +21,59 @@ import me.intel.os.core.User;
 import me.intel.os.plugin.Plugin;
 
 public class OS {
+   @Getter
    private final CommandManager CommandManager = new CommandManager();
+   @Getter
+   private static String Locale;
+   @Getter
+   private static Language Language;
+   @Getter
    private final ServiceManager ServiceManager = new ServiceManager();
    public static HashMap<String, Plugin> nameToPlugin = new HashMap<>();
    @Getter
    private static final ProcessManager ProcessManager = me.intel.os.core.ProcessManager.getProcessManager();
-   //private static final KeybindListener keybindListener = new KeybindListener();
    @Getter
    private static final JSONConfig config = new JSONConfig("os.json");
+   @Getter
    private static OS instance;
    @Getter
    private static final EventBus EventHandler = new EventBus("OS");
 
    public static String currentDir = System.getProperty("user.dir");
    public static Taskbar programBar = Taskbar.getTaskbar();
+   @Getter
    private User currentUser;
 
    public Plugin getPlugin(String plugin) {
       return nameToPlugin.getOrDefault(plugin, null);
    }
 
-   public CommandManager getCommandManager() {
-      return this.CommandManager;
-   }
-
-   public ServiceManager getServiceManager(){return this.ServiceManager;}
-
-   public void updateUser(User u) {
-      this.setUser(u);
-   }
-
-   public void updateUser(String name) {
-      this.setUser(User.getUserByName(name));
-   }
 
    private void setUser(User user) {
       this.currentUser = user;
    }
 
-   Runnable test(){
-      System.out.println("hi!");
-      return null;
-   }
-
-   public void Start(String[] args) throws InterruptedException, IOException {
-      System.out.println("Initialising IntelOS (Java)");
+   public void Start(String[] args) {
       instance = this;
+      //
+      try {
+         if(config.get("locale") != null) {
+            Locale = (String) config.get("locale");
+         } else {
+            Locale = java.util.Locale.getDefault().getLanguage();
+         }
+         Language = new Language(Locale);
+      } catch (InvalidLanguageException e) {
+         Locale = "en";
+         System.out.println("Couldn't find default language, defaulting to english.");
+         Language = new Language("en");
+      }
+      //
+      System.out.println("Initialising IntelOS (Java)");
       // JVM Things
-      Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-         shutdown();
-      }));
+      Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
       ProcessManager.start();
       getServiceManager().registerEvents();
-     // getServiceManager().RegisterService(stTest);
       getEventHandler().post(new BeforeCommandRegisterEvent());
       // Commands
       CommandManager.registerCommand(new HelpCommand());
@@ -87,7 +85,7 @@ public class OS {
       CommandManager.registerCommand(new VerCommand());
       CommandManager.registerCommand(new PWDCommand());
       CommandManager.registerCommand(new KillCommand());
-      CommandManager.registerCommand(new SimpleCommand("whoami", "whoami", List.of("mne"), PermissionLevel.USER ,(cargs) -> { System.out.println(currentUser.getName()); }));
+      CommandManager.registerCommand(new SimpleCommand("whoami", "whoami", List.of("mne"), PermissionLevel.USER ,(cargs) -> System.out.println(currentUser.getName())));
       new Recovery().check(currentDir);
       // Register events
       // END REGISTER EVENTS
@@ -122,32 +120,11 @@ public class OS {
       System.out.println("Shutting Down!");
       System.out.println("Stopping Processes...");
       OS.getProcessManager().shutdown();
-      nameToPlugin.forEach((k, v) -> {
-         v.onDisable();
-      });
-      //File f = new File("output.bin");
+      nameToPlugin.forEach((k, v) -> v.onDisable());
       config.close();
-   }
-   public File getConfigFile() throws IOException {
-      File config = new File(".config");
-      if (!config.exists()) {
-         if(config.createNewFile()) {
-            var e = 1;
-         } else return null;
-      }
-
-      return config;
    }
    public void registerSubscriber(Object o) {
       getEventHandler().register(o);
    }
 
-
-   public static OS getInstance() {
-      return instance;
-   }
-
-   public User getCurrentUser() {
-      return this.currentUser;
-   }
 }
