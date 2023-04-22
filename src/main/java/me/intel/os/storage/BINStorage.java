@@ -37,12 +37,6 @@ public class BINStorage {
             }
         }
     }
-    private static void writeString(String data, DataOutputStream outputStream) throws IOException {
-        byte[] buffer = data.getBytes();
-        outputStream.writeUTF("string");
-        outputStream.writeInt(buffer.length);
-        outputStream.write(buffer);
-    }
 
     private static Object readFromFile(DataInputStream inputStream, String fileName) throws IOException {
         boolean fileFound = false;
@@ -52,15 +46,9 @@ public class BINStorage {
                 String currentFileName = inputStream.readUTF();
                 int length = inputStream.readInt();
                 if (currentFileName.equals(fileName)) {
-                    if (currentFileName.equals("string")) {
-                        byte[] buffer = new byte[length];
-                        inputStream.readFully(buffer);
-                        result = new String(buffer);
-                    } else {
-                        byte[] buffer = new byte[length];
-                        inputStream.readFully(buffer);
-                        result = buffer;
-                    }
+                    byte[] buffer = new byte[length];
+                    inputStream.readFully(buffer);
+                    result = buffer;
                     fileFound = true;
                 } else {
                     inputStream.skipBytes(length);

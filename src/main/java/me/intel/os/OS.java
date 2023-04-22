@@ -96,9 +96,6 @@ public class OS {
       getEventHandler().post(new AfterShellEvent());
       try {
          if((boolean) Start.OSoptions.getOrDefault("debug", false) ) {
-            //System.out.println("Running on Debug Mode, OS: " + System.getProperty("os.name") + " Version: " + System.getProperty("os.version")
-            //
-            //);
             System.out.println("Running on Debug Mode, OS: " + System.getProperty("os.name") +
                     " Build: " + System.getProperty("os.build", "UNKNOWN") +
                     " Compiled on Java 17, Running on " + System.getProperty("java.version")

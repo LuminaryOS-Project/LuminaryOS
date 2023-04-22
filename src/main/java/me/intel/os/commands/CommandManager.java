@@ -29,7 +29,7 @@ public class CommandManager {
             if (cmd != null) {
                cmd.execute(args);
             } else {
-               System.out.println("Command not found: " + command);
+               System.out.println("Unknown " + command);
             }
          }
       }), 15000L);

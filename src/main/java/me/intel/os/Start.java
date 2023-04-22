@@ -31,10 +31,7 @@ public class Start {
        */
       File mainf = new File("IntelOS");
       if (!mainf.exists() && mainf.mkdirs()) {
-         System.out.println("Running setup...");
-         System.out.println("Created main folder!");
-         if(new File("IntelOS/disks").mkdirs() && new File("IntelOS/users").mkdirs() && new File("IntelOS/cache").mkdirs() && new File("IntelOS/config").mkdirs() && new File("IntelOS/temp").mkdirs()) {
-            System.out.println("Successfully created files!");
+         if(new File("IntelOS/disks").mkdirs() && new File("IntelOS/users").mkdirs() && new File("IntelOS/cache").mkdirs() && new File("IntelOS/config").mkdirs() && new File("IntelOS/temp").mkdirs() && new File("IntelOS/langs").mkdirs()) {
             new File("IntelOS/cache/cache.json").createNewFile();
             new File("IntelOS/config/config.json");
             Utils.createDisk(0);
