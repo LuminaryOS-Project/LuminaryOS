@@ -1,4 +1,4 @@
-#IntelOS - Virtual Operating System in Java
+# IntelOS - Virtual Operating System in Java
 IntelOS is a virtual operating system written in Java. It provides a simple and easy to use development & user experience! IntelOS is designed to be a lightweight and portable virtual operating system that can run on a variety of platforms.
 
 ## Getting Started
