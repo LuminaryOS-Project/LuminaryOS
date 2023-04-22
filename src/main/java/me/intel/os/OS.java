@@ -75,13 +75,6 @@ public class OS {
       getServiceManager().registerEvents();
       getEventHandler().post(new BeforeCommandRegisterEvent());
       //
-      Process p = new Process(new Thread(() -> {
-         try { Thread.sleep(1500L); } catch (Exception ignored) {}
-      }), 1000);
-      p.setCallback((code) -> {
-         System.out.println("The callback code was " + code.getCode());
-      });
-      getProcessManager().add(p);
 
       // Commands
       CommandManager.registerCommand(new HelpCommand());
