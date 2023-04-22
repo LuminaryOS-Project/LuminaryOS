@@ -1,0 +1,33 @@
+{
+  "lang": "Hindi",
+  "designedFor": "Beta-R1.0",
+  "definitions": {
+    "diskNotFound": "डिस्क नहीं मिला",
+    "diskCantBeCreated": "डिस्क बनाया नहीं जा सकता",
+    "diskAlreadyExists": "डिस्क पहले से मौजूद है!",
+    "commandNotFound": "अज्ञात कमांड",
+    "fileNotFound": "फ़ाइल नहीं मिली",
+    "fileAlreadyExists": "फ़ाइल पहले से ही मौजूद है",
+    "welcome": "स्वागत है",
+    "initialising": "आरंभ कर रहा है",
+    "errorOccurred": "त्रुटि हुई",
+    "exceptionOccurred": "असामान्य घटना घटी",
+    "aliases": "उपनाम",
+    "directoryNotFound": "डायरेक्ट्री मौजूद नहीं है",
+    "file": "फ़ाइल",
+    "directory": "डायरेक्ट्री",
+    "currentDir": "वर्तमान डायरेक्ट्री",
+    "couldNotSendNotif": "सूचना नहीं भेजी जा सकती",
+    "continue": "जारी रखें",
+    "info": "जानकारी",
+    "warn": "चेतावनी",
+    "error": "त्रुटि",
+    "changeDirUsage": "आपकी वर्तमान डायरेक्ट्री बदलता है",
+    "exitUsage": "ऑपरेटिंग सिस्टम को बंद करता है",
+    "helpUsage": "कमांड के लिए वैध सिंटैक्स दिखाता है",
+    "killUsage": "प्रक्रिया को बंद करता है",
+    "lsUsage": "एक निर्दिष्ट डायरेक्ट्री में सभी फ़ाइलें सूचीबद्ध करता है",
+    "rmUsage": "एक फ़ाइल को हटाता है",
+    "version": "संस्करण"
+  }
+}

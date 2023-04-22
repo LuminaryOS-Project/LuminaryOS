@@ -1,0 +1,39 @@
+{
+  "lang": "Arabic",
+  "designedFor": "Beta-R1.0",
+  "definitions": {
+    "diskNotFound": "القرص غير موجود",
+    "diskCantBeCreated": "لا يمكن إنشاء القرص",
+    "diskAlreadyExists": "القرص موجود بالفعل!",
+    "commandNotFound": "الأمر غير معروف",
+    "fileNotFound": "الملف غير موجود",
+    "fileAlreadyExists": "الملف موجود بالفعل",
+    "welcome": "مرحباً بك في",
+    "initialising": "جاري التهيئة",
+    "errorOccurred": "حدث خطأ",
+    "exceptionOccurred": "حدث استثناء",
+    "aliases": "أسماء مستعارة",
+    "directoryNotFound": "المجلد غير موجود",
+    "file": "ملف",
+    "directory": "مجلد",
+    "currentDir": "المجلد الحالي",
+    "couldNotSendNotif": "لا يمكن إرسال الإشعار",
+    "continue": "متابعة",
+    "info": "معلومات",
+    "warn": "تحذير",
+    "error": "خطأ",
+    "changeDirUsage": "يغير المجلد الحالي",
+    "exitUsage": "يطفئ النظام",
+    "helpUsage": "يعرض الصيغة الصحيحة للأمر",
+    "killUsage": "ينهي عملية",
+    "lsUsage": "يعرض قائمة بجميع الملفات في مجلد معين",
+    "rmUsage": "يحذف ملفًا",
+    "version": "الإصدار"
+  }
+}
+
+
+
+
+
+

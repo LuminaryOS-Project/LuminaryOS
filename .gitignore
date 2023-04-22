@@ -1,5 +1,7 @@
 target/
-IntelOS/
+IntelOS/disks/0
+IntelOS/cache/cache.json
+IntelOS/users
 pom.xml.tag
 pom.xml
 pom.xml.releaseBackup

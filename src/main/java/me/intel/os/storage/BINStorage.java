@@ -1,6 +1,7 @@
 package me.intel.os.storage;
 
 import lombok.AllArgsConstructor;
+import me.intel.os.OS;
 
 import java.io.*;
 
@@ -58,7 +59,7 @@ public class BINStorage {
             }
         }
         if (!fileFound) {
-            throw new FileNotFoundException("File not found: " + fileName);
+            throw new FileNotFoundException(OS.getLanguage().get("fileNotFound") + fileName);
         }
         return result;
     }

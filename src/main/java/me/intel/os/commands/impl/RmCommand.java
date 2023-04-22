@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import me.intel.os.OS;
 import me.intel.os.commands.Command;
 import me.intel.os.permissions.PermissionLevel;
 import me.intel.os.utils.Log;
@@ -13,13 +14,13 @@ import me.intel.os.utils.Utils;
 
 public class RmCommand extends Command {
    public RmCommand() {
-      super("rm", "Removes a file", Arrays.asList("remove", "rem"));
+      super("rm", OS.getLanguage().get("rmUsage"), Arrays.asList("remove", "rem"));
    }
 
    public void execute(List<String> args) {
       if(args.size() != 0 && Objects.equals(args.get(0), "/?")) {
          System.out.println(this.getUsage());
-         System.out.println("Aliases:  " + String.join(" ", this.getAliases()));
+         System.out.println(OS.getLanguage().get("aliases") + ": " + String.join(" ", this.getAliases()));
          return;
       }
       File f = new File(args.get(0));

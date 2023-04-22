@@ -18,11 +18,17 @@ public class Language {
         }
     }
     public String get(String path)  {
-        Object translated = cfg.get(path);
+        Object translated = cfg.get("definitions." + path);
         try {
             return (String) translated;
         } catch (ClassCastException e) {
             return null;
         }
+    }
+    public String getVersion() {
+        return (String) cfg.get("designedFor");
+    }
+    public String getName() {
+        return (String) cfg.get("lang");
     }
 }

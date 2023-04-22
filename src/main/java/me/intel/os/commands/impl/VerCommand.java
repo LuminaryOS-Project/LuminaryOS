@@ -1,5 +1,6 @@
 package me.intel.os.commands.impl;
 
+import me.intel.os.OS;
 import me.intel.os.commands.Command;
 import me.intel.os.permissions.PermissionLevel;
 
@@ -14,8 +15,9 @@ public class VerCommand extends Command {
 
    public void execute(List<String> args) {
       System.out.println("---------------------------");
-      System.out.println("IntelOS Beta 1.0-R1");
+      System.out.println("IntelOS Beta " + OS.getLanguage().get("version") + " R1.0");
       System.out.println("Running on " + System.getProperty("os.name"));
+      System.out.println("Language Pack: " + OS.getLanguage().getName() + " designed for: " + OS.getLanguage().getVersion());
       System.out.println("---------------------------");
    }
 

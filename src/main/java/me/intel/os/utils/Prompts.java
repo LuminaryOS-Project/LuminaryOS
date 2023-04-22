@@ -1,11 +1,13 @@
 package me.intel.os.utils;
 
+import me.intel.os.OS;
+
 import java.util.Objects;
 import java.util.Scanner;
 
 public class Prompts {
     public static boolean YNPrompt() {
-        System.out.print("Continue? (Y/N): ");
+        System.out.print(OS.getLanguage().get("continue") + "? (Y/N): ");
         Scanner scan = new Scanner(System.in);
         while(true) {
             String input = scan.nextLine();

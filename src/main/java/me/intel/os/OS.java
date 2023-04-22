@@ -69,7 +69,7 @@ public class OS {
          Language = new Language("en");
       }
       //
-      System.out.println("Initialising IntelOS (Java)");
+      System.out.println(getLanguage().get("initialising") + " IntelOS (Java)");
       // JVM Things
       Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
       ProcessManager.start();
@@ -85,12 +85,15 @@ public class OS {
       CommandManager.registerCommand(new VerCommand());
       CommandManager.registerCommand(new PWDCommand());
       CommandManager.registerCommand(new KillCommand());
-      CommandManager.registerCommand(new SimpleCommand("whoami", "whoami", List.of("mne"), PermissionLevel.USER ,(cargs) -> System.out.println(currentUser.getName())));
+      CommandManager.registerCommand(new SimpleCommand("whoami", "whoami", List.of("me"), PermissionLevel.USER ,(cargs) -> System.out.println(currentUser.getName())));
+      CommandManager.registerCommand(new SimpleCommand("lang", "lang", List.of("lang", "language"), PermissionLevel.USER, (cargs) -> {
+         System.out.println("Language Pack: " + getLanguage().getName() + " designed for: " + getLanguage().getVersion() + "\n");
+      }));
       new Recovery().check(currentDir);
       // Register events
       // END REGISTER EVENTS
       Scanner scanner = new Scanner(System.in);
-      System.out.println("Welcome To IntelOS");
+      System.out.println(getLanguage().get("welcome") + " IntelOS");
       getEventHandler().post(new AfterShellEvent());
       try {
          if((boolean) Start.OSoptions.getOrDefault("debug", false) ) {

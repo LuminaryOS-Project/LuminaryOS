@@ -3,7 +3,6 @@ package me.intel.os.commands;
 import me.intel.os.OS;
 import me.intel.os.core.Process;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,7 +15,7 @@ public class CommandManager {
    }
 
    public String getUsage(String command) {
-      return this.commands.get(command) != null ? ((Command)this.commands.get(command)).getUsage() : "Unknown Command";
+      return this.commands.get(command) != null ? ((Command)this.commands.get(command)).getUsage() : OS.getLanguage().get("commandNotFound");
    }
 
    public void executeCommand(String command, List<String> args) {
@@ -29,7 +28,7 @@ public class CommandManager {
             if (cmd != null) {
                cmd.execute(args);
             } else {
-               System.out.println("Unknown " + command);
+               System.out.println(OS.getLanguage().get("commandNotFound") + command);
             }
          }
       }), 15000L);
@@ -41,16 +40,16 @@ public class CommandManager {
    }
 
    private Command findCommandByAlias(String alias) {
-      Iterator var2 = this.commands.values().iterator();
+      Iterator<Command> cmds = this.commands.values().iterator();
 
       Command cmd;
-      List aliases;
+      List<String> aliases;
       do {
-         if (!var2.hasNext()) {
+         if (!cmds.hasNext()) {
             return null;
          }
 
-         cmd = (Command)var2.next();
+         cmd = (Command)cmds.next();
          aliases = cmd.getAliases();
       } while(!aliases.contains(alias));
 

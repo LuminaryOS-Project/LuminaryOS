@@ -1,5 +1,7 @@
 package me.intel.os.notification;
 
+import me.intel.os.OS;
+
 import java.awt.*;
 import java.util.logging.Logger;
 
@@ -14,7 +16,7 @@ public class NotificationManager {
             tray.add(trayIcon);
             trayIcon.displayMessage(title, tooltip, messageType);
         } catch (Exception e) {
-            Logger.getLogger("[OS/Notification Manager] ").warning("Could not send notification");
+            Logger.getLogger("[OS/Notification Manager] ").warning(OS.getLanguage().get("couldNotSendNotif"));
         }
     }
 }

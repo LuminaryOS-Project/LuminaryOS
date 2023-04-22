@@ -1,0 +1,33 @@
+{
+  "lang": "Russian",
+  "designedFor": "Beta-R1.0",
+  "definitions": {
+    "diskNotFound": "Диск не найден",
+    "diskCantBeCreated": "Диск не может быть создан",
+    "diskAlreadyExists": "Диск уже существует!",
+    "commandNotFound": "Неизвестная команда",
+    "fileNotFound": "Файл не найден",
+    "fileAlreadyExists": "Файл уже существует",
+    "welcome": "Добро пожаловать в",
+    "initialising": "Инициализация",
+    "errorOccurred": "Произошла ошибка",
+    "exceptionOccurred": "Произошло исключение",
+    "aliases": "Псевдонимы",
+    "directoryNotFound": "Каталог не существует",
+    "file": "Файл",
+    "directory": "Каталог",
+    "currentDir": "Текущий каталог",
+    "couldNotSendNotif": "Не удалось отправить уведомление",
+    "continue": "Продолжить",
+    "info": "информация",
+    "warn": "предупреждение",
+    "error": "ошибка",
+    "changeDirUsage": "Изменить текущий каталог",
+    "exitUsage": "Выключить операционную систему",
+    "helpUsage": "Показать правильный синтаксис команды",
+    "killUsage": "Завершить процесс",
+    "lsUsage": "Перечислить все файлы в каталоге",
+    "rmUsage": "Удалить файл",
+    "version": "Версия"
+  }
+}
