@@ -2,6 +2,7 @@ package me.intel.os.core.services;
 
 import com.google.common.eventbus.Subscribe;
 import me.intel.os.OS;
+import me.intel.os.core.StatusCode;
 import me.intel.os.events.AfterShellEvent;
 import me.intel.os.events.BeforeCommandRegisterEvent;
 
@@ -51,9 +52,12 @@ public class ServiceManager {
             Thread thread = service.getThread();
             if (!thread.isAlive()) {
                 System.out.println("Starting service " + thread.getName());
+                if(!OS.getCurrentUser().getPermissionLevel().canPerformAction(service.getLevel())) {
+                    service.getCallback().ifPresent(callback -> callback.accept(StatusCode.INSUFFICIENT_PERMISSION));
+                    System.out.println("Not enough permissions");
+                    return;
+                }
                 try {
-                    System.out.println("debug");
-                    System.out.println(thread.getState());
                     thread.start();
                 } catch (IllegalThreadStateException e) {
                     e.printStackTrace();

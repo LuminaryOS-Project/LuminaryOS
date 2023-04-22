@@ -41,7 +41,7 @@ public class OS {
    public static String currentDir = System.getProperty("user.dir");
    public static Taskbar programBar = Taskbar.getTaskbar();
    @Getter
-   private User currentUser;
+   private static User currentUser;
 
    public Plugin getPlugin(String plugin) {
       return nameToPlugin.getOrDefault(plugin, null);
