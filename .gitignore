@@ -2,6 +2,7 @@ target/
 IntelOS/disks/0
 IntelOS/cache/cache.json
 IntelOS/users
+Debug/
 pom.xml.tag
 pom.xml
 pom.xml.releaseBackup

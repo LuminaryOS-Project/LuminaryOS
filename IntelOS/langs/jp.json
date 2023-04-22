@@ -1,0 +1,33 @@
+{
+  "lang": "Japanese",
+  "designedFor": "Beta-R1.0",
+  "definitions": {
+    "diskNotFound": "ディスクが見つかりません",
+    "diskCantBeCreated": "ディスクを作成できません",
+    "diskAlreadyExists": "ディスクはすでに存在しています！",
+    "commandNotFound": "不明なコマンド",
+    "fileNotFound": "ファイルが見つかりません",
+    "fileAlreadyExists": "ファイルはすでに存在しています",
+    "welcome": "ようこそ",
+    "initialising": "初期化中",
+    "errorOccurred": "エラーが発生しました",
+    "exceptionOccurred": "例外が発生しました",
+    "aliases": "エイリアス",
+    "directoryNotFound": "ディレクトリが存在しません",
+    "file": "ファイル",
+    "directory": "ディレクトリ",
+    "currentDir": "現在のディレクトリ",
+    "couldNotSendNotif": "通知を送信できませんでした",
+    "continue": "続ける",
+    "info": "情報",
+    "warn": "警告",
+    "error": "エラー",
+    "changeDirUsage": "現在のディレクトリを変更します",
+    "exitUsage": "OSをシャットダウンします",
+    "helpUsage": "コマンドの有効な構文を表示します",
+    "killUsage": "プロセスを終了します",
+    "lsUsage": "ディレクトリ内のすべてのファイルをリスト表示します",
+    "rmUsage": "ファイルを削除します",
+    "version": "バージョン"
+  }
+}

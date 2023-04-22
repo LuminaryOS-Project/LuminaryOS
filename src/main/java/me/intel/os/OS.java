@@ -7,7 +7,7 @@ import com.google.common.eventbus.EventBus;
 import lombok.Getter;
 
 import me.intel.os.commands.SimpleCommand;
-import me.intel.os.core.Language;
+import me.intel.os.core.*;
 import me.intel.os.core.exceptions.InvalidLanguageException;
 import me.intel.os.core.services.ServiceManager;
 import me.intel.os.events.AfterShellEvent;
@@ -16,8 +16,6 @@ import me.intel.os.permissions.PermissionLevel;
 import me.intel.os.utils.*;
 import me.intel.os.commands.CommandManager;
 import me.intel.os.commands.impl.*;
-import me.intel.os.core.ProcessManager;
-import me.intel.os.core.User;
 import me.intel.os.plugin.Plugin;
 
 public class OS {
@@ -75,6 +73,9 @@ public class OS {
       ProcessManager.start();
       getServiceManager().registerEvents();
       getEventHandler().post(new BeforeCommandRegisterEvent());
+      //
+
+
       // Commands
       CommandManager.registerCommand(new HelpCommand());
       CommandManager.registerCommand(new LsCommand());
