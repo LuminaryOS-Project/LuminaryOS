@@ -29,7 +29,7 @@ java -version
 
 <br>
 Once you have verified you have Java 17+ simply run 
-```
+```bash
 java -jar IntelOS.jar
 ```
 
