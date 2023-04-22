@@ -6,7 +6,7 @@ To get started with IntelOS, you will need to have Java installed on your machin
 
 Once you have Java installed, you can download the IntelOS source code from the GitHub repository. You can then build the project using maven
 
-##Features
+## Features
 IntelOS provides a number of features, including:
 
 Process management: IntelOS provides a process manager that can be used to start, stop, and monitor processes.
