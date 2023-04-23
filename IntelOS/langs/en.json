@@ -1,0 +1,33 @@
+{
+  "lang": "English",
+  "designedFor": "Beta-R1.0",
+  "definitions": {
+    "diskNotFound": "Disk not found",
+    "diskCantBeCreated": "Disk cannot be created",
+    "diskAlreadyExists": "Disk already exists!",
+    "commandNotFound": "Unknown Command",
+    "fileNotFound": "File not found",
+    "fileAlreadyExists": "File already exists",
+    "welcome": "Welcome To",
+    "initialising": "Initialising",
+    "errorOccurred": "Error occurred",
+    "exceptionOccurred": "Exception occurred",
+    "aliases": "Aliases",
+    "directoryNotFound": "Directory does not exist",
+    "file": "File",
+    "directory": "Directory",
+    "currentDir": "Current Directory",
+    "couldNotSendNotif": "Could not send notification",
+    "continue": "Continue",
+    "info": "info",
+    "warn": "warn",
+    "error": "error",
+    "changeDirUsage": "Changes your current directory",
+    "exitUsage": "Shuts down the OS",
+    "helpUsage": "Shows the valid syntax for a command",
+    "killUsage": "Kills a process",
+    "lsUsage": "Lists all files in a directory",
+    "rmUsage": "Removes a file",
+    "version": "Version"
+  }
+}

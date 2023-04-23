@@ -1,0 +1,33 @@
+{
+  "lang": "Chinese",
+  "designedFor": "Beta-R1.0",
+  "definitions": {
+    "diskNotFound": "找不到磁盘",
+    "diskCantBeCreated": "无法创建磁盘",
+    "diskAlreadyExists": "磁盘已存在！",
+    "commandNotFound": "未知命令",
+    "fileNotFound": "找不到文件",
+    "fileAlreadyExists": "文件已经存在",
+    "welcome": "欢迎来到",
+    "initialising": "初始化",
+    "errorOccurred": "发生错误",
+    "exceptionOccurred": "发生异常",
+    "aliases": "别名",
+    "directoryNotFound": "目录不存在",
+    "file": "文件",
+    "directory": "目录",
+    "currentDir": "当前目录",
+    "couldNotSendNotif": "无法发送通知",
+    "continue": "继续",
+    "info": "信息",
+    "warn": "警告",
+    "error": "错误",
+    "changeDirUsage": "更改当前目录",
+    "exitUsage": "关闭操作系统",
+    "helpUsage": "显示命令的有效语法",
+    "killUsage": "终止一个进程",
+    "lsUsage": "列出目录中的所有文件",
+    "rmUsage": "删除一个文件",
+    "version": "版本"
+  }
+}

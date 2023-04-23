@@ -1,0 +1,33 @@
+{
+  "lang": "Korean",
+  "designedFor": "Beta-R1.0",
+  "definitions": {
+    "diskNotFound": "디스크를 찾을 수 없음",
+    "diskCantBeCreated": "디스크를 생성할 수 없음",
+    "diskAlreadyExists": "디스크가 이미 존재함!",
+    "commandNotFound": "알 수 없는 명령어",
+    "fileNotFound": "파일을 찾을 수 없음",
+    "fileAlreadyExists": "파일이 이미 존재함",
+    "welcome": "환영합니다",
+    "initialising": "초기화 중",
+    "errorOccurred": "오류 발생",
+    "exceptionOccurred": "예외 발생",
+    "aliases": "별칭",
+    "directoryNotFound": "디렉토리가 존재하지 않음",
+    "file": "파일",
+    "directory": "디렉토리",
+    "currentDir": "현재 디렉토리",
+    "couldNotSendNotif": "알림을 보낼 수 없음",
+    "continue": "계속",
+    "info": "정보",
+    "warn": "경고",
+    "error": "오류",
+    "changeDirUsage": "현재 디렉토리 변경",
+    "exitUsage": "OS 종료",
+    "helpUsage": "명령어의 올바른 구문 표시",
+    "killUsage": "프로세스 종료",
+    "lsUsage": "디렉토리의 모든 파일 나열",
+    "rmUsage": "파일 제거",
+    "version": "버전"
+  }
+}

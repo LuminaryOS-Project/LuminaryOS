@@ -1,0 +1,33 @@
+{
+  "lang": "Polish",
+  "designedFor": "Beta-R1.0",
+  "definitions": {
+    "diskNotFound": "Dysk nie został znaleziony",
+    "diskCantBeCreated": "Nie można utworzyć dysku",
+    "diskAlreadyExists": "Dysk już istnieje!",
+    "commandNotFound": "Nieznane polecenie",
+    "fileNotFound": "Plik nie został znaleziony",
+    "fileAlreadyExists": "Plik już istnieje",
+    "welcome": "Witaj w",
+    "initialising": "Inicjowanie",
+    "errorOccurred": "Wystąpił błąd",
+    "exceptionOccurred": "Wystąpił wyjątek",
+    "aliases": "Aliasy",
+    "directoryNotFound": "Katalog nie istnieje",
+    "file": "Plik",
+    "directory": "Katalog",
+    "currentDir": "Bieżący katalog",
+    "couldNotSendNotif": "Nie można wysłać powiadomienia",
+    "continue": "Kontynuuj",
+    "info": "informacja",
+    "warn": "ostrzeżenie",
+    "error": "błąd",
+    "changeDirUsage": "Zmienia bieżący katalog",
+    "exitUsage": "Zamyka system operacyjny",
+    "helpUsage": "Wyświetla poprawną składnię polecenia",
+    "killUsage": "Zabija proces",
+    "lsUsage": "Wyświetla listę wszystkich plików w katalogu",
+    "rmUsage": "Usuwa plik",
+    "version": "Wersja"
+  }
+}

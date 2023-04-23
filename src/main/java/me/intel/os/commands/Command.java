@@ -26,7 +26,7 @@ public abstract class Command {
       return this.name;
    }
 
-   public List getAliases() {
+   public List<String> getAliases() {
       return this.aliases;
    }
 

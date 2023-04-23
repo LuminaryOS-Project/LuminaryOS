@@ -14,7 +14,7 @@ public class PWDCommand extends Command {
    }
 
    public void execute(List<String> args) {
-      System.out.println("Current Directory: " + OS.currentDir);
+      System.out.println(OS.getLanguage().get("currentDir") + ": " + OS.currentDir);
    }
 
    public PermissionLevel getPremission() {

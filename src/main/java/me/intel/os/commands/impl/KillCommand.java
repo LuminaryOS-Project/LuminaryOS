@@ -10,13 +10,13 @@ import java.util.Objects;
 
 public class KillCommand extends Command {
    public KillCommand() {
-      super("kill", "Kills a process", Arrays.asList("kill", "taskkill"));
+      super("kill", OS.getLanguage().get("killUsage"), Arrays.asList("kill", "taskkill"));
    }
 
    public void execute(List<String> args) {
       if(args.size() == 0 || Objects.equals(args.get(0), "/?")) {
          System.out.println(this.getUsage());
-         System.out.print("Aliases:  " + String.join(" ", this.getAliases()) + "\n");
+         System.out.print(OS.getLanguage().get("aliases") + ": " + String.join(" ", this.getAliases()) + "\n");
          return;
       }
       try {
@@ -25,7 +25,7 @@ public class KillCommand extends Command {
          OS.getProcessManager().kill(id);
       } catch (Exception e) {
          System.out.println(this.getUsage());
-         System.out.print("Aliases:  " + String.join(" ", this.getAliases()) + "\n");
+         System.out.print(OS.getLanguage().get("aliases") + ": " + String.join(" ", this.getAliases()) + "\n");
          e.printStackTrace();
          return;
       }

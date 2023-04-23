@@ -31,12 +31,9 @@ public class Start {
        */
       File mainf = new File("IntelOS");
       if (!mainf.exists() && mainf.mkdirs()) {
-         System.out.println("Running setup...");
-         System.out.println("Created main folder!");
-         if(new File("IntelOS/disks").mkdirs() && new File("IntelOS/users").mkdirs() && new File("IntelOS/cache").mkdirs() && new File("IntelOS/config").mkdirs() && new File("IntelOS/temp").mkdirs()) {
-            System.out.println("Successfully created files!");
+         if(new File("IntelOS/disks").mkdirs() && new File("IntelOS/users").mkdirs() && new File("IntelOS/cache").mkdirs() && new File("IntelOS/config").mkdirs() && new File("IntelOS/temp").mkdirs() && new File("IntelOS/langs").mkdirs()) {
             new File("IntelOS/cache/cache.json").createNewFile();
-            new File("IntelOS/config/config.json");
+            new File("IntelOS/config/config.json").createNewFile();
             Utils.createDisk(0);
          } else {
             System.out.println("Failed to create the needed OS files...");
@@ -78,13 +75,13 @@ public class Start {
                      }
 
                   } catch (Exception e) {
-                     System.out.println("Error occurred while enabling plugin!");
+                     System.out.println(OS.getLanguage().get("errorOccurred"));
                      e.printStackTrace();
                      plugin.onDisable();
                   }
                }
             } catch (InstantiationException | IllegalAccessException | ClassNotFoundException var11) {
-               System.out.println("Exception occurred during instancing...");
+               System.out.println(OS.getLanguage().get("exceptionOccurred"));
                var11.printStackTrace();
             }
 

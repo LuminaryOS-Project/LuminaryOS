@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 public class Process {
     @Getter
@@ -18,6 +20,11 @@ public class Process {
     @Getter
     @Setter
     private int id;
+    @Getter
+    private Optional<Callback> callback;
+    public void setCallback(Callback callback) {
+        this.callback = Optional.of(callback);
+    }
     public Thread start() {
         if(!thread.isAlive()) {
             thread.setPriority(1);

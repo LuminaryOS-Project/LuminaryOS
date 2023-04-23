@@ -1,0 +1,33 @@
+{
+  "lang": "Romanian",
+  "designedFor": "Beta-R1.0",
+  "definitions": {
+    "diskNotFound": "Discul nu a fost găsit",
+    "diskCantBeCreated": "Discul nu a poate fii creat",
+    "diskAlreadyExists": "Discul deja exista",
+    "commandNotFound": "Comanda necunoscuta",
+    "fileNotFound": "Fișierul nu a poate fii gasit",
+    "fileAlreadyExists": "Fisierul deja exista",
+    "welcome": "Bine ati venit",
+    "initialising": "Inițializarea",
+    "errorOccurred": "Eroare",
+    "exceptionOccurred": "A apărut o excepție",
+    "aliases": "Pseudonime",
+    "directoryNotFound": "Directorul nu există",
+    "file": "Fisier",
+    "directory": "Director",
+    "currentDir": "Directorul curent",
+    "couldNotSendNotif": "Nu s-a putut trimite o notificare",
+    "continue": "Continua",
+    "info": "info",
+    "warn": "warn",
+    "error": "eroare",
+    "changeDirUsage": "Schimba directorul curent",
+    "exitUsage": "se inchide os-ul",
+    "helpUsage": "Afișează sintaxa validă pentru o comandă",
+    "killUsage": "omoara procesul",
+    "lsUsage": "Listează toate fișierele dintr-un director",
+    "rmUsage": "Sterge fisierul",
+    "version": "Versiune"
+  }
+}

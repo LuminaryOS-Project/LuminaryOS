@@ -1,0 +1,33 @@
+{
+  "lang": "German",
+  "designedFor": "Beta-R1.0",
+  "definitions": {
+    "diskNotFound": "Festplatte nicht gefunden",
+    "diskCantBeCreated": "Festplatte kann nicht erstellt werden",
+    "diskAlreadyExists": "Festplatte existiert bereits!",
+    "commandNotFound": "Unbekannter Befehl",
+    "fileNotFound": "Datei nicht gefunden",
+    "fileAlreadyExists": "Datei existiert bereits",
+    "welcome": "Willkommen bei",
+    "initialising": "Initialisierung",
+    "errorOccurred": "Fehler aufgetreten",
+    "exceptionOccurred": "Ausnahme aufgetreten",
+    "aliases": "Aliasnamen",
+    "directoryNotFound": "Verzeichnis existiert nicht",
+    "file": "Datei",
+    "directory": "Verzeichnis",
+    "currentDir": "Aktuelles Verzeichnis",
+    "couldNotSendNotif": "Benachrichtigung konnte nicht gesendet werden",
+    "continue": "Weiter",
+    "info": "Information",
+    "warn": "Warnung",
+    "error": "Fehler",
+    "changeDirUsage": "Ändert das aktuelle Verzeichnis",
+    "exitUsage": "Fährt das Betriebssystem herunter",
+    "helpUsage": "Zeigt die gültige Syntax für einen Befehl an",
+    "killUsage": "Beendet einen Prozess",
+    "lsUsage": "Listet alle Dateien in einem Verzeichnis auf",
+    "rmUsage": "Entfernt eine Datei",
+    "version": "Version"
+  }
+}

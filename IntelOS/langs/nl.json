@@ -1,0 +1,33 @@
+{
+  "lang": "Dutch",
+  "designedFor": "Beta-R1.0",
+  "definitions": {
+    "diskNotFound": "Schijf niet gevonden",
+    "diskCantBeCreated": "Schijf kan niet worden gemaakt",
+    "diskAlreadyExists": "Schijf bestaat al!",
+    "commandNotFound": "Onbekend commando",
+    "fileNotFound": "Bestand niet gevonden",
+    "fileAlreadyExists": "Bestand bestaat al",
+    "welcome": "Welkom bij",
+    "initialising": "Initialiseren",
+    "errorOccurred": "Er is een fout opgetreden",
+    "exceptionOccurred": "Er is een uitzondering opgetreden",
+    "aliases": "Aliassen",
+    "directoryNotFound": "Map niet gevonden",
+    "file": "Bestand",
+    "directory": "Map",
+    "currentDir": "Huidige map",
+    "couldNotSendNotif": "Kon geen melding versturen",
+    "continue": "Doorgaan",
+    "info": "informatie",
+    "warn": "waarschuwing",
+    "error": "fout",
+    "changeDirUsage": "Verandert uw huidige map",
+    "exitUsage": "Sluit het besturingssysteem af",
+    "helpUsage": "Toont de geldige syntax voor een commando",
+    "killUsage": "Beëindigt een proces",
+    "lsUsage": "Lijst alle bestanden op in een map",
+    "rmUsage": "Verwijdert een bestand",
+    "version": "Versie"
+  }
+}

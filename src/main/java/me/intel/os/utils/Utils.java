@@ -1,5 +1,7 @@
 package me.intel.os.utils;
 
+import me.intel.os.OS;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -81,10 +83,10 @@ public class Utils {
                     cfg.set("disks.0.hash", hash);
                 }
             } catch (IOException e) {
-                throw new IllegalArgumentException("Disk cannot be created!", e);
+                throw new IllegalArgumentException(OS.getLanguage().get("diskCantBeCreated"), e);
             }
         } else {
-            throw new IllegalArgumentException("Disk already exists!");
+            throw new IllegalArgumentException(OS.getLanguage().get("diskAlreadyExists"));
         }
     }
 }
