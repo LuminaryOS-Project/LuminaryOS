@@ -21,6 +21,8 @@ import me.intel.os.plugin.Plugin;
 
 public class OS {
    @Getter
+   private static final String version = "Beta-R1.0";
+   @Getter
    private final CommandManager CommandManager = new CommandManager();
    @Getter
    private static String Locale;

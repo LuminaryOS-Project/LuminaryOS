@@ -15,7 +15,7 @@ public class VerCommand extends Command {
 
    public void execute(List<String> args) {
       System.out.println("---------------------------");
-      System.out.println("IntelOS Beta " + OS.getLanguage().get("version") + " R1.0");
+      System.out.println("IntelOS " + OS.getLanguage().get("version") + " " + OS.getVersion());
       System.out.println("Running on " + System.getProperty("os.name"));
       System.out.println("Language Pack: " + OS.getLanguage().getName() + " designed for: " + OS.getLanguage().getVersion());
       System.out.println("---------------------------");
