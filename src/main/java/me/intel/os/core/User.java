@@ -26,16 +26,19 @@ public class User {
       this.permissionLevel = permissionLevel;
       this.usercfg = new JSONConfig(Paths.get("IntelOS", "users", name, "user.json").toString());
    }
+   public boolean checkPassword(String password) {
+      return Security.checkPassword(password, (String) usercfg.get("password"));
+   }
    public static @NotNull User createUser(String name, boolean overwrite) {
       Path userPath = Paths.get("IntelOS", "users", name);
       Path jsonPath = Paths.get("IntelOS", "users", name, "user.json");
       if(Files.exists(userPath) || Files.exists(jsonPath)) {
          if(!overwrite) { throw new IllegalArgumentException("User already exists!"); }
-         if(overwrite) { Utils.deleteDirectory(new File(Paths.get("IntelOS", "users", name).toString())); }
+         if(overwrite) { Utils.deleteDirectory(new File(userPath.toString())); }
       }
-      Utils.createDirectory(Paths.get("IntelOS", "users", name));
+      Utils.createDirectory(userPath);
       try {
-         new File(Paths.get("IntelOS", "users", name, "user.json").toString()).createNewFile();
+         new File(jsonPath.toString()).createNewFile();
       } catch (IOException e) {
 
       }
@@ -43,7 +46,7 @@ public class User {
          cfg.set("permissionlvl", "USER");
          cfg.set("name", name);
          System.out.println("Password must be at least 6 characters, 1 Uppercase and 1 Lowercase");
-         cfg.set("password", Prompts.getPassword("Enter password", "^(?=.*[A-Z])(?=.*[a-z]).{6,}$"));
+         cfg.set("password", Prompts.getPassword("Enter password", "^(?=.*[A-Z])(?=.*[a-z]).{6,}$", true));
       }
       return new User(name, PermissionLevel.USER);
    }

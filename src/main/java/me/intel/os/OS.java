@@ -53,7 +53,7 @@ public class OS {
 
 
    private void setUser(User user) {
-      this.currentUser = user;
+      currentUser = user;
    }
 
    public void Start(String[] args) {
@@ -72,7 +72,8 @@ public class OS {
          Language = new Language("en");
       }
       //
-      System.out.println(getLanguage().get("initialising") + " IntelOS (Java)");
+      System.out.println(getLanguage().get("initialising") + " IntelOS (Java)\n");
+
       // JVM Things
       Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
       ProcessManager.start();
@@ -95,15 +96,35 @@ public class OS {
       }));
       new Recovery().check(currentDir);
       //
-      boolean loggedIn = false;
       List<String> users = Arrays.stream(new File("IntelOS/users").list())
               .filter(name -> new File("IntelOS/users", name).isDirectory())
               .filter(name -> List.of(new File("IntelOS/users", name).list()).contains("user.json"))
               .toList();
-
-      System.out.println("Users: " + String.join(",", users));
-      //
       Scanner scanner = new Scanner(System.in);
+      System.out.println("Users: " + String.join(",", users));
+      System.out.println("Select a user to login to!" + "\n");
+      String selectedUser;
+      while(true) {
+         System.out.print("Username: ");
+         String user = scanner.nextLine();
+         if(users.contains(user)) {
+            selectedUser = user;
+            break;
+         }
+      }
+      boolean loggedIn = false;
+      while(!loggedIn) {
+         assert System.console() != null;
+         loggedIn = User.getUserByName(selectedUser).checkPassword(Prompts.getPassword("Enter password", "^(?=.*[A-Z])(?=.*[a-z]).{6,}$", false));
+         if(loggedIn) {
+            System.out.println("Logged in");
+         } else {
+            System.out.println("Incorrect password");
+         }
+      }
+      setUser(User.getUserByName(selectedUser));
+      Utils.clearScreen();
+      //
       System.out.println(getLanguage().get("welcome") + " IntelOS");
       getEventHandler().post(new AfterShellEvent());
       try {
@@ -135,7 +156,6 @@ public class OS {
       System.out.println("Stopping Processes...");
       // saving config
       config.set("locale", getLocale());
-      config.set("activeUser", getCurrentUser().getName());
       config.set("shutdown", System.currentTimeMillis());
       OS.getProcessManager().shutdown();
       nameToPlugin.forEach((k, v) -> v.onDisable());

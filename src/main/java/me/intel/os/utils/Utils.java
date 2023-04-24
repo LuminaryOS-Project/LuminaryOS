@@ -58,6 +58,16 @@ public class Utils {
     public static void createDirectory(Path path) {
         new File(path.toString()).mkdirs();
     }
+    public static void clearScreen() {
+        System.out.println("If you can see this message your terminal doesnt support the clearing ASCI Escape code!");
+        if(System.getProperty("os.name").contains("Windows")) {
+            System.out.println("You seem to be on windows, we recommend you use the new Windows Terminal App!");
+            System.out.println("https://github.com/microsoft/terminal");
+        } else {
+            System.out.println("Most linux / macOS terminals should support this escape code!");
+        }
+        System.out.println("\033\143");
+    }
     public static String MD5Hash(String file) {
         try {
             byte[] data = Files.readAllBytes(Paths.get(file));
