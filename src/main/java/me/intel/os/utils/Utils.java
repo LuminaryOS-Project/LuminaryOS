@@ -26,14 +26,14 @@ public class Utils {
         return new String(Base64.getDecoder().decode(input.getBytes()));
     }
 
-    public byte[] compress(byte[] data) {
+    public static byte[] compress(byte[] data) {
         return Zstd.compress(data);
     }
-    public byte[] compress(String data) {
+    public static byte[] compress(String data) {
         return Zstd.compress(data.getBytes());
     }
-    public byte[] decompress(byte[] data) {
-        byte[] des = new byte[data.length/4];
+    public static byte[] decompress(byte[] data) {
+        byte[] des = new byte[data.length];
         Zstd.decompress(des, data);
         return des;
     }
