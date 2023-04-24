@@ -1,8 +1,9 @@
 package me.intel.os.utils;
 
 import me.intel.os.OS;
+import me.intel.os.core.Security;
 
-import java.util.Objects;
+import java.util.regex.Pattern;
 import java.util.Scanner;
 
 public class Prompts {
@@ -16,6 +17,27 @@ public class Prompts {
             } else if(input.equalsIgnoreCase("N")) {
                 return false;
             }
+        }
+    }
+    public static String getPassword(String prompt, String req) {
+        System.out.print(prompt + ": ");
+        Scanner scan = new Scanner(System.in);
+        Pattern regex = Pattern.compile(req);
+        while(true) {
+            String input = scan.nextLine();
+            if(regex.matcher(input).matches()) {
+                return Security.hashPassword(input, 14);
+            } else {
+                System.out.println("Password is invalid!");
+            }
+        }
+    }
+    public static String getPassword(String prompt) {
+        System.out.print(prompt + ": ");
+        Scanner scan = new Scanner(System.in);
+        while(true) {
+            String input = scan.nextLine();
+            return Security.hashPassword(input, 14);
         }
     }
 

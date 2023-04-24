@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import lombok.Getter;
+import me.intel.os.utils.adapters.VersionAdapter;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -32,7 +33,13 @@ public class JSONConfig implements AutoCloseable {
       }
 
    }
-
+   public void adapt(VersionAdapter adapter) {
+      adapter.handle();
+   }
+   public void clear() { internalMap.clear();}
+   public void remove(String key) {
+      internalMap.remove(key);
+   }
    public Object get(String path) {
       String[] keys = path.split("\\."); // split the path by dot notation
       Object value = this.internalMap;
@@ -41,6 +48,20 @@ public class JSONConfig implements AutoCloseable {
             value = ((Map) value).get(key);
          } else {
             value = null;
+            break;
+         }
+      }
+      return value;
+   }
+   //
+   public Object get(String path, Object defaultValue) {
+      String[] keys = path.split("\\.");
+      Object value = this.internalMap;
+      for (String key : keys) {
+         if (value instanceof Map) {
+            value = ((Map) value).get(key);
+         } else {
+            value = defaultValue;
             break;
          }
       }

@@ -1,6 +1,9 @@
 package me.intel.os;
 
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.List;
 import com.google.common.eventbus.EventBus;
@@ -8,7 +11,6 @@ import lombok.Getter;
 
 import me.intel.os.commands.SimpleCommand;
 import me.intel.os.core.*;
-import me.intel.os.core.Process;
 import me.intel.os.core.exceptions.InvalidLanguageException;
 import me.intel.os.core.services.ServiceManager;
 import me.intel.os.events.AfterShellEvent;
@@ -77,7 +79,6 @@ public class OS {
       getServiceManager().registerEvents();
       getEventHandler().post(new BeforeCommandRegisterEvent());
       //
-
       // Commands
       CommandManager.registerCommand(new HelpCommand());
       CommandManager.registerCommand(new LsCommand());
@@ -93,8 +94,15 @@ public class OS {
          System.out.println("Language Pack: " + getLanguage().getName() + " designed for: " + getLanguage().getVersion() + "\n");
       }));
       new Recovery().check(currentDir);
-      // Register events
-      // END REGISTER EVENTS
+      //
+      boolean loggedIn = false;
+      List<String> users = Arrays.stream(new File("IntelOS/users").list())
+              .filter(name -> new File("IntelOS/users", name).isDirectory())
+              .filter(name -> List.of(new File("IntelOS/users", name).list()).contains("user.json"))
+              .toList();
+
+      System.out.println("Users: " + String.join(",", users));
+      //
       Scanner scanner = new Scanner(System.in);
       System.out.println(getLanguage().get("welcome") + " IntelOS");
       getEventHandler().post(new AfterShellEvent());
@@ -125,6 +133,10 @@ public class OS {
    public void shutdown() {
       System.out.println("Shutting Down!");
       System.out.println("Stopping Processes...");
+      // saving config
+      config.set("locale", getLocale());
+      config.set("activeUser", getCurrentUser().getName());
+      config.set("shutdown", System.currentTimeMillis());
       OS.getProcessManager().shutdown();
       nameToPlugin.forEach((k, v) -> v.onDisable());
       config.close();

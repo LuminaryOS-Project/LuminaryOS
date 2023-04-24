@@ -1,32 +1,65 @@
 package me.intel.os.core;
 
-import me.intel.os.events.LoginEvent;
+import lombok.Getter;
 import me.intel.os.permissions.PermissionLevel;
+import me.intel.os.utils.JSONConfig;
+import me.intel.os.utils.Prompts;
+import me.intel.os.utils.Utils;
+import org.jetbrains.annotations.NotNull;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 
 public class User {
-   public String name;
-   public PermissionLevel permissionLevel;
-   public String location;
+   @Getter
+   private final String name;
+   @Getter
+   private final PermissionLevel permissionLevel;
+   private final JSONConfig usercfg;
 
-   public User(String name, PermissionLevel permissionLevel, String location) {
-      this.location = location;
+   public User(String name, PermissionLevel permissionLevel) {
       this.name = name;
       this.permissionLevel = permissionLevel;
+      this.usercfg = new JSONConfig(Paths.get("IntelOS", "users", name, "user.json").toString());
    }
+   public static @NotNull User createUser(String name, boolean overwrite) {
+      Path userPath = Paths.get("IntelOS", "users", name);
+      Path jsonPath = Paths.get("IntelOS", "users", name, "user.json");
+      if(Files.exists(userPath) || Files.exists(jsonPath)) {
+         if(!overwrite) { throw new IllegalArgumentException("User already exists!"); }
+         if(overwrite) { Utils.deleteDirectory(new File(Paths.get("IntelOS", "users", name).toString())); }
+      }
+      Utils.createDirectory(Paths.get("IntelOS", "users", name));
+      try {
+         new File(Paths.get("IntelOS", "users", name, "user.json").toString()).createNewFile();
+      } catch (IOException e) {
 
-   public PermissionLevel getPermissionLevel() {
-      return this.permissionLevel;
+      }
+      try(JSONConfig cfg = new JSONConfig(jsonPath.toString())) {
+         cfg.set("permissionlvl", "USER");
+         cfg.set("name", name);
+         System.out.println("Password must be at least 6 characters, 1 Uppercase and 1 Lowercase");
+         cfg.set("password", Prompts.getPassword("Enter password", "^(?=.*[A-Z])(?=.*[a-z]).{6,}$"));
+      }
+      return new User(name, PermissionLevel.USER);
    }
-
-   public String getLocation() {
-      return this.location;
-   }
-
-   public String getName() {
-      return this.name;
-   }
-
    public static User getUserByName(String name) {
-      return new User(name, PermissionLevel.USER, "/users/" + name);
+      Path userPath = Paths.get("IntelOS", "users", name);
+      if(Files.exists(userPath)) {
+         Path jsonPath = Paths.get("IntelOS", "users", name, "user.json");
+         if(Files.exists(jsonPath)) {
+            try(JSONConfig cfg = new JSONConfig(jsonPath.toString())) {
+               PermissionLevel lvl = PermissionLevel.valueOf(cfg.get("permissionlvl").toString());
+               if(lvl != null) {
+                  return new User(name, lvl);
+               }
+            }
+         }
+      }
+      return createUser(name, true);
    }
 }

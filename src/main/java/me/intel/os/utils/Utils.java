@@ -55,6 +55,9 @@ public class Utils {
         }
         directory.delete();
     }
+    public static void createDirectory(Path path) {
+        new File(path.toString()).mkdirs();
+    }
     public static String MD5Hash(String file) {
         try {
             byte[] data = Files.readAllBytes(Paths.get(file));
