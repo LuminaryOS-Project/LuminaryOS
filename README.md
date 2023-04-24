@@ -4,7 +4,7 @@ IntelOS is a virtual operating system written in Java. It provides a simple and 
 ## Getting Started
 To get started with IntelOS, you will need to have Java installed on your machine. You can download the latest version of Java from the Oracle website.
 
-Once you have Java installed, you can download the IntelOS source code from the GitHub repository. You can then build the project using maven
+Once you have Java installed, you can download the IntelOS source code from the GitHub repository. You can then build the project using maven or you can use a pre built version
 
 ## Features
 IntelOS provides a number of features, including:
