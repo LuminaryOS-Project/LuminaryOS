@@ -1,5 +1,6 @@
 package me.intel.os.utils;
 
+import com.github.luben.zstd.Zstd;
 import me.intel.os.OS;
 
 import java.io.File;
@@ -24,6 +25,19 @@ public class Utils {
     public static String decodeBase64(String input) {
         return new String(Base64.getDecoder().decode(input.getBytes()));
     }
+
+    public byte[] compress(byte[] data) {
+        return Zstd.compress(data);
+    }
+    public byte[] compress(String data) {
+        return Zstd.compress(data.getBytes());
+    }
+    public byte[] decompress(byte[] data) {
+        byte[] des = new byte[data.length/4];
+        Zstd.decompress(des, data);
+        return des;
+    }
+
     public static void zipFiles(String[] srcFilenames, String zipFilename) throws IOException {
         try (
                 FileOutputStream fileOut = new FileOutputStream(zipFilename);
@@ -59,12 +73,12 @@ public class Utils {
         new File(path.toString()).mkdirs();
     }
     public static void clearScreen() {
-        System.out.println("If you can see this message your terminal doesnt support the clearing ASCI Escape code!");
+        System.out.println("\nIf you can see this message your terminal doesnt support the clearing ASCI Escape code!");
         if(System.getProperty("os.name").contains("Windows")) {
             System.out.println("You seem to be on windows, we recommend you use the new Windows Terminal App!");
-            System.out.println("https://github.com/microsoft/terminal");
+            System.out.println("https://github.com/microsoft/terminal \n");
         } else {
-            System.out.println("Most linux / macOS terminals should support this escape code!");
+            System.out.println("Most linux / macOS terminals should support this escape code\n");
         }
         System.out.println("\033\143");
     }

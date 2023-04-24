@@ -119,4 +119,13 @@ public class JSONConfig implements AutoCloseable {
       };
       return (Map)gson.fromJson(json, token.getType());
    }
+   public void setPref(String pref, Object value) {
+      this.set("preference." + pref, value);
+   }
+   public void setSetting(String setting, Object value) {
+      this.set("setting." + setting, value);
+   }
+   public void setMisc(String misc, Object value) {
+      this.set("misc." + misc, value);
+   }
 }

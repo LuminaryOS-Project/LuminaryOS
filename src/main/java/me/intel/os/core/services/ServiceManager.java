@@ -57,6 +57,7 @@ public class ServiceManager {
                     System.out.println("Not enough permissions");
                     return;
                 }
+                service.getCallback().ifPresent(callback -> callback.accept(StatusCode.SUCCESS));
                 try {
                     thread.start();
                 } catch (IllegalThreadStateException e) {

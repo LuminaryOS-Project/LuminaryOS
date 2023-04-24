@@ -155,8 +155,8 @@ public class OS {
       System.out.println("Shutting Down!");
       System.out.println("Stopping Processes...");
       // saving config
-      config.set("locale", getLocale());
-      config.set("shutdown", System.currentTimeMillis());
+      config.setPref("locale", getLocale());
+      config.setMisc("shutdown", System.currentTimeMillis());
       OS.getProcessManager().shutdown();
       nameToPlugin.forEach((k, v) -> v.onDisable());
       config.close();
@@ -164,5 +164,4 @@ public class OS {
    public void registerSubscriber(Object o) {
       getEventHandler().register(o);
    }
-
 }

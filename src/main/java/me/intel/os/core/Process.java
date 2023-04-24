@@ -36,6 +36,7 @@ public class Process {
     public void stop() {
         if(thread.isAlive()) {
             thread.stop();
+            callback.ifPresent(callback -> callback.accept(StatusCode.SUCCESS));
         }
     }
 

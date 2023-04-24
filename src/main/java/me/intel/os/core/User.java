@@ -26,6 +26,15 @@ public class User {
       this.permissionLevel = permissionLevel;
       this.usercfg = new JSONConfig(Paths.get("IntelOS", "users", name, "user.json").toString());
    }
+   public void setPref(String pref, Object value) {
+      usercfg.set("preference." + pref, value);
+   }
+   public void setSetting(String setting, Object value) {
+      usercfg.set("setting." + setting, value);
+   }
+   public void setMisc(String misc, Object value) {
+      usercfg.set("misc." + misc, value);
+   }
    public boolean checkPassword(String password) {
       return Security.checkPassword(password, (String) usercfg.get("password"));
    }

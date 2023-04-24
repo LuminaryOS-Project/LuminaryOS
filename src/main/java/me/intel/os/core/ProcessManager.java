@@ -4,6 +4,7 @@ import lombok.Getter;
 import me.intel.os.OS;
 import me.intel.os.core.services.Service;
 import me.intel.os.events.ProcessTimeoutEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -17,7 +18,7 @@ public class ProcessManager {
     @Getter
     private final ConcurrentHashMap<Integer, Process> runningProcesses = new ConcurrentHashMap<>();
     private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-    public void add(Process t) {
+    public void add(@NotNull Process t) {
         queuedProcess.add(t);
     }
 

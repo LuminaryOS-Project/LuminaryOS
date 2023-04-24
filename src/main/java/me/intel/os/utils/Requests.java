@@ -24,6 +24,7 @@ public class Requests {
         URL u = new URL(url);
         InputStream in = u.openStream();
         OutputStream out = new FileOutputStream(path);
+
         byte[] buffer = new byte[4096];
         int bytesRead;
         while ((bytesRead = in.read(buffer)) != -1) {
