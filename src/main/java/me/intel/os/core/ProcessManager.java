@@ -38,6 +38,7 @@ public class ProcessManager {
     }
 
     public void shutdown() {
+        executor.shutdown();
         runningProcesses.forEach((k, v) -> { v.getThread().interrupt(); });
         runningProcesses.clear();
     }

@@ -19,25 +19,57 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class Utils {
+    /**
+     * <h3>Encodes a string to Base64</h3>
+     * @param input String to encode
+     * @return Encoded String
+     */
     public static String encodeBase64(String input) {
         return Base64.getEncoder().encodeToString(input.getBytes());
     }
+
+    /**
+     * <h3>Decodes a Base64 string</h3>
+     * @param input String to decode
+     * @return Decoded String
+     */
     public static String decodeBase64(String input) {
         return new String(Base64.getDecoder().decode(input.getBytes()));
     }
 
+    /**
+     * <h3>Compresses Data Using ZSTD</h3>
+     * @param data byte[] of data to compress
+     * @return Compressed Data
+     */
     public static byte[] compress(byte[] data) {
         return Zstd.compress(data);
     }
+    /**
+     * <h3>Compresses Data Using ZSTD</h3>
+     * @param data String of data to compress
+     * @return Compressed Data
+     */
     public static byte[] compress(String data) {
         return Zstd.compress(data.getBytes());
     }
+
+    /**
+     * <h3>Decompresses ZSTD Data</h3>
+     * @param data Data to decompress
+     * @return Decompressed byte[] Data
+     */
     public static byte[] decompress(byte[] data) {
         byte[] des = new byte[data.length];
         Zstd.decompress(des, data);
         return des;
     }
-
+    /**
+     * <h3>Zips files using ZipOutputStream</h3>
+     * @param srcFilenames Files to zip
+     * @param zipFilename Output zip file name
+     * @throws IOException
+     */
     public static void zipFiles(String[] srcFilenames, String zipFilename) throws IOException {
         try (
                 FileOutputStream fileOut = new FileOutputStream(zipFilename);
@@ -57,21 +89,46 @@ public class Utils {
             }
         }
     }
+
+    /**
+     * <h3>Lists all the folders within a folder</h3>
+     * @param path Path to list
+     * @return File[]
+     */
     public static File[] listDirectories(String path) {
         return new File(path).listFiles(File::isDirectory);
     }
+    /**
+     * <h3>Lists all the files within a folder</h3>
+     * @param folder Path to list
+     * @return File[]
+     */
     public static File[] listFilesInDirectory(final File folder) {
         return folder.listFiles(File::isFile);
     }
+
+    /**
+     * <h3>Deletes a tree of directories</h3>
+     * @param directory Directory to delete
+     */
     public static void deleteDirectory(File directory) {
         if (directory.isDirectory()) {
             Arrays.stream(Objects.requireNonNull(directory.listFiles())).forEach(Utils::deleteDirectory);
         }
         directory.delete();
     }
+
+    /**
+     * <h3>Creates a directory from a path</h3>
+     * @param path Path to create
+     */
     public static void createDirectory(Path path) {
         new File(path.toString()).mkdirs();
     }
+
+    /**
+     * <h3>Clears the console or shows a warning if the users console doesn't support it</h3>
+     */
     public static void clearScreen() {
         System.out.println("\nIf you can see this message your terminal doesnt support the clearing ASCI Escape code!");
         if(System.getProperty("os.name").contains("Windows")) {
@@ -82,6 +139,12 @@ public class Utils {
         }
         System.out.println("\033\143");
     }
+
+    /**
+     * <h3>Gets the MD5 hash of a file</h3>
+     * @param file The path to the file
+     * @return MD5 hash of the file
+     */
     public static String MD5Hash(String file) {
         try {
             byte[] data = Files.readAllBytes(Paths.get(file));
@@ -90,6 +153,12 @@ public class Utils {
         } catch (Exception ignored) {}
         return null;
     }
+
+    /**
+     * <h3>Creates a folder and files for a disk</h3>
+     * @param i Disk Number
+     * @throws IOException
+     */
     public static void createDisk(int i) throws IOException {
         Path diskPath = Paths.get("IntelOS", "disks", String.valueOf(i));
         if (Files.notExists(diskPath)) {

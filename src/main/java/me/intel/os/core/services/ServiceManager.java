@@ -21,28 +21,6 @@ public class ServiceManager {
         sIDcntr++;
     }
 
-    public void registerEvents(){
-        OS.getInstance().registerSubscriber(this);
-    }
-
-    @Subscribe
-    public void trigger0EventHandler(BeforeCommandRegisterEvent e){
-        services.forEach((k,v) -> {
-            if(v.autoStart && v.startTrigger == 0 && !v.getThread().isAlive()){
-                v.start();
-            }
-        });
-    }
-
-    @Subscribe
-    public void trigger1EventHandler(AfterShellEvent e){
-        services.forEach((k,v) -> {
-            if(v.autoStart && v.startTrigger == 1 && !v.getThread().isAlive()){
-                v.start();
-            }
-        });
-    }
-
     private boolean isRegistered(Service service){
         return services.containsValue(service) || services.containsKey(service);
     }
@@ -84,7 +62,7 @@ public class ServiceManager {
         }
     }
 
-    public ServiceManager() {}
+    private ServiceManager() {}
     public static ServiceManager getServiceManager() {
         if(serviceManager == null) {
             serviceManager = new ServiceManager();

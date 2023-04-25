@@ -31,7 +31,7 @@ public class OS {
    @Getter
    private static Language Language;
    @Getter
-   private final ServiceManager ServiceManager = new ServiceManager();
+   private final ServiceManager ServiceManager = me.intel.os.core.services.ServiceManager.getServiceManager();
    public static HashMap<String, Plugin> nameToPlugin = new HashMap<>();
    @Getter
    private static final ProcessManager ProcessManager = me.intel.os.core.ProcessManager.getProcessManager();
@@ -73,11 +73,9 @@ public class OS {
       }
       //
       System.out.println(getLanguage().get("initialising") + " IntelOS (Java)\n");
-
       // JVM Things
       Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
       ProcessManager.start();
-      getServiceManager().registerEvents();
       getEventHandler().post(new BeforeCommandRegisterEvent());
       //
       // Commands
