@@ -1,7 +1,7 @@
 target/
-IntelOS/disks/0
-IntelOS/cache/cache.json
-IntelOS/users
+LuminaryOS/disks/0
+LuminaryOS/cache/cache.json
+LuminaryOS/users
 Debug/
 pom.xml.tag
 pom.xml

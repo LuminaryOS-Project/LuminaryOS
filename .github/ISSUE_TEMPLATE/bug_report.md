@@ -24,7 +24,7 @@ A clear and concise description of what the bug is.
 - [ ] Recovery
 
 **Tools version:**
-<!--- Please list all of the affected IntelOS versions (`1.0.1`, etc.)-->
+<!--- Please list all affected LuminaryOS versions (`1.0.1`, etc.)-->
 
 **Repro steps:**  
 A description with steps to reproduce the issue.

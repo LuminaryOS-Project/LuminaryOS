@@ -1,3 +1,9 @@
 {
-  "locale": "en"
+  "preference": {
+    "locale": "en"
+  },
+  "locale": "en",
+  "misc": {
+    "shutdown": 1682973651401
+  }
 }
