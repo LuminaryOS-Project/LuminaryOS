@@ -15,9 +15,10 @@ import java.util.concurrent.*;
 
 public class ProcessManager {
     private int currID = 0;
+    private int elasped = 0;
     private static ProcessManager procManager;
     private Thread manager;
-    private LinkedList<Pair<Integer, Integer>> procHist;
+    private LinkedList<Pair<Integer, Integer>> processHistory = new LinkedList<>();
     private final Deque<Process> queuedProcess = new ArrayDeque<>();
     @Getter
     private final ConcurrentHashMap<Integer, Process> runningProcesses = new ConcurrentHashMap<>();
@@ -47,6 +48,16 @@ public class ProcessManager {
         runningProcesses.clear();
     }
     public void start() {
+        new Thread(() -> {
+            try {
+                Thread.sleep(1000);
+                if(processHistory.size() >= 100) processHistory.removeFirst();
+                processHistory.push(new Pair<>(elasped, runningProcesses.size()));
+                elasped++;
+            } catch (InterruptedException e) {
+                System.out.println("Error when trying to load ");
+            }
+        }).start();
         executor.scheduleAtFixedRate(() -> {
             if (!queuedProcess.isEmpty()) {
                 Process process = queuedProcess.poll();
