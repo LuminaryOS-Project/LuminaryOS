@@ -30,7 +30,7 @@ public class OS {
    @Getter
    private static final String version = "Beta-R1.0";
    @Getter
-   private final CommandManager CommandManager = new CommandManager();
+   private final CommandManager CommandManager = com.luminary.os.commands.CommandManager.getInstance();
    @Getter
    private static String Locale;
    @Getter
@@ -95,6 +95,11 @@ public class OS {
       CommandManager.registerCommand(new SimpleCommand("whoami", "whoami", List.of("me"), PermissionLevel.USER ,(cargs) -> System.out.println(currentUser.getName())));
       CommandManager.registerCommand(new SimpleCommand("lang", "lang", List.of("lang", "language"), PermissionLevel.USER, (cargs) -> {
          System.out.println("Language Pack: " + getLanguage().getName() + " designed for: " + getLanguage().getVersion() + "\n");
+      }));
+      //
+      CommandManager.registerCommand(new SimpleCommand("screensaver", "Displays a screensaver", List.of("scrnsvr", "srcvr"), PermissionLevel.USER, (cargs) -> {
+         Screensaver ss = new Screensaver("donut");
+         try { ss.start(); } catch (Exception e) {}
       }));
       new Recovery().check(currentDir);
       //

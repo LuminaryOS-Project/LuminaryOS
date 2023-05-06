@@ -9,6 +9,9 @@ import java.util.jar.JarFile;
 
 import com.luminary.os.core.User;
 import com.luminary.os.plugin.Plugin;
+import com.luminary.os.utils.async.Promise;
+import com.luminary.os.utils.network.Request;
+import com.luminary.os.utils.network.Response;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import com.luminary.os.utils.Utils;
@@ -34,7 +37,7 @@ public class Start {
             new File("LuminaryOS/cache/cache.json").createNewFile();
             new File("LuminaryOS/config/config.json").createNewFile();
             Utils.createDisk(0);
-            User.createUser(new Scanner(System.in).nextLine(), false);
+            User.createUser(new Scanner(System.in).nextLine(), true);
          } else {
             System.out.println("Failed to create the needed OS files...");
             Utils.deleteDirectory(new File("LuminaryOS"));

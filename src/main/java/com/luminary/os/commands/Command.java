@@ -6,6 +6,7 @@ import com.luminary.os.permissions.PermissionLevel;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class Command {
+   public static final PermissionLevel DEFAULT_PERMISSION = PermissionLevel.USER;
    private String name;
    private List<String> aliases;
    public String usage;

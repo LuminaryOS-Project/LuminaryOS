@@ -127,6 +127,14 @@ public class Utils {
     }
 
     /**
+     * <h3>Creates a directory from a path</h3>
+     * @param path Path to create
+     */
+    public static void createDirectory(String path) {
+        new File(path).mkdirs();
+    }
+
+    /**
      * <h3>Clears the console or shows a warning if the users console doesn't support it</h3>
      */
     public static void clearScreen() {
@@ -186,5 +194,16 @@ public class Utils {
         } else {
             throw new IllegalArgumentException(OS.getLanguage().get("diskAlreadyExists"));
         }
+    }
+
+    public static void delay(Runnable task, int ms) {
+        new Thread(() -> {
+            try {
+                Thread.sleep(ms);
+                task.run();
+            } catch (InterruptedException e) {
+                System.out.println("Error occurred while trying to delay task.");
+            }
+        }).start();
     }
 }

@@ -32,11 +32,22 @@ public class Prompts {
             }
         }
     }
-    public static String getPassword(String prompt) {
-        System.out.print(prompt + ": ");
-        Scanner scan = new Scanner(System.in);
+    public static String getPassword(String prompt, String req) {
+        Pattern regex = Pattern.compile(req);
         while(true) {
-            String input = scan.nextLine();
+            System.out.print(prompt + ": ");
+            String input = new String(System.console().readPassword());
+            if(regex.matcher(input).matches()) {
+                return input;
+            } else {
+                System.out.println("Password is invalid!");
+            }
+        }
+    }
+    public static String getPassword(String prompt) {
+        while(true) {
+            System.out.print(prompt + ": ");
+            String input = new String(System.console().readPassword());
             return Security.hashPassword(input, 14);
         }
     }

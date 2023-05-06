@@ -9,11 +9,17 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class CommandManager {
    public ConcurrentHashMap<String, Command> commands = new ConcurrentHashMap<>();
-
+   private static CommandManager cmdmgr;
    public void registerCommand(Command command) {
       this.commands.put(command.getName(), command);
    }
-
+   private CommandManager() {}
+   public static CommandManager getInstance() {
+      if(cmdmgr == null) {
+         cmdmgr = new CommandManager();
+      }
+      return cmdmgr;
+   }
    public String getUsage(String command) {
       return this.commands.get(command) != null ? ((Command)this.commands.get(command)).getUsage() : OS.getLanguage().get("commandNotFound");
    }
