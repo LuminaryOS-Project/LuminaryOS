@@ -1,5 +1,6 @@
 package com.luminary.os.core;
 
+import com.luminary.os.utils.Pair;
 import lombok.Getter;
 import com.luminary.os.OS;
 import com.luminary.os.core.services.Service;
@@ -8,12 +9,15 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.*;
 
 public class ProcessManager {
     private int currID = 0;
     private static ProcessManager procManager;
     private Thread manager;
+    private LinkedList<Pair<Integer, Integer>> procHist;
     private final Deque<Process> queuedProcess = new ArrayDeque<>();
     @Getter
     private final ConcurrentHashMap<Integer, Process> runningProcesses = new ConcurrentHashMap<>();
