@@ -9,9 +9,8 @@ import java.util.jar.JarFile;
 
 import com.luminary.os.core.User;
 import com.luminary.os.plugin.Plugin;
-import com.luminary.os.utils.async.Promise;
-import com.luminary.os.utils.network.Request;
-import com.luminary.os.utils.network.Response;
+import com.luminary.api.unsigned.*;
+import static com.luminary.api.unsigned.Unsigned.*;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import com.luminary.os.utils.Utils;

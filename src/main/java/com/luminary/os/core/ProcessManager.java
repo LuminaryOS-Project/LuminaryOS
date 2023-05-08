@@ -1,5 +1,16 @@
 package com.luminary.os.core;
 
+import com.indvd00m.ascii.render.Region;
+import com.indvd00m.ascii.render.Render;
+import com.indvd00m.ascii.render.api.ICanvas;
+import com.indvd00m.ascii.render.api.IContextBuilder;
+import com.indvd00m.ascii.render.api.IRender;
+import com.indvd00m.ascii.render.elements.Rectangle;
+import com.indvd00m.ascii.render.elements.plot.Axis;
+import com.indvd00m.ascii.render.elements.plot.AxisLabels;
+import com.indvd00m.ascii.render.elements.plot.Plot;
+import com.indvd00m.ascii.render.elements.plot.api.IPlotPoint;
+import com.indvd00m.ascii.render.elements.plot.misc.PlotPoint;
 import com.luminary.os.utils.Pair;
 import lombok.Getter;
 import com.luminary.os.OS;
@@ -7,10 +18,7 @@ import com.luminary.os.core.services.Service;
 import com.luminary.os.events.ProcessTimeoutEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.*;
 
 public class ProcessManager {
@@ -47,6 +55,24 @@ public class ProcessManager {
         runningProcesses.forEach((k, v) -> { v.getThread().interrupt(); });
         runningProcesses.clear();
     }
+    public String getRunning() {
+        List<IPlotPoint> points = new ArrayList<>();
+        for(Pair<Integer, Integer> pair : processHistory) {
+            points.add(new PlotPoint(pair.getFirst(), pair.getSecond()));
+        }
+        IRender render = new Render();
+        ICanvas canvas = render.render(render.newBuilder()
+                .width(100)
+                .height(30)
+                .element(new Rectangle(0, 0, 80, 20))
+                .layer(new Region(1, 1, 78, 18))
+                .element(new Axis(points, new Region(0, 0, 78, 18)))
+                .element(new AxisLabels(points, new Region(0, 0, 78, 18)))
+                .element(new Plot(points, new Region(0, 0, 78, 18)))
+                .build()
+        );
+        return canvas.getText();
+    }
     public void start() {
         new Thread(() -> {
             try {
@@ -55,7 +81,7 @@ public class ProcessManager {
                 processHistory.push(new Pair<>(elasped, runningProcesses.size()));
                 elasped++;
             } catch (InterruptedException e) {
-                System.out.println("Error when trying to load ");
+                System.out.println("Error when trying to save processes");
             }
         }).start();
         executor.scheduleAtFixedRate(() -> {
