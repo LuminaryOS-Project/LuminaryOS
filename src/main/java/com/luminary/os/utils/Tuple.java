@@ -1,8 +1,11 @@
 package com.luminary.os.utils;
 
 import com.google.common.collect.ImmutableList;
+import org.jetbrains.annotations.NotNull;
 
-public class Tuple<T> {
+import java.util.Iterator;
+
+public class Tuple<T> implements Iterable<T> {
     ImmutableList<T> list;
     @SafeVarargs
     public Tuple(T... o) {
@@ -10,5 +13,11 @@ public class Tuple<T> {
     }
     public T get(int i) {
         return list.get(i);
+    }
+
+    @NotNull
+    @Override
+    public Iterator<T> iterator() {
+        return list.stream().iterator();
     }
 }
