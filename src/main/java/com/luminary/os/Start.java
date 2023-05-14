@@ -9,8 +9,6 @@ import java.util.jar.JarFile;
 
 import com.luminary.os.core.User;
 import com.luminary.os.plugin.Plugin;
-import com.luminary.api.unsigned.*;
-import static com.luminary.api.unsigned.Unsigned.*;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import com.luminary.os.utils.Utils;
@@ -44,49 +42,47 @@ public class Start {
       }
       //
       File[] files = pluginFolder.listFiles((dir, name) -> name.endsWith(".jar"));
-      ArrayList urls = new ArrayList();
-      ArrayList<String> classes = new ArrayList();
+      ArrayList<URL> urls = new ArrayList<>();
+      ArrayList<String> classes = new ArrayList<>();
+
       if (files != null) {
-         Arrays.stream(files).forEach(file -> {
-            try {
-               JarFile jarFile = new JarFile(file);
+         for (File file : files) {
+            try (JarFile jarFile = new JarFile(file)) {
                urls.add(new URL("jar:file:plugins/" + file.getName() + "!/"));
-               jarFile.stream().filter(jarEntry -> jarEntry.getName().endsWith(".class")).forEach(jarEntry -> classes.add(jarEntry.getName()));
-            } catch (IOException e) { e.printStackTrace(); }
-         });
+               jarFile.stream()
+                       .filter(jarEntry -> jarEntry.getName().endsWith(".class"))
+                       .forEach(jarEntry -> classes.add(jarEntry.getName()));
+            } catch (IOException e) {
+               e.printStackTrace();
+            }
+         }
 
-         URLClassLoader pluginLoader = new URLClassLoader((URL[])urls.toArray(new URL[urls.size()]));
-         classes.forEach((s) -> {
+         URLClassLoader pluginLoader = new URLClassLoader(urls.toArray(new URL[0]));
+         classes.forEach(className -> {
             try {
-               Class<?> classs = pluginLoader.loadClass(s.replaceAll("/", ".").replace(".class", ""));
-               Class<?>[] interfaces = classs.getInterfaces();
-               if (Plugin.class.isAssignableFrom(classs)) {
-                  Plugin plugin = (Plugin)classs.newInstance();
-                  try {
-                     if (OS.nameToPlugin.containsKey(plugin.getName())) {
-                        System.out.println("A plugin by the name %name% is already registered!".replace("%name%", plugin.getName()));
-                     } try {
-                        new Thread(() -> {
+               Class<?> clazz = pluginLoader.loadClass(className.replaceAll("/", ".").replace(".class", ""));
+               if (Plugin.class.isAssignableFrom(clazz)) {
+                  Plugin plugin = (Plugin) clazz.getDeclaredConstructor().newInstance();
+                  String pluginName = plugin.getName();
+                  if (OS.nameToPlugin.containsKey(pluginName)) {
+                     System.out.println("A plugin by the name " + pluginName + " is already registered!");
+                  } else {
+                     new Thread(() -> {
+                        try {
                            plugin.onEnable();
-                           System.out.println("Loaded plugin " + classs.getCanonicalName() + " successfully");
-                           OS.nameToPlugin.put(plugin.getName(), plugin);
-                        }, "PLUGINLOAD_" + plugin.getName()).start();
-
-                     } catch (Exception e) {
-                        e.printStackTrace();
-                     }
-
-                  } catch (Exception e) {
-                     System.out.println(OS.getLanguage().get("errorOccurred"));
-                     e.printStackTrace();
-                     plugin.onDisable();
+                           System.out.println("Loaded plugin " + clazz.getCanonicalName() + " successfully");
+                           OS.nameToPlugin.put(pluginName, plugin);
+                        } catch (Exception e) {
+                           plugin.onDisable();
+                           e.printStackTrace();
+                        }
+                     }, "PLUGINLOAD_" + pluginName).start();
                   }
                }
-            } catch (InstantiationException | IllegalAccessException | ClassNotFoundException var11) {
+            } catch (Exception e) {
                System.out.println(OS.getLanguage().get("exceptionOccurred"));
-               var11.printStackTrace();
+               e.printStackTrace();
             }
-
          });
       }
       //
