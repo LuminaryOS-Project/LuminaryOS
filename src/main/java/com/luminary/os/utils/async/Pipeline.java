@@ -1,7 +1,7 @@
 package com.luminary.os.utils.async;
 
 
-class Pipeline<I, O> {
+public class Pipeline<I, O> {
 
     private final Handler<I, O> currentHandler;
 
