@@ -9,15 +9,16 @@ import java.util.jar.JarFile;
 
 import com.luminary.os.core.User;
 import com.luminary.os.plugin.Plugin;
-import com.luminary.os.utils.Tuple;
+import com.luminary.os.utils.*;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
-import com.luminary.os.utils.Utils;
+import lombok.SneakyThrows;
 
 public class Start {
    public static Map<String, Object> OSoptions = new HashMap<>();
    private static OptionSet options;
    public static Object getOption(String option) { return options.valueOf(option); }
+   @SneakyThrows
    public static void main(String[] args) throws IOException {
       //long startNS = System.nanoTime();
       // Plugins
@@ -96,8 +97,13 @@ public class Start {
       });
       options = parser.parse(args);
       OS os = new OS();
-
+      Log.info("Hello");
+      Spinner spinner = new Spinner(Spinners.STAR);
+      spinner.start();
+      Thread.sleep(10000);
+      spinner.stop();
+      System.out.println("Done");
       // System.out.println(getOption("val"));
-      os.Start(args);
+      //os.Start(args);
    }
 }

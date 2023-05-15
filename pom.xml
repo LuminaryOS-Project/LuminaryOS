@@ -103,12 +103,6 @@
             <version>31.1-jre</version>
         </dependency>
         <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-base</artifactId>
-            <version>18</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>net.sf.jopt-simple</groupId>
             <artifactId>jopt-simple</artifactId>
             <version>6.0-alpha-3</version>
