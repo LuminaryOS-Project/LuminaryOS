@@ -31,7 +31,8 @@ Once you have verified you have Java 17+ simply run
 ```bash
 java -jar LuminaryOS.jar
 ```
-
+## Plans
+Once Java 21 comes out we will most likely move over to it. This is since Java 21 will be a LTS release and has alot of useful features. 
 ## Contributing
 If you are interested in contributing to LuminaryOS, you can do so by submitting pull requests on the GitHub repository. Before submitting a pull request, please make sure that the code you commit is fully compatible and bug free.
 <b>
