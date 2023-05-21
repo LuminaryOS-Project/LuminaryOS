@@ -10,6 +10,7 @@ import java.util.jar.JarFile;
 import com.luminary.os.core.User;
 import com.luminary.os.plugin.Plugin;
 import com.luminary.os.utils.*;
+import com.luminary.os.utils.network.Request;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import lombok.SneakyThrows;
@@ -98,12 +99,7 @@ public class Start {
       options = parser.parse(args);
       OS os = new OS();
       Log.info("Hello");
-      Spinner spinner = new Spinner(Spinners.STAR);
-      spinner.start();
-      Thread.sleep(10000);
-      spinner.stop();
-      System.out.println("Done");
       // System.out.println(getOption("val"));
-      //os.Start(args);
+      os.Start(args);
    }
 }
