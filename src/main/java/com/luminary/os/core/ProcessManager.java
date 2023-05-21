@@ -20,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.stream.Collectors;
 
 public class ProcessManager {
     private int currID = 0;
@@ -31,8 +32,15 @@ public class ProcessManager {
     @Getter
     private final ConcurrentHashMap<Integer, Process> runningProcesses = new ConcurrentHashMap<>();
     private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+    /**
+     * @see com.luminary.os.core.Priority
+     */
     public void add(@NotNull Process t) {
         queuedProcess.add(t);
+        List<Process> sorted = new ArrayList<>(queuedProcess);
+        sorted.sort(Comparator.comparingInt(p -> p.getPriority().ordinal())); // sorts by the priority enum ordinal
+        queuedProcess.clear();
+        queuedProcess.addAll(sorted);
     }
 
     public Thread getProcess(int id) {

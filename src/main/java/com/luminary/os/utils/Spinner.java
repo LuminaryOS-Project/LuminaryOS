@@ -14,14 +14,14 @@ public class Spinner {
         this.delay = pair.getSecond();
     }
 
-    public void start() {
+    public void start(String prompt) {
         if(spinThread != null && spinThread.isAlive()) {
             throw new IllegalArgumentException("Spinner has already been started");
         }
         spinThread = new Thread(() -> {
             try {
                 for (;;) {
-                    System.out.print(text[idx] + "\r");
+                    System.out.print(prompt + text[idx] + "\r");
                     System.out.flush();
                     idx = (idx + 1) % text.length;
                     Thread.sleep(delay);
