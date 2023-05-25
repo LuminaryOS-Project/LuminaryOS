@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -20,8 +21,8 @@ public class Process {
     @Setter
     private int id;
     @Getter
-    private Optional<Callback> callback;
-    public void setCallback(Callback callback) {
+    private @Nullable Optional<Callback> callback;
+    public void setCallback(@NotNull Callback callback) {
         this.callback = Optional.of(callback);
     }
     public Thread start() {

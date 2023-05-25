@@ -6,6 +6,7 @@ import com.luminary.os.core.Level;
 import com.luminary.os.core.Process;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -19,8 +20,8 @@ public class Service extends Process {
     @Getter
     public final boolean autoStart;
     @Getter
-    private Optional<Callback> callback;
-    public void setCallback(Callback callback) {
+    private @Nullable Optional<Callback> callback;
+    public void setCallback(@NotNull Callback callback) {
         this.callback = Optional.of(callback);
     }
     @Getter
@@ -31,7 +32,7 @@ public class Service extends Process {
     // 0: Start before commands are registered
     // 1: Start after shell
     ////////////////////////////////////////////////
-    public Service(@NotNull Thread thread,boolean autoStart,int startTrigger) {
+    public Service(@NotNull Thread thread, boolean autoStart, int startTrigger) {
         super(thread, 0);
         this.startTrigger = startTrigger;
         this.autoStart = autoStart;

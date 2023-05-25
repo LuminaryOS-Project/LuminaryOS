@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 @AllArgsConstructor
 public enum StatusCode {
@@ -20,7 +21,10 @@ public enum StatusCode {
     ILLEGAL(110);
     @Getter
     final int code;
-    public StatusCode of(int toFind) {
+    public static StatusCode of(int toFind) {
+        if(toFind > 110 || toFind < 100) {
+            throw new NoSuchElementException();
+        }
         return Arrays.stream(StatusCode.values()).filter(code -> code.getCode() == toFind).toList().get(0);
     }
 }
