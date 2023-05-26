@@ -107,6 +107,6 @@ public class Start {
 //
       //System.out.println("Has: " + Permission.hasPermission(c, Permission.ADMINISTRATOR));
       //System.out.println("HasCU: " + Permission.hasPermission(c, Permission.CREATE_USER));
-      //os.Start(args);
+      os.Start(args);
    }
 }
