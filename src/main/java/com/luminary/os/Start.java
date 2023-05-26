@@ -99,14 +99,7 @@ public class Start {
       options = parser.parse(args);
       OS os = new OS();
       Log.info("Hello");
-      // System.out.println(getOption("val"));
-      //int c = Permission.from(Permission.ADMINISTRATOR, Permission.DELETE_USER, Permission.DELETE_FILE);
-      //c = Permission.add(c, Permission.ADMINISTRATOR);
-      //System.out.println("Code: " + c);
-      //System.out.println("Perms: " + Permission.has(c).toString());
-//
-      //System.out.println("Has: " + Permission.hasPermission(c, Permission.ADMINISTRATOR));
-      //System.out.println("HasCU: " + Permission.hasPermission(c, Permission.CREATE_USER));
+      
       os.Start(args);
    }
 }
