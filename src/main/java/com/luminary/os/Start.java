@@ -1,19 +1,23 @@
 package com.luminary.os;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.*;
-import java.util.jar.JarFile;
-
 import com.luminary.os.core.User;
 import com.luminary.os.plugin.Plugin;
-import com.luminary.os.utils.*;
+import com.luminary.os.utils.Log;
+import com.luminary.os.utils.Utils;
 import com.luminary.os.utils.network.Request;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import lombok.SneakyThrows;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.jar.JarFile;
 
 public class Start {
    public static Map<String, Object> OSoptions = new HashMap<>();
@@ -37,7 +41,10 @@ public class Start {
             new File("LuminaryOS/cache/cache.json").createNewFile();
             new File("LuminaryOS/config/config.json").createNewFile();
             Utils.createDisk(0);
+            System.out.print("Input your future username: ");
             User.createUser(new Scanner(System.in).nextLine(), true);
+            Log.warn("Without a working internet connection the setup can't continue please make sure you have a working internet connection");
+            DlReqDeps();
          } else {
             System.out.println("Failed to create the needed OS files...");
             Utils.deleteDirectory(new File("LuminaryOS"));
@@ -99,7 +106,12 @@ public class Start {
       options = parser.parse(args);
       OS os = new OS();
       Log.info("Hello");
-      
+
       os.Start(args);
+   }
+
+   private static void DlReqDeps() throws Exception {
+
+      Request.download("https://raw.githubusercontent.com/LuminaryOS-Project/luminaryos-project.github.io/main/data/langs/en.json", null, "LuminaryOS/langs/en.json");
    }
 }

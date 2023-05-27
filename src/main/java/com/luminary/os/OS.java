@@ -1,30 +1,27 @@
 package com.luminary.os;
 
-import java.awt.*;
-import java.io.File;
-import java.util.*;
-import java.util.List;
 import com.google.common.eventbus.EventBus;
+import com.luminary.os.commands.CommandManager;
+import com.luminary.os.commands.SimpleCommand;
 import com.luminary.os.commands.impl.*;
 import com.luminary.os.core.Language;
-import com.luminary.os.core.Process;
+import com.luminary.os.core.Screensaver;
 import com.luminary.os.core.User;
+import com.luminary.os.core.exceptions.InvalidLanguageException;
+import com.luminary.os.core.services.ServiceManager;
 import com.luminary.os.events.AfterShellEvent;
 import com.luminary.os.events.BeforeCommandRegisterEvent;
+import com.luminary.os.permissions.PermissionLevel;
 import com.luminary.os.plugin.Plugin;
 import com.luminary.os.utils.JSONConfig;
 import com.luminary.os.utils.Prompts;
 import com.luminary.os.utils.Utils;
 import lombok.Getter;
 
-import com.luminary.os.commands.SimpleCommand;
-import com.luminary.os.core.*;
-import com.luminary.os.core.exceptions.InvalidLanguageException;
-import com.luminary.os.core.services.ServiceManager;
-import com.luminary.os.permissions.PermissionLevel;
-import com.luminary.os.utils.*;
-import com.luminary.os.commands.CommandManager;
-import com.luminary.os.commands.impl.*;
+import java.awt.*;
+import java.io.File;
+import java.util.List;
+import java.util.*;
 
 public class OS {
    @Getter
@@ -48,7 +45,7 @@ public class OS {
    private static final EventBus EventHandler = new EventBus("OS");
 
    public static String currentDir = System.getProperty("user.dir");
-   public static Taskbar programBar = Taskbar.getTaskbar();
+   public static Taskbar programBar = null;
    @Getter
    private static User currentUser;
 
@@ -63,9 +60,12 @@ public class OS {
 
    public void Start(String[] args) {
       instance = this;
+      if (System.getProperty("os.name").startsWith("Windows")) {
+         Taskbar.getTaskbar();
+      }
       //
       try {
-         if(config.get("locale") != null) {
+         if (config.get("locale") != null) {
             Locale = (String) config.get("locale");
          } else {
             Locale = java.util.Locale.getDefault().getLanguage();
