@@ -1,23 +1,20 @@
 package com.luminary.os;
 
-import com.luminary.os.core.User;
-import com.luminary.os.plugin.Plugin;
-import com.luminary.os.utils.Log;
-import com.luminary.os.utils.Utils;
-import com.luminary.os.utils.network.Request;
-import joptsimple.OptionParser;
-import joptsimple.OptionSet;
-import lombok.SneakyThrows;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 import java.util.jar.JarFile;
+
+import com.luminary.os.core.User;
+import com.luminary.os.plugin.Plugin;
+import com.luminary.os.utils.*;
+import com.luminary.os.utils.async.Promise;
+import com.luminary.os.utils.network.Request;
+import joptsimple.OptionParser;
+import joptsimple.OptionSet;
+import lombok.SneakyThrows;
 
 public class Start {
    public static Map<String, Object> OSoptions = new HashMap<>();
@@ -40,11 +37,19 @@ public class Start {
          if(new File("LuminaryOS/disks").mkdirs() && new File("LuminaryOS/users").mkdirs() && new File("LuminaryOS/cache").mkdirs() && new File("LuminaryOS/config").mkdirs() && new File("LuminaryOS/temp").mkdirs() && new File("LuminaryOS/langs").mkdirs()) {
             new File("LuminaryOS/cache/cache.json").createNewFile();
             new File("LuminaryOS/config/config.json").createNewFile();
+            System.out.println("Downloading languages...");
+            Arrays.asList("en.json", "cn.json", "de.json", "fr.json", "hu.json", "in.json", "jp.json", "kr.json", "nl.json", "pl.json", "ro.json", "ru.json").forEach(lang -> {
+               System.out.print("Downloading " + lang + "... ");
+               try {
+                  Request.download("https://raw.githubusercontent.com/LuminaryOS-Project/LuminaryOS/main/LuminaryOS/langs/" + lang, null, "LuminaryOS/langs/" + lang);
+                  System.out.print("Done." + "\n");
+               } catch (IOException e) {
+                  System.out.print("Failed." + "\n");
+               }
+            });
             Utils.createDisk(0);
-            System.out.print("Input your future username: ");
+            System.out.print("Enter a Username: ");
             User.createUser(new Scanner(System.in).nextLine(), true);
-            Log.warn("Without a working internet connection the setup can't continue please make sure you have a working internet connection");
-            DlReqDeps();
          } else {
             System.out.println("Failed to create the needed OS files...");
             Utils.deleteDirectory(new File("LuminaryOS"));
@@ -106,12 +111,7 @@ public class Start {
       options = parser.parse(args);
       OS os = new OS();
       Log.info("Hello");
-
+      
       os.Start(args);
-   }
-
-   private static void DlReqDeps() throws Exception {
-
-      Request.download("https://raw.githubusercontent.com/LuminaryOS-Project/luminaryos-project.github.io/main/data/langs/en.json", null, "LuminaryOS/langs/en.json");
    }
 }
