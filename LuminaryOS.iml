@@ -3,7 +3,8 @@
   <component name="AutoImportedSourceRoots">
     <option name="directories">
       <list>
-        <option value="P:\IntelOS\IntelOS-Java/src/main/kotlin" />
+        <option value="src/main/java" />
+        <option value="target/generated-sources/annotations" />
       </list>
     </option>
   </component>

@@ -25,7 +25,7 @@ public class Request {
     public static Promise<Response> delete(String url, Map<String, String> headers) {
         return sendRequest("DELETE", url, headers, null);
     }
-    public static Response download(String url, Map<String, String> headers, String filename) throws Exception {
+    public static Response download(String url, Map<String, String> headers, String filename) throws IOException {
         HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
         if (headers != null) {
             for (Map.Entry<String, String> entry : headers.entrySet()) {
