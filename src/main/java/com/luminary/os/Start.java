@@ -7,7 +7,7 @@ import java.net.URLClassLoader;
 import java.util.*;
 import java.util.jar.JarFile;
 
-import com.luminary.os.core.Native;
+
 import com.luminary.os.core.User;
 import com.luminary.os.plugin.Plugin;
 import com.luminary.os.utils.*;
