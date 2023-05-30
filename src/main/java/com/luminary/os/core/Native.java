@@ -8,6 +8,7 @@ public class Native {
     public static boolean isLoaded() {
         return loaded;
     }
+    public static boolean supportsNativeAccel() { return System.getProperty("os.name").contains("windows"); }
     public static Native getInstance() {
         if (instance == null) { instance = new Native(); }
         return instance;
@@ -26,4 +27,8 @@ public class Native {
 
     }
     public native String getInfo();
+    // Rendering
+    public native float calculateX(int i, int j, int k, float A, float B, float C);
+    public native float calculateY(int i, int j, int k, float A, float B, float C);
+    public native float calculateZ(int i, int j, int k, float A, float B, float C);
 }
