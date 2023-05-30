@@ -7,10 +7,10 @@ import java.net.URLClassLoader;
 import java.util.*;
 import java.util.jar.JarFile;
 
+import com.luminary.os.core.Native;
 import com.luminary.os.core.User;
 import com.luminary.os.plugin.Plugin;
 import com.luminary.os.utils.*;
-import com.luminary.os.utils.async.Promise;
 import com.luminary.os.utils.network.Request;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -34,7 +34,7 @@ public class Start {
        */
       File mainf = new File("LuminaryOS");
       if (!mainf.exists() && mainf.mkdirs()) {
-         if(new File("LuminaryOS/disks").mkdirs() && new File("LuminaryOS/users").mkdirs() && new File("LuminaryOS/cache").mkdirs() && new File("LuminaryOS/config").mkdirs() && new File("LuminaryOS/temp").mkdirs() && new File("LuminaryOS/langs").mkdirs()) {
+         if(new File("LuminaryOS/disks").mkdirs() && new File("LuminaryOS/natives").mkdirs() && new File("LuminaryOS/users").mkdirs() && new File("LuminaryOS/cache").mkdirs() && new File("LuminaryOS/config").mkdirs() && new File("LuminaryOS/temp").mkdirs() && new File("LuminaryOS/langs").mkdirs()) {
             new File("LuminaryOS/cache/cache.json").createNewFile();
             new File("LuminaryOS/config/config.json").createNewFile();
             System.out.println("Downloading languages...");
@@ -47,6 +47,16 @@ public class Start {
                   System.out.print("Failed." + "\n");
                }
             });
+            if(System.getProperty("os.name").toLowerCase().contains("windows")) {
+               System.out.print("Downloading Windows Natives... ");
+               try {
+                  Request.download("https://raw.githubusercontent.com/LuminaryOS-Project/LuminaryOS/main/LuminaryOS/natives/windows.dll", null, "LuminaryOS/natives/windows.dll");
+                  System.out.print("Done." + "\n");
+               } catch (IOException e) {
+                  System.out.print("Failed." + "\n");
+               }
+
+            }
             Utils.createDisk(0);
             System.out.print("Enter a Username: ");
             User.createUser(new Scanner(System.in).nextLine(), true);
