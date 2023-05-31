@@ -12,6 +12,7 @@ import com.luminary.os.core.User;
 import com.luminary.os.plugin.Plugin;
 import com.luminary.os.utils.*;
 import com.luminary.os.utils.network.Request;
+
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import lombok.SneakyThrows;
@@ -22,7 +23,7 @@ public class Start {
    public static Object getOption(String option) { return options.valueOf(option); }
    @SneakyThrows
    public static void main(String[] args) throws IOException {
-      //long startNS = System.nanoTime();
+
       // Plugins
       File pluginFolder = new File("plugins");
       if (!pluginFolder.exists() && pluginFolder.mkdirs()) {
@@ -30,7 +31,6 @@ public class Start {
       }
       /*
       First startup
-
        */
       File mainf = new File("LuminaryOS");
       if (!mainf.exists() && mainf.mkdirs()) {
@@ -89,14 +89,14 @@ public class Start {
                if (Plugin.class.isAssignableFrom(clazz)) {
                   Plugin plugin = (Plugin) clazz.getDeclaredConstructor().newInstance();
                   String pluginName = plugin.getName();
-                  if (OS.nameToPlugin.containsKey(pluginName)) {
+                  if (OS.isRegistered(plugin.getClass())) {
                      System.out.println("A plugin by the name " + pluginName + " is already registered!");
                   } else {
                      new Thread(() -> {
                         try {
                            plugin.onEnable();
                            System.out.println("Loaded plugin " + clazz.getCanonicalName() + " successfully");
-                           OS.nameToPlugin.put(pluginName, plugin);
+                           OS.registerPlugin(plugin);
                         } catch (Exception e) {
                            plugin.onDisable();
                            e.printStackTrace();
@@ -114,14 +114,11 @@ public class Start {
       OptionParser parser = new OptionParser();
       Map<String, String> rarg = new HashMap<>();
       rarg.put("debug", "Enables OS debugging");
-      rarg.put("val", "idk");
       rarg.forEach((k, v) -> {
          parser.accepts(k, v).withOptionalArg();
       });
       options = parser.parse(args);
       OS os = new OS();
-      Log.info("Hello");
-      
       os.Start(args);
    }
 }

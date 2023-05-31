@@ -163,7 +163,9 @@ public class Utils {
         } catch (Exception ignored) {}
         return null;
     }
-
+    public static Class<?> or(Class<?> c, Class<?> c1) {
+        return c == null ? c1 : c;
+    }
     /**
      * <h3>Creates a folder and files for a disk</h3>
      * @param i Disk Number

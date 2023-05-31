@@ -5,6 +5,7 @@ import com.luminary.os.commands.CommandManager;
 import com.luminary.os.commands.SimpleCommand;
 import com.luminary.os.commands.impl.*;
 import com.luminary.os.core.Language;
+import com.luminary.os.core.Native;
 import com.luminary.os.core.Screensaver;
 import com.luminary.os.core.User;
 import com.luminary.os.core.exceptions.InvalidLanguageException;
@@ -25,7 +26,9 @@ import java.util.*;
 
 public class OS {
    @Getter
-   private static final String version = "Beta-R1.0";
+   private static Optional<Native> NATIVE = Optional.empty();
+   public static final String VERSION = "Beta-R1.2";
+   public static final int BUILD_NUM = 230531;
    @Getter
    private final CommandManager CommandManager = com.luminary.os.commands.CommandManager.getInstance();
    @Getter
@@ -34,7 +37,8 @@ public class OS {
    private static com.luminary.os.core.Language Language;
    @Getter
    private final ServiceManager ServiceManager = com.luminary.os.core.services.ServiceManager.getServiceManager();
-   public static HashMap<String, Plugin> nameToPlugin = new HashMap<>();
+   private static final HashMap<String, Plugin> nameToPlugin = new HashMap<>();
+   private static final HashMap<Class<? extends Plugin>, Plugin> plugins = new HashMap<>();
    @Getter
    private static final com.luminary.os.core.ProcessManager ProcessManager = com.luminary.os.core.ProcessManager.getProcessManager();
    @Getter
@@ -48,19 +52,47 @@ public class OS {
    public static Taskbar programBar = null;
    @Getter
    private static User currentUser;
-
-   public Plugin getPlugin(String plugin) {
-      return nameToPlugin.getOrDefault(plugin, null);
+   // Plugin related
+   public static List<Plugin> getRegisteredPlugins() {
+      return new ArrayList<>(plugins.values());
    }
 
-
+   public static void registerPlugin(Plugin plugin) {
+      plugins.put(plugin.getClass(), plugin);
+      nameToPlugin.put(plugin.getName(), plugin);
+   }
+   public static void registerPlugin(Class<? extends Plugin> plugin) {
+      try {
+         Plugin p = plugin.getDeclaredConstructor().newInstance();
+         plugins.put(plugin, p);
+         nameToPlugin.put(p.getName(), p);
+      } catch (Exception ignored) {}
+   }
+   public static boolean isRegistered(Class<? extends Plugin> plugin) {
+      return plugins.get(plugin) != null;
+   }
+   public static Plugin getPlugin(String plugin) {
+      return nameToPlugin.getOrDefault(plugin, null);
+   }
+   public static Plugin getPlugin(Class<? extends Plugin> plugin) {
+      return plugins.get(plugin);
+   }
+   public static Class<?> getPluginClass(Plugin plugin) {
+      Optional<Class<? extends Plugin>> o = plugins.keySet().stream().filter(clazz -> clazz == plugin.getClass()).findFirst();
+      return o.orElse(null);
+   }
+   public static Class<?> getPluginClass(String plugin) {
+      return Utils.or(nameToPlugin.get(plugin).getClass(), null);
+   }
+   // End of plugin stuff
    private void setUser(User user) {
       currentUser = user;
    }
 
    public void Start(String[] args) {
       instance = this;
-      if (System.getProperty("os.name").startsWith("Windows")) {
+      if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+         NATIVE = Optional.of(Native.getInstance());
          Taskbar.getTaskbar();
       }
       //
@@ -81,6 +113,7 @@ public class OS {
       // JVM Things
       Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
       ProcessManager.start();
+
       getEventHandler().post(new BeforeCommandRegisterEvent());
       // Commands
       CommandManager.registerCommand(new HelpCommand());

@@ -8,7 +8,7 @@ public class Native {
     public static boolean isLoaded() {
         return loaded;
     }
-    public static boolean supportsNativeAccel() { return System.getProperty("os.name").contains("windows"); }
+    public static boolean supportsNative() { return System.getProperty("os.name").toLowerCase().contains("windows"); }
     public static Native getInstance() {
         if (instance == null) { instance = new Native(); }
         return instance;
