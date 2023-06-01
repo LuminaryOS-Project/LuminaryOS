@@ -34,7 +34,7 @@ public class CommandManager {
             if (cmd != null) {
                cmd.execute(args);
             } else {
-               System.out.println(OS.getLanguage().get("commandNotFound") + command);
+               System.out.println(OS.getLanguage().get("commandNotFound") + " " + command);
             }
          }
       }), 15000L);
