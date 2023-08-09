@@ -19,7 +19,7 @@ public class ServiceManager {
     }
 
     private boolean isRegistered(Service service){
-        return services.containsValue(service) || services.containsKey(service);
+        return services.containsValue(service);
     }
 
     public void startService(Service service) {

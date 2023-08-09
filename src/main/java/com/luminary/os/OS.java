@@ -18,6 +18,8 @@ import com.luminary.os.utils.JSONConfig;
 import com.luminary.os.utils.Prompts;
 import com.luminary.os.utils.Utils;
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.io.File;
@@ -27,7 +29,7 @@ import java.util.*;
 public class OS {
    @Getter
    private static Optional<Native> NATIVE = Optional.empty();
-   public static final String VERSION = "Beta-R1.2";
+   public static final String VERSION = "v1_R2";
    public static final int BUILD_NUM = 230531;
    @Getter
    private final CommandManager CommandManager = com.luminary.os.commands.CommandManager.getInstance();
@@ -68,20 +70,20 @@ public class OS {
          nameToPlugin.put(p.getName(), p);
       } catch (Exception ignored) {}
    }
-   public static boolean isRegistered(Class<? extends Plugin> plugin) {
+   public static boolean isRegistered(@NotNull Class<? extends Plugin> plugin) {
       return plugins.get(plugin) != null;
    }
-   public static Plugin getPlugin(String plugin) {
+   public static @Nullable Plugin getPlugin(@NotNull String plugin) {
       return nameToPlugin.getOrDefault(plugin, null);
    }
-   public static Plugin getPlugin(Class<? extends Plugin> plugin) {
-      return plugins.get(plugin);
+   public static @Nullable Plugin getPlugin(@NotNull Class<? extends Plugin> plugin) {
+      return plugins.getOrDefault(plugin, null);
    }
-   public static Class<?> getPluginClass(Plugin plugin) {
+   public static @Nullable Class<?> getPluginClass(@NotNull Plugin plugin) {
       Optional<Class<? extends Plugin>> o = plugins.keySet().stream().filter(clazz -> clazz == plugin.getClass()).findFirst();
       return o.orElse(null);
    }
-   public static Class<?> getPluginClass(String plugin) {
+   public static @Nullable Class<?> getPluginClass(String plugin) {
       return Utils.or(nameToPlugin.get(plugin).getClass(), null);
    }
    // End of plugin stuff
@@ -117,6 +119,7 @@ public class OS {
       getEventHandler().post(new BeforeCommandRegisterEvent());
       // Commands
       CommandManager.registerCommand(new HelpCommand());
+      CommandManager.registerCommand(new InstallCommand());
       CommandManager.registerCommand(new LsCommand());
       CommandManager.registerCommand(new RmCommand());
       CommandManager.registerCommand(new CDCommand());

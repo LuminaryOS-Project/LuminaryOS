@@ -7,7 +7,6 @@ import java.net.URLClassLoader;
 import java.util.*;
 import java.util.jar.JarFile;
 
-
 import com.luminary.os.core.User;
 import com.luminary.os.plugin.Plugin;
 import com.luminary.os.utils.*;
@@ -23,22 +22,16 @@ public class Start {
    public static Object getOption(String option) { return options.valueOf(option); }
    @SneakyThrows
    public static void main(String[] args) throws IOException {
-
-      // Plugins
-      File pluginFolder = new File("plugins");
-      if (!pluginFolder.exists() && pluginFolder.mkdirs()) {
-         System.out.println("Created plugin folder");
-      }
       /*
       First startup
        */
       File mainf = new File("LuminaryOS");
       if (!mainf.exists() && mainf.mkdirs()) {
-         if(new File("LuminaryOS/disks").mkdirs() && new File("LuminaryOS/natives").mkdirs() && new File("LuminaryOS/users").mkdirs() && new File("LuminaryOS/cache").mkdirs() && new File("LuminaryOS/config").mkdirs() && new File("LuminaryOS/temp").mkdirs() && new File("LuminaryOS/langs").mkdirs()) {
+         if(new File("LuminaryOS/plugins").mkdirs() && new File("LuminaryOS/disks").mkdirs() && new File("LuminaryOS/natives").mkdirs() && new File("LuminaryOS/users").mkdirs() && new File("LuminaryOS/cache").mkdirs() && new File("LuminaryOS/config").mkdirs() && new File("LuminaryOS/temp").mkdirs() && new File("LuminaryOS/langs").mkdirs()) {
             new File("LuminaryOS/cache/cache.json").createNewFile();
             new File("LuminaryOS/config/config.json").createNewFile();
             System.out.println("Downloading languages...");
-            Arrays.asList("en.json", "cn.json", "de.json", "fr.json", "hu.json", "in.json", "jp.json", "kr.json", "nl.json", "pl.json", "ro.json", "ru.json").forEach(lang -> {
+            List.of("en.json", "cn.json", "de.json", "fr.json", "hu.json", "in.json", "jp.json", "kr.json", "nl.json", "pl.json", "ro.json", "ru.json").forEach(lang -> {
                System.out.print("Downloading " + lang + "... ");
                try {
                   Request.download("https://raw.githubusercontent.com/LuminaryOS-Project/LuminaryOS/main/LuminaryOS/langs/" + lang, null, "LuminaryOS/langs/" + lang);
@@ -55,7 +48,6 @@ public class Start {
                } catch (IOException e) {
                   System.out.print("Failed." + "\n");
                }
-
             }
             Utils.createDisk(0);
             System.out.print("Enter a Username: ");
@@ -65,6 +57,7 @@ public class Start {
             Utils.deleteDirectory(new File("LuminaryOS"));
          }
       }
+      File pluginFolder = new File("LuminaryOS/plugins");
       //
       File[] files = pluginFolder.listFiles((dir, name) -> name.endsWith(".jar"));
       ArrayList<URL> urls = new ArrayList<>();
@@ -112,6 +105,7 @@ public class Start {
       }
       //
       OptionParser parser = new OptionParser();
+      parser.allowsUnrecognizedOptions();
       Map<String, String> rarg = new HashMap<>();
       rarg.put("debug", "Enables OS debugging");
       rarg.forEach((k, v) -> {

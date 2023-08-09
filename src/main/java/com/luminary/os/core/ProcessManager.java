@@ -3,7 +3,6 @@ package com.luminary.os.core;
 import com.indvd00m.ascii.render.Region;
 import com.indvd00m.ascii.render.Render;
 import com.indvd00m.ascii.render.api.ICanvas;
-import com.indvd00m.ascii.render.api.IContextBuilder;
 import com.indvd00m.ascii.render.api.IRender;
 import com.indvd00m.ascii.render.elements.Rectangle;
 import com.indvd00m.ascii.render.elements.plot.Axis;
@@ -20,13 +19,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.concurrent.*;
-import java.util.stream.Collectors;
 
 public class ProcessManager {
     private int currID = 0;
-    private int elasped = 0;
+    private int elapsed = 0;
     private static ProcessManager procManager;
-    private Thread manager;
     private LinkedList<Pair<Integer, Integer>> processHistory = new LinkedList<>();
     private final Deque<Process> queuedProcess = new ArrayDeque<>();
     @Getter
@@ -86,8 +83,8 @@ public class ProcessManager {
             try {
                 Thread.sleep(1000);
                 if(processHistory.size() >= 100) processHistory.removeFirst();
-                processHistory.push(new Pair<>(elasped, runningProcesses.size()));
-                elasped++;
+                processHistory.push(new Pair<>(elapsed, runningProcesses.size()));
+                elapsed++;
             } catch (InterruptedException e) {
                 System.out.println("Error when trying to save processes");
             }

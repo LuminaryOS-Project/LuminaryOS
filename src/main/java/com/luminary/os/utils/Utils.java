@@ -1,7 +1,12 @@
 package com.luminary.os.utils;
 
 import com.github.luben.zstd.Zstd;
+import com.google.gson.GsonBuilder;
 import com.luminary.os.OS;
+import com.luminary.os.utils.network.Request;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -165,6 +170,17 @@ public class Utils {
     }
     public static Class<?> or(Class<?> c, Class<?> c1) {
         return c == null ? c1 : c;
+    }
+    public static boolean isUpToDate() {
+        Request.get("https://api.github.com/repos/LuminaryOS-Project/LuminaryOS/releases/latest", null).then(response -> {
+            try {
+                JSONObject jres = (JSONObject) new JSONParser().parse(response.getBody());
+                System.out.println("Ver?: " + jres.get("tag_name"));
+            } catch (ParseException ignored) {
+            }
+            return response;
+        });
+        return false;
     }
     /**
      * <h3>Creates a folder and files for a disk</h3>

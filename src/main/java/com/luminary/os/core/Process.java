@@ -21,7 +21,7 @@ public class Process {
     @Setter
     private int id;
     @Getter
-    private @Nullable Optional<Callback> callback = Optional.empty();
+    private @NotNull Optional<Callback> callback = Optional.empty();
     public void setCallback(@NotNull Callback callback) {
         this.callback = Optional.of(callback);
     }

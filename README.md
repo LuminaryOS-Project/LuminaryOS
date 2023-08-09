@@ -1,6 +1,7 @@
 # LuminaryOS - Virtual Operating System in Java
 LuminaryOS is a virtual operating system written in Java. It provides a simple and easy to use development & user experience! LuminaryOS is designed to be a lightweight and portable virtual operating system that can run on a variety of platforms.
 
+## STATUS: Paused
 ## Getting Started
 To get started with LuminaryOS, you will need to have Java installed on your machine. You can download the latest version of Java from the Oracle website.
 

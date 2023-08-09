@@ -20,7 +20,7 @@ public class Service extends Process {
     @Getter
     public final boolean autoStart;
     @Getter
-    private @Nullable Optional<Callback> callback;
+    private @NotNull Optional<Callback> callback;
     public void setCallback(@NotNull Callback callback) {
         this.callback = Optional.of(callback);
     }

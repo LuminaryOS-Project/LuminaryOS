@@ -5,6 +5,7 @@ import com.luminary.os.permissions.PermissionLevel;
 import com.luminary.os.utils.JSONConfig;
 import com.luminary.os.utils.Prompts;
 import com.luminary.os.utils.Utils;
+import lombok.val;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -43,12 +44,14 @@ public class User {
       Path jsonPath = Paths.get("LuminaryOS", "users", name, "user.json");
       if(Files.exists(userPath) || Files.exists(jsonPath)) {
          if(!overwrite) { throw new IllegalArgumentException("User already exists!"); }
-         if(overwrite) { Utils.deleteDirectory(new File(userPath.toString())); }
+         else { Utils.deleteDirectory(new File(userPath.toString())); }
       }
       Utils.createDirectory(userPath);
       try {
          new File(jsonPath.toString()).createNewFile();
-      } catch (IOException e) {
+      } catch (IOException ignored) {
+         System.out.println("Failed to create user json...");
+         System.exit(0);
 
       }
       try(JSONConfig cfg = new JSONConfig(jsonPath.toString())) {
@@ -72,6 +75,7 @@ public class User {
             }
          }
       }
+
       return createUser(name, true);
    }
 }
