@@ -15,8 +15,7 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.luminary.os.utils.async;
+package com.luminary.ui;
 
-interface Handler<I, O> {
-    O process(I input);
+public class UIManager {
 }
