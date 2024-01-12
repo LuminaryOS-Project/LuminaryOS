@@ -1,6 +1,7 @@
 package com.luminary.api.unsigned;
 
 import java.io.ObjectStreamException;
+import java.io.Serial;
 import java.math.BigInteger;
 
 /**
@@ -65,7 +66,7 @@ public final class UInt extends UNumber implements Comparable<UInt> {
      *         negative no cache will be created. If the value is larger than
      *         {@link Integer#MAX_VALUE} then Integer#MAX_VALUE will be used.
      */
-    private static final int getPrecacheSize() {
+    private static int getPrecacheSize() {
         String prop = null;
         long propParsed;
 
@@ -82,7 +83,7 @@ public final class UInt extends UNumber implements Comparable<UInt> {
 
         // empty value
         // FIXME: should we log this somewhere?
-        if (prop.length() <= 0)
+        if (prop.length() == 0)
             return DEFAULT_PRECACHE_SIZE;
 
         try {
@@ -110,7 +111,7 @@ public final class UInt extends UNumber implements Comparable<UInt> {
      *
      * @return Array of cached values for UInteger
      */
-    private static final UInt[] mkValues() {
+    private static UInt[] mkValues() {
         int precacheSize = getPrecacheSize();
         UInt[] ret;
 
@@ -241,6 +242,7 @@ public final class UInt extends UNumber implements Comparable<UInt> {
      *         this object
      * @throws ObjectStreamException
      */
+    @Serial
     private Object readResolve() throws ObjectStreamException {
         UInt cached;
 
@@ -280,9 +282,8 @@ public final class UInt extends UNumber implements Comparable<UInt> {
     @Override
     public int hashCode() {
         /* [java-8] */
-        if (true) return Long.hashCode(value);
+        return Long.hashCode(value);
         /* [/java-8] */
-        return Long.valueOf(value).hashCode();
     }
 
     @Override
@@ -302,7 +303,7 @@ public final class UInt extends UNumber implements Comparable<UInt> {
 
     @Override
     public int compareTo(UInt o) {
-        return (value < o.value ? -1 : (value == o.value ? 0 : 1));
+        return (Long.compare(value, o.value));
     }
 
     public UInt add(final UInt val) {

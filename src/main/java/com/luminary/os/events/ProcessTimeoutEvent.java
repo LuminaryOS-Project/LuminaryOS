@@ -1,13 +1,12 @@
 package com.luminary.os.events;
 
-import lombok.Getter;
 import com.luminary.os.core.Process;
 import com.luminary.os.core.StatusCode;
+import lombok.Getter;
 
+@Getter
 public class ProcessTimeoutEvent {
-    @Getter
     private final Process process;
-    @Getter
     private final int pID;
     public ProcessTimeoutEvent(Process process, int piD) {
         this.process = process;

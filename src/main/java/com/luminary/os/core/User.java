@@ -1,11 +1,10 @@
 package com.luminary.os.core;
 
-import lombok.Getter;
 import com.luminary.os.permissions.PermissionLevel;
 import com.luminary.os.utils.JSONConfig;
 import com.luminary.os.utils.Prompts;
 import com.luminary.os.utils.Utils;
-import lombok.val;
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -69,9 +68,7 @@ public class User {
          if(Files.exists(jsonPath)) {
             try(JSONConfig cfg = new JSONConfig(jsonPath.toString())) {
                PermissionLevel lvl = PermissionLevel.valueOf(cfg.get("permissionlvl").toString());
-               if(lvl != null) {
-                  return new User(name, lvl);
-               }
+                return new User(name, lvl);
             }
          }
       }

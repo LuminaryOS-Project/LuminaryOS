@@ -1,14 +1,10 @@
 package com.luminary.os.utils;
 
-import lombok.Getter;
-
-import java.util.Arrays;
-
 public class Spinner {
     private int idx = 0;
     private Thread spinThread;
-    private String[] text;
-    private int delay;
+    private final String[] text;
+    private final int delay;
     public Spinner(Pair<String[], Integer> pair) {
         this.text = pair.getFirst();
         this.delay = pair.getSecond();

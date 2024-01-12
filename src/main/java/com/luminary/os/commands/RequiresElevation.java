@@ -7,9 +7,6 @@ import org.jetbrains.annotations.TestOnly;
 @TestOnly
 public interface RequiresElevation {
     default boolean success(User u) {
-        if(u.getPermissionLevel().equals(PermissionLevel.ADMIN) || u.getPermissionLevel().equals(PermissionLevel.ROOT)) {
-            return true;
-        }
-        return false;
+        return u.getPermissionLevel().equals(PermissionLevel.ADMIN) || u.getPermissionLevel().equals(PermissionLevel.ROOT);
     }
 }

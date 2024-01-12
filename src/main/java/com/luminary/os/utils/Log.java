@@ -1,6 +1,5 @@
 package com.luminary.os.utils;
 import com.luminary.os.OS;
-import com.luminary.os.Start;
 import com.luminary.os.core.Color;
 import org.jetbrains.annotations.NotNull;
 

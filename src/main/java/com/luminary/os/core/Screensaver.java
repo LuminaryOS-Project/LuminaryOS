@@ -2,7 +2,6 @@ package com.luminary.os.core;
 import java.util.Arrays;
 
 import static com.luminary.os.utils.Utils.clearScreen;
-import static com.luminary.os.utils.Utils.delay;
 
 public class Screensaver {
     private Thread inThread;
@@ -19,8 +18,8 @@ public class Screensaver {
         for (;;) {
             Arrays.fill(b, ' ');
             Arrays.fill(z, 0);
-            for (float j = 0; j < 6.28; j += 0.07) {
-                for (float i = 0; i < 6.28; i += 0.02) {
+            for (float j = 0; j < 6.28; j += 0.07F) {
+                for (float i = 0; i < 6.28; i += 0.02F) {
                     float c = (float) Math.sin(i);
                     float d = (float) Math.cos(j);
                     float e = (float) Math.sin(A);
@@ -38,17 +37,17 @@ public class Screensaver {
                     int N = (int) (8 * ((f * e - c * d * g) * m - c * d * e - f * g - l * d * n));
                     if (22 > y && y > 0 && x > 0 && 80 > x && D > z[o]) {
                         z[o] = D;
-                        b[o] = ".,-~:;=!*#$@".charAt(N > 0 ? N : 0);
+                        b[o] = ".,-~:;=!*#$@".charAt(Math.max(N, 0));
                     }
                 }
             }
             long elapsedTime = System.currentTimeMillis() - startTime;
             double fps = (double) frames / (elapsedTime / 1000.0);
-            System.out.print(String.format("\033[H\033[2JFPS: %.2f\n", fps)); // clear the screen and print FPS
+            System.out.printf("\033[H\033[2JFPS: %.2f\n", fps); // clear the screen and print FPS
             for (int k = 0; k < 1761; k++) {
                 System.out.print(k % 80 == 0 ? "\n" : b[k]);
-                A += 0.00004;
-                B += 0.00002;
+                A += 0.00004F;
+                B += 0.00002F;
             }
             frames++;
             Thread.sleep(1000 / 24);

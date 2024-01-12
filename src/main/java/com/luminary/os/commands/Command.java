@@ -1,32 +1,22 @@
 package com.luminary.os.commands;
 
-import java.util.List;
-
 import com.luminary.os.permissions.PermissionLevel;
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
+@Getter
 public abstract class Command {
    public static final PermissionLevel DEFAULT_PERMISSION = PermissionLevel.USER;
-   private String name;
-   private List<String> aliases;
-   public String usage;
+   private final String name;
+   private final List<String> aliases;
+   public final String usage;
 
    public Command(@NotNull String name, @NotNull String usage, @NotNull List<String> aliases) {
       this.name = name;
       this.usage = usage;
       this.aliases = aliases;
-   }
-
-   public String getUsage() {
-      return this.usage;
-   }
-
-   public String getName() {
-      return this.name;
-   }
-
-   public List<String> getAliases() {
-      return this.aliases;
    }
 
    public abstract void execute(List<String> args);

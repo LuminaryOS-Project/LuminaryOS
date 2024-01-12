@@ -8,7 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class Language {
-    private JSONConfig cfg;
+    private final JSONConfig cfg;
     public Language(String language) throws InvalidLanguageException {
         Path LPath = Paths.get("LuminaryOS", "langs", language + ".json");
         if(!new File(LPath.toString()).exists() || new File(LPath.toString()).length() == 0) {

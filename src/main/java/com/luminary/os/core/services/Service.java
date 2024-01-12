@@ -1,12 +1,10 @@
 package com.luminary.os.core.services;
 
-import lombok.Getter;
 import com.luminary.os.core.Callback;
 import com.luminary.os.core.Level;
 import com.luminary.os.core.Process;
-
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 

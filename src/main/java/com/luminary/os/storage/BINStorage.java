@@ -1,7 +1,7 @@
 package com.luminary.os.storage;
 
-import lombok.AllArgsConstructor;
 import com.luminary.os.OS;
+import lombok.AllArgsConstructor;
 
 import java.io.*;
 

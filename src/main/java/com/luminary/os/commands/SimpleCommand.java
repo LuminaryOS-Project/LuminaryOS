@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class SimpleCommand extends Command {
-    private Consumer<List<String>> cmdfunc;
+    private final Consumer<List<String>> cmdfunc;
     private PermissionLevel pL = PermissionLevel.USER;
     public SimpleCommand(@NotNull String name, @NotNull String usage, @NotNull List<String> aliases, Consumer<List<String>> cmdfunc) {
         super(name, usage, aliases);

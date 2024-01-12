@@ -1,6 +1,7 @@
 package com.luminary.api.unsigned;
 
 import java.io.ObjectStreamException;
+import java.io.Serial;
 import java.math.BigInteger;
 
 /**
@@ -49,7 +50,7 @@ public final class UByte extends UNumber implements Comparable<UByte> {
      *
      * @return Array of cached values for UByte.
      */
-    private static final UByte[] mkValues() {
+    private static UByte[] mkValues() {
         UByte[] ret = new UByte[256];
 
         for (int i = Byte.MIN_VALUE; i <= Byte.MAX_VALUE; i++)
@@ -212,6 +213,7 @@ public final class UByte extends UNumber implements Comparable<UByte> {
      * @return cached instance of this object's value
      * @throws ObjectStreamException
      */
+    @Serial
     private Object readResolve() throws ObjectStreamException {
         return valueOf(value);
     }
@@ -239,9 +241,8 @@ public final class UByte extends UNumber implements Comparable<UByte> {
     @Override
     public int hashCode() {
         /* [java-8] */
-        if (true) return Short.hashCode(value);
+        return Short.hashCode(value);
         /* [/java-8] */
-        return Short.valueOf(value).hashCode();
     }
 
     @Override
@@ -261,7 +262,7 @@ public final class UByte extends UNumber implements Comparable<UByte> {
 
     @Override
     public int compareTo(UByte o) {
-        return (value < o.value ? -1 : (value == o.value ? 0 : 1));
+        return (Short.compare(value, o.value));
     }
 
     @Override

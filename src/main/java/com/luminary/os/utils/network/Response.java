@@ -1,11 +1,14 @@
 package com.luminary.os.utils.network;
 
+import lombok.Getter;
+
 import java.util.Map;
 
+@Getter
 public class Response {
-    private int statusCode;
-    private Map<String, String> headers;
-    private String body;
+    private final int statusCode;
+    private final Map<String, String> headers;
+    private final String body;
 
     public Response(int statusCode, Map<String, String> headers, String body) {
         this.statusCode = statusCode;
@@ -13,15 +16,4 @@ public class Response {
         this.body = body;
     }
 
-    public int getStatusCode() {
-        return statusCode;
-    }
-
-    public Map<String, String> getHeaders() {
-        return headers;
-    }
-
-    public String getBody() {
-        return body;
-    }
 }

@@ -2,10 +2,9 @@ package com.luminary.os.events;
 
 import lombok.Getter;
 
+@Getter
 public class UserEvent {
-    @Getter
     private final String username;
-    @Getter
     private final long time;
     public UserEvent(String username) {
         this.time = System.currentTimeMillis();

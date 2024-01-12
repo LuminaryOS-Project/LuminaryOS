@@ -2,19 +2,19 @@ package com.luminary.os;
 
 import com.luminary.os.core.Native;
 
-import java.lang.Math;
 import java.util.Arrays;
 class BenchCube {
     static float A, B, C;
     static float cubeWidth = 20;
-    static int width = 160, height = 44;
-    static float[] zBuffer = new float[160 * 44];
-    static char[] buffer = new char[160 * 44];
-    static char backgroundASCIICode = ' ';
-    static int distanceFromCam = 100;
+    static final int width = 160;
+    static final int height = 44;
+    static final float[] zBuffer = new float[160 * 44];
+    static final char[] buffer = new char[160 * 44];
+    static final char backgroundASCIICode = ' ';
+    static final int distanceFromCam = 100;
     static float horizontalOffset;
-    static float K1 = 40;
-    static float incrementSpeed = 1f;
+    static final float K1 = 40;
+    static final float incrementSpeed = 1f;
     static float x, y, z;
     static float ooz;
     static int xp, yp;
@@ -80,9 +80,9 @@ class BenchCube {
             for (int k = 0; k < width * height; k++) {
                 System.out.print(k % width != 0 ? buffer[k] : "\n");
             }
-            A += 0.05;
-            B += 0.05;
-            C += 0.01;
+            A += 0.05F;
+            B += 0.05F;
+            C += 0.01F;
             frames++;
             long currTime = System.currentTimeMillis();
             long elapsed = currTime - prevTime;

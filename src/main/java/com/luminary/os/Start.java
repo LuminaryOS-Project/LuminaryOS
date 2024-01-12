@@ -1,5 +1,13 @@
 package com.luminary.os;
 
+import com.luminary.os.core.User;
+import com.luminary.os.plugin.Plugin;
+import com.luminary.os.utils.Utils;
+import com.luminary.os.utils.network.Request;
+import joptsimple.OptionParser;
+import joptsimple.OptionSet;
+import lombok.SneakyThrows;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -7,21 +15,12 @@ import java.net.URLClassLoader;
 import java.util.*;
 import java.util.jar.JarFile;
 
-import com.luminary.os.core.User;
-import com.luminary.os.plugin.Plugin;
-import com.luminary.os.utils.*;
-import com.luminary.os.utils.network.Request;
-
-import joptsimple.OptionParser;
-import joptsimple.OptionSet;
-import lombok.SneakyThrows;
-
 public class Start {
-   public static Map<String, Object> OSoptions = new HashMap<>();
+   public static final Map<String, Object> OSoptions = new HashMap<>();
    private static OptionSet options;
    public static Object getOption(String option) { return options.valueOf(option); }
    @SneakyThrows
-   public static void main(String[] args) throws IOException {
+   public static void main(String[] args) {
       /*
       First startup
        */
@@ -74,43 +73,42 @@ public class Start {
                e.printStackTrace();
             }
          }
-
-         URLClassLoader pluginLoader = new URLClassLoader(urls.toArray(new URL[0]));
-         classes.forEach(className -> {
-            try {
-               Class<?> clazz = pluginLoader.loadClass(className.replaceAll("/", ".").replace(".class", ""));
-               if (Plugin.class.isAssignableFrom(clazz)) {
-                  Plugin plugin = (Plugin) clazz.getDeclaredConstructor().newInstance();
-                  String pluginName = plugin.getName();
-                  if (OS.isRegistered(plugin.getClass())) {
-                     System.out.println("A plugin by the name " + pluginName + " is already registered!");
-                  } else {
-                     new Thread(() -> {
-                        try {
-                           plugin.onEnable();
-                           System.out.println("Loaded plugin " + clazz.getCanonicalName() + " successfully");
-                           OS.registerPlugin(plugin);
-                        } catch (Exception e) {
-                           plugin.onDisable();
-                           e.printStackTrace();
-                        }
-                     }, "PLUGINLOAD_" + pluginName).start();
+         try(URLClassLoader pluginLoader = new URLClassLoader(urls.toArray(new URL[0]))) {
+            classes.forEach(className -> {
+               try {
+                  Class<?> clazz = pluginLoader.loadClass(className.replaceAll("/", ".").replace(".class", ""));
+                  if (Plugin.class.isAssignableFrom(clazz)) {
+                     Plugin plugin = (Plugin) clazz.getDeclaredConstructor().newInstance();
+                     String pluginName = plugin.getName();
+                     if (OS.isRegistered(plugin.getClass())) {
+                        System.out.println("A plugin by the name " + pluginName + " is already registered!");
+                     } else {
+                        new Thread(() -> {
+                           try {
+                              plugin.onEnable();
+                              System.out.println("Loaded plugin " + clazz.getCanonicalName() + " successfully");
+                              OS.registerPlugin(plugin);
+                           } catch (Exception e) {
+                              plugin.onDisable();
+                              e.printStackTrace();
+                           }
+                        }, "PLUGINLOAD_" + pluginName).start();
+                     }
                   }
+               } catch (Exception e) {
+                  System.out.println(OS.getLanguage().get("exceptionOccurred"));
+                  e.printStackTrace();
                }
-            } catch (Exception e) {
-               System.out.println(OS.getLanguage().get("exceptionOccurred"));
-               e.printStackTrace();
-            }
-         });
+            });
+         }
+
       }
       //
       OptionParser parser = new OptionParser();
       parser.allowsUnrecognizedOptions();
       Map<String, String> rarg = new HashMap<>();
       rarg.put("debug", "Enables OS debugging");
-      rarg.forEach((k, v) -> {
-         parser.accepts(k, v).withOptionalArg();
-      });
+      rarg.forEach((k, v) -> parser.accepts(k, v).withOptionalArg());
       options = parser.parse(args);
       OS os = new OS();
       os.Start(args);

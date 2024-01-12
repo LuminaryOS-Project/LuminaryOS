@@ -1,10 +1,10 @@
 package com.luminary.os.events;
 
-import lombok.Getter;
 import com.luminary.os.permissions.PermissionLevel;
+import lombok.Getter;
 
+@Getter
 public class LoginEvent extends UserEvent {
-    @Getter
     private final PermissionLevel permissionLevel;
 
     /**

@@ -2,13 +2,16 @@ package com.luminary.os.utils.network;
 
 import com.luminary.os.utils.async.Promise;
 
-import java.io.*;
+import java.io.DataOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.List;
 public class Request {
     public static Promise<Response> get(String url, Map<String, String> headers) {
         return sendRequest("GET", url, headers, null);

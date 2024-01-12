@@ -4,13 +4,8 @@ import com.luminary.os.commands.Command;
 import com.luminary.os.permissions.PermissionLevel;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
-import org.jetbrains.annotations.NotNull;
 
-import java.lang.ref.WeakReference;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class InstallCommand extends Command {
     public InstallCommand() {

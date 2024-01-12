@@ -1,8 +1,8 @@
 package com.luminary.os.commands.impl;
 
 import com.luminary.os.OS;
-import com.luminary.os.permissions.PermissionLevel;
 import com.luminary.os.commands.Command;
+import com.luminary.os.permissions.PermissionLevel;
 
 import java.util.Arrays;
 import java.util.List;

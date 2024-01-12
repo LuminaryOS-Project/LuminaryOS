@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CommandManager {
-   public ConcurrentHashMap<String, Command> commands = new ConcurrentHashMap<>();
+   public final ConcurrentHashMap<String, Command> commands = new ConcurrentHashMap<>();
    private static CommandManager cmdmgr;
    public void registerCommand(Command command) {
       this.commands.put(command.getName(), command);
@@ -21,12 +21,12 @@ public class CommandManager {
       return cmdmgr;
    }
    public String getUsage(String command) {
-      return this.commands.get(command) != null ? ((Command)this.commands.get(command)).getUsage() : OS.getLanguage().get("commandNotFound");
+      return this.commands.get(command) != null ? this.commands.get(command).getUsage() : OS.getLanguage().get("commandNotFound");
    }
 
    public void executeCommand(String command, List<String> args) {
       Process p  = new Process(new Thread(() -> {
-         Command cmd = (Command)this.commands.get(command);
+         Command cmd = this.commands.get(command);
          if (cmd != null) {
             cmd.execute(args);
          } else {
@@ -55,7 +55,7 @@ public class CommandManager {
             return null;
          }
 
-         cmd = (Command)cmds.next();
+         cmd = cmds.next();
          aliases = cmd.getAliases();
       } while(!aliases.contains(alias));
 

@@ -1,13 +1,13 @@
 package com.luminary.os.core;
 
 
+import lombok.Getter;
+
 public class Native {
     private static Native instance = null;
 
+    @Getter
     private static boolean loaded = false;
-    public static boolean isLoaded() {
-        return loaded;
-    }
     public static boolean supportsNative() { return System.getProperty("os.name").toLowerCase().contains("windows"); }
     public static Native getInstance() {
         if (instance == null) { instance = new Native(); }

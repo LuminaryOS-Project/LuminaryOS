@@ -74,7 +74,7 @@ public final class ULong extends UNumber implements Comparable<ULong> {
     public static int compare(long x, long y) {
         x += Long.MIN_VALUE;
         y += Long.MIN_VALUE;
-        return (x < y) ? -1 : ((x == y) ? 0 : 1);
+        return Long.compare(x, y);
     }
 
     /**
@@ -165,9 +165,8 @@ public final class ULong extends UNumber implements Comparable<ULong> {
     @Override
     public int hashCode() {
         /* [java-8] */
-        if (true) return Long.hashCode(value);
+        return Long.hashCode(value);
         /* [/java-8] */
-        return Long.valueOf(value).hashCode();
     }
 
     @Override

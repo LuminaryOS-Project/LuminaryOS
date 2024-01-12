@@ -4,10 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
+@Getter
 @AllArgsConstructor
 public enum Permission {
     ADMINISTRATOR(0x73D00B7B),
@@ -15,7 +14,6 @@ public enum Permission {
     CREATE_USER(0x63DF8907),
     DELETE_USER(0x4E7C126B),
     NONE(0x000000);
-    @Getter
     private final int code;
     public static boolean hasPermission(int permissionCode, Permission permission) {
         return ((permissionCode & permission.getCode()) == permission.getCode());
@@ -29,7 +27,7 @@ public enum Permission {
         return code;
     }
     public static int add(int code, Permission permission) {
-        return code |= permission.getCode();
+        return code | permission.getCode();
     }
     public static Permission of(int code) {
         for(Permission p : Permission.values()) {

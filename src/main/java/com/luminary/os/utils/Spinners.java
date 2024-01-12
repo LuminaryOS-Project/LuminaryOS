@@ -1,7 +1,5 @@
 package com.luminary.os.utils;
 
-import lombok.SneakyThrows;
-
 public class Spinners {
     public static final Pair<String[], Integer> STAR = new Pair<>(new String[]{"+", "x", "*"},  80);
     public static final Pair<String[], Integer> BALLOON = new Pair<>(new String[]{"_", ".", "o", "O", "°", "O", "o", "."}, 120);

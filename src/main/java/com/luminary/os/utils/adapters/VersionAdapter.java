@@ -1,7 +1,8 @@
 package com.luminary.os.utils.adapters;
 
-import lombok.AllArgsConstructor;
 import com.luminary.os.utils.JSONConfig;
+import lombok.AllArgsConstructor;
+
 import static org.jetbrains.annotations.ApiStatus.Experimental;
 @AllArgsConstructor
 @Experimental

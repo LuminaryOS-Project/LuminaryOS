@@ -6,6 +6,7 @@ import lombok.Getter;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
+@Getter
 @AllArgsConstructor
 public enum StatusCode {
     SUCCESS(100),
@@ -19,7 +20,6 @@ public enum StatusCode {
     INTERRUPTED(108),
     OPERATION_UNSUPPORTED(109),
     ILLEGAL(110);
-    @Getter
     final int code;
     public static StatusCode of(int toFind) {
         if(toFind > 110 || toFind < 100) {

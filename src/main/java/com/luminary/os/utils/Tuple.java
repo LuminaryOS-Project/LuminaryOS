@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Iterator;
 
 public class Tuple<T> implements Iterable<T> {
-    ImmutableList<T> list;
+    final ImmutableList<T> list;
     @SafeVarargs
     public Tuple(T... o) {
         list = ImmutableList.copyOf(o);

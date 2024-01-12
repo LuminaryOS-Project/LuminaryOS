@@ -129,9 +129,8 @@ public final class UShort extends UNumber implements Comparable<UShort> {
     @Override
     public int hashCode() {
         /* [java-8] */
-        if (true) return Integer.hashCode(value);
+        return Integer.hashCode(value);
         /* [/java-8] */
-        return Integer.valueOf(value).hashCode();
     }
 
     @Override
@@ -149,7 +148,7 @@ public final class UShort extends UNumber implements Comparable<UShort> {
 
     @Override
     public int compareTo(UShort o) {
-        return (value < o.value ? -1 : (value == o.value ? 0 : 1));
+        return (Integer.compare(value, o.value));
     }
 
     public UShort add(UShort val) throws NumberFormatException {

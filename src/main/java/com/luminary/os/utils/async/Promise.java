@@ -2,17 +2,16 @@ package com.luminary.os.utils.async;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class Promise<T> {
     private T result;
     private Exception exception;
     private boolean isResolved;
-    private List<Consumer<T>> thenCallbacks;
-    private List<Consumer<Exception>> catchCallbacks;
+    private final List<Consumer<T>> thenCallbacks;
+    private final List<Consumer<Exception>> catchCallbacks;
 
     public Promise() {
         thenCallbacks = new ArrayList<>();
@@ -47,9 +46,7 @@ public class Promise<T> {
             U result = callback.apply(this.result);
             promise.resolve(result);
         } else {
-            thenCallbacks.add(result -> {
-                CompletableFuture.supplyAsync(() -> callback.apply(result)).thenAccept(promise::resolve);
-            });
+            thenCallbacks.add(result -> CompletableFuture.supplyAsync(() -> callback.apply(result)).thenAccept(promise::resolve));
         }
         return promise;
     }

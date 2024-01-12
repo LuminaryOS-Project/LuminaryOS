@@ -3,8 +3,8 @@ package com.luminary.os.utils;
 import com.luminary.os.OS;
 import com.luminary.os.core.Security;
 
-import java.util.regex.Pattern;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class Prompts {
     public static boolean YNPrompt() {
@@ -45,11 +45,9 @@ public class Prompts {
         }
     }
     public static String getPassword(String prompt) {
-        while(true) {
-            System.out.print(prompt + ": ");
-            String input = new String(System.console().readPassword());
-            return Security.hashPassword(input, 14);
-        }
+        System.out.print(prompt + ": ");
+        String input = new String(System.console().readPassword());
+        return Security.hashPassword(input, 14);
     }
 
     public static boolean YNPrompt(String msg) {

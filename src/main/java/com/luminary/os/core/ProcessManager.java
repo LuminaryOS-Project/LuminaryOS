@@ -10,21 +10,24 @@ import com.indvd00m.ascii.render.elements.plot.AxisLabels;
 import com.indvd00m.ascii.render.elements.plot.Plot;
 import com.indvd00m.ascii.render.elements.plot.api.IPlotPoint;
 import com.indvd00m.ascii.render.elements.plot.misc.PlotPoint;
-import com.luminary.os.utils.Pair;
-import lombok.Getter;
 import com.luminary.os.OS;
 import com.luminary.os.core.services.Service;
 import com.luminary.os.events.ProcessTimeoutEvent;
+import com.luminary.os.utils.Pair;
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
-import java.util.concurrent.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class ProcessManager {
     private int currID = 0;
     private int elapsed = 0;
     private static ProcessManager procManager;
-    private LinkedList<Pair<Integer, Integer>> processHistory = new LinkedList<>();
+    private final LinkedList<Pair<Integer, Integer>> processHistory = new LinkedList<>();
     private final Deque<Process> queuedProcess = new ArrayDeque<>();
     @Getter
     private final ConcurrentHashMap<Integer, Process> runningProcesses = new ConcurrentHashMap<>();
@@ -57,7 +60,7 @@ public class ProcessManager {
 
     public void shutdown() {
         executor.shutdown();
-        runningProcesses.forEach((k, v) -> { v.getThread().interrupt(); });
+        runningProcesses.forEach((k, v) -> v.getThread().interrupt());
         runningProcesses.clear();
     }
     public String getRunning() {

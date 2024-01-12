@@ -2,22 +2,18 @@ package com.luminary.os.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import com.luminary.os.utils.adapters.VersionAdapter;
 import lombok.Getter;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
 public class JSONConfig implements AutoCloseable {
-   private static Gson gson = (new GsonBuilder()).setPrettyPrinting().create();
+   private static final Gson gson = (new GsonBuilder()).setPrettyPrinting().create();
    @Getter
    private Map<String, Object> internalMap = new HashMap<>();
-   private String internalString;
+   private final String internalString;
 
    public JSONConfig(String file) {
       File internalFile = new File(file);
@@ -45,7 +41,7 @@ public class JSONConfig implements AutoCloseable {
       Object value = this.internalMap;
       for (String key : keys) {
          if (value instanceof Map) {
-            value = ((Map) value).get(key);
+            value = ((Map<?, ?>) value).get(key);
          } else {
             value = null;
             break;
@@ -59,7 +55,7 @@ public class JSONConfig implements AutoCloseable {
       Object value = this.internalMap;
       for (String key : keys) {
          if (value instanceof Map) {
-            value = ((Map) value).get(key);
+            value = ((Map<?, ?>) value).get(key);
          } else {
             value = defaultValue;
             break;
@@ -86,7 +82,7 @@ public class JSONConfig implements AutoCloseable {
       } catch (IOException var2) {
       }
    }
-   public static void writeJSONToFile(String filename, Map data) throws IOException {
+   public static void writeJSONToFile(String filename, Map<String, Object> data) throws IOException {
       if (!(new File(filename)).exists()) {
          (new File(filename)).createNewFile();
       }
@@ -96,28 +92,22 @@ public class JSONConfig implements AutoCloseable {
       writer.close();
    }
 
-   public static JSONObject readJSONFromFile(String filename) throws IOException {
-      JSONParser parser = new JSONParser();
+   public static Map<String, Object> readJSONFromFile(String filename) throws IOException {
       File file = new File(filename);
       if (!file.exists() || file.length() == 0) {
-         return new JSONObject();
+         return new HashMap<>();
       }
       try (Reader reader = new FileReader(filename)) {
-         return (JSONObject) parser.parse(reader);
-      } catch (ParseException e) {
-         e.printStackTrace();
+         return gson.fromJson(reader, Map.class);
       }
-      return null;
    }
 
-   public static String toString(Map data) {
+   public static String toString(Map<String, Object> data) {
       return gson.toJson(data);
    }
 
-   public static Map fromJSONString(String json) {
-      TypeToken token = new TypeToken() {
-      };
-      return (Map)gson.fromJson(json, token.getType());
+   public static Map<String, Object> fromJSONString(String json) {
+      return (Map<String, Object>) gson.fromJson(json, Map.class);
    }
    public void setPref(String pref, Object value) {
       this.set("preference." + pref, value);

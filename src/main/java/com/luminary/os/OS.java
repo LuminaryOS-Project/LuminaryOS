@@ -26,30 +26,28 @@ import java.io.File;
 import java.util.List;
 import java.util.*;
 
-public class OS {
+public final class OS {
+   private final Thread mainThread;
    @Getter
    private static Optional<Native> NATIVE = Optional.empty();
    public static final String VERSION = "v1_R2";
-   public static final int BUILD_NUM = 230531;
+   public static final int BUILD_NUM = 230809;
    @Getter
    private final CommandManager CommandManager = com.luminary.os.commands.CommandManager.getInstance();
    @Getter
    private static String Locale;
    @Getter
    private static com.luminary.os.core.Language Language;
-   @Getter
    private final ServiceManager ServiceManager = com.luminary.os.core.services.ServiceManager.getServiceManager();
    private static final HashMap<String, Plugin> nameToPlugin = new HashMap<>();
    private static final HashMap<Class<? extends Plugin>, Plugin> plugins = new HashMap<>();
    @Getter
    private static final com.luminary.os.core.ProcessManager ProcessManager = com.luminary.os.core.ProcessManager.getProcessManager();
-   @Getter
    private static final JSONConfig config = new JSONConfig("os.json");
    @Getter
    private static OS instance;
    @Getter
    private static final EventBus EventHandler = new EventBus("OS");
-
    public static String currentDir = System.getProperty("user.dir");
    public static Taskbar programBar = null;
    @Getter
@@ -90,6 +88,9 @@ public class OS {
    private void setUser(User user) {
       currentUser = user;
    }
+   public OS() {
+      this.mainThread = Thread.currentThread();
+   }
 
    public void Start(String[] args) {
       instance = this;
@@ -129,13 +130,11 @@ public class OS {
       CommandManager.registerCommand(new PWDCommand());
       CommandManager.registerCommand(new KillCommand());
       CommandManager.registerCommand(new SimpleCommand("whoami", "whoami", List.of("me"), PermissionLevel.USER ,(cargs) -> System.out.println(currentUser.getName())));
-      CommandManager.registerCommand(new SimpleCommand("lang", "lang", List.of("lang", "language"), PermissionLevel.USER, (cargs) -> {
-         System.out.println("Language Pack: " + getLanguage().getName() + " designed for: " + getLanguage().getVersion() + "\n");
-      }));
+      CommandManager.registerCommand(new SimpleCommand("lang", "lang", List.of("lang", "language"), PermissionLevel.USER, (cargs) -> System.out.println("Language Pack: " + getLanguage().getName() + " designed for: " + getLanguage().getVersion() + "\n")));
       //
       CommandManager.registerCommand(new SimpleCommand("screensaver", "Displays a screensaver", List.of("scrnsvr", "srcvr"), PermissionLevel.USER, (cargs) -> {
          Screensaver ss = new Screensaver("donut");
-         try { ss.start(); } catch (Exception e) {}
+         try { ss.start(); } catch (Exception ignored) {}
       }));
       new Recovery().check(currentDir);
       //
@@ -170,14 +169,12 @@ public class OS {
       //
       System.out.println(getLanguage().get("welcome") + " LuminaryOS");
       getEventHandler().post(new AfterShellEvent());
-      try {
-         if((boolean) Start.OSoptions.getOrDefault("debug", false) ) {
-            System.out.println("Running on Debug Mode, OS: " + System.getProperty("os.name") +
-                    " Build: " + System.getProperty("os.build", "UNKNOWN") +
-                    " Compiled on Java 17, Running on " + System.getProperty("java.version")
-            );
-         }
-      } catch (ClassCastException ignored) {}
+      if((boolean) Start.OSoptions.getOrDefault("debug", false) ) {
+         System.out.println("Running on Debug Mode, OS: " + System.getProperty("os.name") +
+                 " Build: " + System.getProperty("os.build", "UNKNOWN") +
+                 " Compiled on Java 17, Running on " + System.getProperty("java.version")
+         );
+      }
       while(true) {
          try {
             System.out.print("$ ");
