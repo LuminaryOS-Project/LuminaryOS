@@ -56,8 +56,8 @@ public final class OS {
    @Getter
    private static com.luminary.os.core.Language Language;
    private final ServiceManager ServiceManager = com.luminary.os.core.services.ServiceManager.getServiceManager();
-   private static final HashMap<String, Plugin> nameToPlugin = new HashMap<>();
-   private static final HashMap<Class<? extends Plugin>, Plugin> plugins = new HashMap<>();
+   private static final Map<String, Plugin> nameToPlugin = new HashMap<>();
+   private static final Map<Class<? extends Plugin>, Plugin> plugins = new HashMap<>();
    @Getter
    private static final com.luminary.os.core.ProcessManager ProcessManager = com.luminary.os.core.ProcessManager.getProcessManager();
    private static final JSONConfig config = new JSONConfig("os.json");

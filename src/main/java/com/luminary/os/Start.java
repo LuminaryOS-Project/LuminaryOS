@@ -17,9 +17,12 @@
 
 package com.luminary.os;
 
+import com.luminary.os.core.LuminarySecurityManager;
 import com.luminary.os.core.Native;
 import com.luminary.os.core.User;
 import com.luminary.os.plugin.Plugin;
+import com.luminary.os.utils.FileLogger;
+import com.luminary.os.utils.Log;
 import com.luminary.os.utils.Utils;
 import com.luminary.os.utils.network.Request;
 import joptsimple.OptionParser;
@@ -30,6 +33,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -43,6 +49,8 @@ public class Start {
       /*
       First startup
        */
+      FileLogger.init();
+      Log.info("OS Startup @ " + new SimpleDateFormat("hh:mm a dd/MM/yyyy").format(new Date()));
       File mainf = new File("LuminaryOS");
       if (!mainf.exists() && mainf.mkdirs()) {
          if(new File("LuminaryOS/plugins").mkdirs() && new File("LuminaryOS/disks").mkdirs() && new File("LuminaryOS/natives").mkdirs() && new File("LuminaryOS/users").mkdirs() && new File("LuminaryOS/cache").mkdirs() && new File("LuminaryOS/config").mkdirs() && new File("LuminaryOS/temp").mkdirs() && new File("LuminaryOS/langs").mkdirs()) {
@@ -75,11 +83,11 @@ public class Start {
             Utils.deleteDirectory(new File("LuminaryOS"));
          }
       }
-      //
-      //if(Native.supportsNative()) {
-      //   System.out.println("Attempting...");
-      //   System.out.println("RESPONSE: " + Native.getInstance().blacklistMethods(OS.class, Set.of("example")));
-      //}
+
+      if(Native.supportsNative()) {
+         LuminarySecurityManager.blockFields();
+         LuminarySecurityManager.blockMethods();
+      }
       //
       File pluginFolder = new File("LuminaryOS/plugins");
       //
@@ -93,7 +101,7 @@ public class Start {
                jarFile.stream()
                        .filter(jarEntry -> jarEntry.getName().endsWith(".class"))
                        .forEach(jarEntry -> {
-                          System.out.println("Found Jar Class: " + jarEntry.getName());
+                          Log.info(String.format("Found jar class \"%s\" from file \"%s\"", jarEntry.getName(), file.getAbsolutePath()), false);
                           classes.add(jarEntry.getName());
                        });
             } catch (IOException e) {

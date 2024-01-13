@@ -17,6 +17,45 @@
 
 package com.luminary.os.core;
 
-public class LuminarySecurityManager {
+import com.luminary.os.OS;
+import com.luminary.os.utils.FileLogger;
+import com.luminary.os.utils.Log;
 
+import java.util.Map;
+import java.util.Set;
+
+public class LuminarySecurityManager {
+    public static void blockFields() {
+        Map<Class<?>, Set<String>> toPatch = Map.of(
+                OS.class, Set.of(
+                        "instance",
+                        "mainThread",
+                        "NATIVE",
+                        "VERSION",
+                        "BUILD_NUM",
+                        "CommandManager",
+                        "EventHandler",
+                        "config",
+                        "ProcessManager",
+                        "nameToPlugin",
+                        "plugins",
+                        "ServiceManager",
+                        "Language"
+                )
+        );
+
+        toPatch.forEach((clazz, fields) -> {
+            FileLogger.log("-".repeat(32));
+            FileLogger.log(Log.getLogMessage("SECURITY", "Blocking fields \"" + fields.toString() + "\" for class " + clazz.getName()));
+            FileLogger.log(Log.getLogMessage("SECURITY", "Response from native method: " + Native.getInstance().blacklistFields(clazz, fields)));
+        });
+        FileLogger.log("-".repeat(32));
+    }
+    public static void blockMethods() {
+        Map<Class<?>, Set<String>> toPatch = Map.of(
+                OS.class, Set.of(
+
+                )
+        );
+    }
 }

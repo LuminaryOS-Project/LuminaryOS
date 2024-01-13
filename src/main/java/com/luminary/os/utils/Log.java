@@ -20,6 +20,8 @@ import com.luminary.os.OS;
 import com.luminary.os.core.Color;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalTime;
 import java.util.Objects;
 
@@ -27,24 +29,52 @@ import java.util.Objects;
 public class Log {
     // allows chaining
     private static Log log;
-    public static Log info(@NotNull Object o) {
+    private static FileWriter fw;
+    public static Log info(@NotNull Object o, boolean stdout) {
         LocalTime time = LocalTime.now();
-        System.out.printf("[%02d:%02d:%02d | %s] [%s]: %s%n",
+        String msg = String.format("[%02d:%02d:%02d | %s] [%s]: %s%n",
                 time.getHour(), time.getMinute(), time.getSecond(), getCallerInfo(), OS.getLanguage() != null ? OS.getLanguage().get("info") : "INFO", o);
+        FileLogger.log(msg);
+        if(stdout)
+            System.out.println(msg);
         return getInstance();
     }
-    public static Log warn(@NotNull Object o) {
+    public static Log info(@NotNull Object o) {
+        return info(o, true);
+    }
+    public static Log warn(@NotNull Object o, boolean stdout) {
         LocalTime time = LocalTime.now();
-        System.out.printf("[%02d:%02d:%02d | %s] [%s]: %s%n",
+        String msg = String.format("[%02d:%02d:%02d | %s] [%s]: %s%n",
                 time.getHour(), time.getMinute(), time.getSecond(), getCallerInfo(), OS.getLanguage() != null ? OS.getLanguage().get("warn") : "WARN", o);
+        FileLogger.log(msg);
+        if(stdout)
+            System.out.println(msg);
+        return getInstance();
+    }
+
+    public static Log warn(@NotNull Object o) {
+        return warn(o, true);
+    }
+
+    public static Log error(@NotNull Object o, boolean stdout) {
+        LocalTime time = LocalTime.now();
+        String msg = String.format("[%02d:%02d:%02d | %s] [%s]: %s%n" ,
+                time.getHour(), time.getMinute(), time.getSecond(), getCallerInfo(), OS.getLanguage() != null ? OS.getLanguage().get("error") : "ERROR", o);
+        FileLogger.log(msg);
+        if(stdout)
+            System.out.println(Color.RED + msg + Color.RESET);
         return getInstance();
     }
     public static Log error(@NotNull Object o) {
-        LocalTime time = LocalTime.now();
-        System.out.printf(Color.RED + "[%02d:%02d:%02d | %s] [%s]: %s%n" + Color.RESET,
-                time.getHour(), time.getMinute(), time.getSecond(), getCallerInfo(), OS.getLanguage() != null ? OS.getLanguage().get("error") : "ERROR", o);
-        return getInstance();
+        return error(o, true);
     }
+
+    public static String getLogMessage(String logLevel, @NotNull Object o) {
+        LocalTime time = LocalTime.now();
+        return String.format("[%02d:%02d:%02d | %s] [%s]: %s%n",
+                time.getHour(), time.getMinute(), time.getSecond(), getCallerInfo(), logLevel, o);
+    }
+
     private Log() {}
     private static String getCallerInfo() {
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
