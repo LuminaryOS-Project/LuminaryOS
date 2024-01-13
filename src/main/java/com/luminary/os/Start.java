@@ -47,15 +47,15 @@ public class Start {
    public static Object getOption(String option) { return options.valueOf(option); }
 
    public static boolean isMac() {
-      return (System.getProperty("os.name").contains("mac"));
+      return (System.getProperty("os.name").toLowerCase().contains("mac"));
    }
 
    public static boolean isWindows() {
-      return (System.getProperty("os.name").contains("win"));
+      return (System.getProperty("os.name").toLowerCase().contains("win"));
    }
 
    public static boolean isUnix() {
-      String o = System.getProperty("os.name");
+      String o = System.getProperty("os.name").toLowerCase();
       return (o.contains("nix") || o.contains("nux") || o.indexOf("aix") > 0);
    }
 
