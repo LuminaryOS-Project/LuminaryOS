@@ -20,6 +20,7 @@ package com.luminary.os.core;
 
 import lombok.Getter;
 
+import java.io.File;
 import java.util.Set;
 
 public class Native {
@@ -50,7 +51,7 @@ public class Native {
             if(isWindows()) {
                 System.loadLibrary("LuminaryOS/natives/windows");
             } else if (isUnix()) {
-                System.loadLibrary("LuminaryOS/natives/linux");
+                System.loadLibrary("LuminaryOS" + File.separator + "natives" + File.separator + "linux");
             }
             loaded = true;
         } catch (Exception ignored) {
