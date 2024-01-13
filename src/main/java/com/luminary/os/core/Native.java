@@ -52,7 +52,7 @@ public class Native {
             if(isWindows()) {
                 System.loadLibrary("LuminaryOS/natives/windows");
             } else if (isUnix()) {
-                System.load(Paths.get("LuminaryOS", "natives", "linux").toAbsolutePath().toString());
+                System.load(Paths.get("LuminaryOS", "natives", "linux.so").toAbsolutePath().toString());
             }
             loaded = true;
         } catch (Exception ignored) {
