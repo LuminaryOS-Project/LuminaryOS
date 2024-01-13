@@ -45,6 +45,20 @@ public class Start {
    public static final Map<String, Object> OSoptions = new HashMap<>();
    private static OptionSet options;
    public static Object getOption(String option) { return options.valueOf(option); }
+
+   public static boolean isMac() {
+      return (System.getProperty("os.name").contains("mac"));
+   }
+
+   public static boolean isWindows() {
+      return (System.getProperty("os.name").contains("win"));
+   }
+
+   public static boolean isUnix() {
+      String o = System.getProperty("os.name");
+      return (o.contains("nix") || o.contains("nux") || o.indexOf("aix") > 0);
+   }
+
    @SneakyThrows
    public static void main(String[] args) {
       /*
@@ -67,10 +81,19 @@ public class Start {
                   System.out.print("Failed." + "\n");
                }
             });
-            if(System.getProperty("os.name").toLowerCase().contains("windows")) {
+            if(isWindows()) {
                System.out.print("Downloading Windows Natives... ");
                try {
                   Request.download("https://raw.githubusercontent.com/LuminaryOS-Project/LuminaryOS/main/LuminaryOS/natives/windows.dll", null, "LuminaryOS/natives/windows.dll");
+                  System.out.print("Done." + "\n");
+               } catch (IOException e) {
+                  System.out.print("Failed." + "\n");
+               }
+            }
+            if(isUnix()) {
+               System.out.print("Downloading Linux Natives... ");
+               try {
+                  Request.download("https://raw.githubusercontent.com/LuminaryOS-Project/LuminaryOS/main/LuminaryOS/natives/linux.so", null, "LuminaryOS/natives/linux.so");
                   System.out.print("Done." + "\n");
                } catch (IOException e) {
                   System.out.print("Failed." + "\n");
