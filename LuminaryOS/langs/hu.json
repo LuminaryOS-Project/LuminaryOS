@@ -30,6 +30,6 @@
     "killUsage": "Leállít egy folyamatot",
     "lsUsage": "Kiírja az összes fájlt a jelenlegi mappában",
     "rmUsage": "Töröl egy fájlt",
-    "version": "Verzió",
+    "version": "Verzió"
   }
 }
