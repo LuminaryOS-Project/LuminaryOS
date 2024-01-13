@@ -22,6 +22,7 @@ import lombok.Getter;
 
 import java.io.File;
 import java.util.Set;
+import java.nio.file.Paths;
 
 public class Native {
     private static Native instance = null;
@@ -51,7 +52,7 @@ public class Native {
             if(isWindows()) {
                 System.loadLibrary("LuminaryOS/natives/windows");
             } else if (isUnix()) {
-                System.loadLibrary("LuminaryOS" + File.separator + "natives" + File.separator + "linux");
+                System.load(Paths.get("LuminaryOS", "natives", "linux").toAbsolutePath().toString());
             }
             loaded = true;
         } catch (Exception ignored) {
