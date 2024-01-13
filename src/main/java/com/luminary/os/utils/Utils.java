@@ -22,10 +22,7 @@ import com.luminary.os.OS;
 import com.luminary.os.utils.network.Request;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.nio.file.Files;
@@ -40,6 +37,12 @@ import java.util.zip.ZipOutputStream;
 
 public class Utils {
 
+
+    public static void logErrToFile(Exception ex) {
+        FileWriter fw = FileLogger.getWriter();
+        if(fw != null)
+            ex.printStackTrace(new PrintWriter(fw, true));
+    }
     public <T> T[] concatenate(T[] a, T[] b) {
         int aLen = a.length;
         int bLen = b.length;

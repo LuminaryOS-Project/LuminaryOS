@@ -26,6 +26,7 @@ import java.io.File;
 import java.util.UUID;
 
 public abstract class Plugin {
+   private final PluginDescription description;
    @NotNull
    public File getFolder() {
       File f = new File("plugins/" + getName() + "/");
@@ -37,13 +38,14 @@ public abstract class Plugin {
       }
    }
    //
+   public Plugin(final PluginDescription description) {
+      this.description = description;
+   }
+   //
    @NotNull
    public JSONConfig getConfig() {
       return new JSONConfig(getFolder() + "config.json");
    }
-   @Getter
-   OS OS = com.luminary.os.OS.getInstance();
-   UUID loadUUID = UUID.randomUUID();
 
    public abstract void onEnable();
 

@@ -31,8 +31,10 @@ public class JSONConfig implements AutoCloseable {
    @Getter
    private Map<String, Object> internalMap = new HashMap<>();
    private final String internalString;
+   private final boolean write;
 
    public JSONConfig(String file) {
+      this.write = true;
       File internalFile = new File(file);
       this.internalString = file;
 
@@ -40,9 +42,26 @@ public class JSONConfig implements AutoCloseable {
          if (!internalFile.exists()) {
             internalFile.createNewFile();
          }
-
+         System.out.println("Loading File " + file + "!");
          this.internalMap = readJSONFromFile(file);
-      } catch (Exception var4) {
+      } catch (Exception ex) {
+         FileWriter fw = FileLogger.getWriter();
+         if(fw != null)
+            ex.printStackTrace(new PrintWriter(fw, true));
+      }
+   }
+
+   public JSONConfig(InputStream stream) {
+      this.internalString = null;
+      this.write = false;
+      try {
+         try (Reader reader = new InputStreamReader(stream)) {
+            this.internalMap = gson.fromJson(reader, Map.class);
+         }
+      } catch (IOException ex) {
+         FileWriter fw = FileLogger.getWriter();
+         if(fw != null)
+            ex.printStackTrace(new PrintWriter(fw, true));
       }
 
    }
@@ -65,6 +84,10 @@ public class JSONConfig implements AutoCloseable {
          }
       }
       return value;
+   }
+
+   public <T> T getAs(String path) {
+      return (T) get(path);
    }
    //
    public Object get(String path, Object defaultValue) {
@@ -95,8 +118,9 @@ public class JSONConfig implements AutoCloseable {
    @Override
    public void close() {
       try {
-         writeJSONToFile(this.internalString, this.internalMap);
-      } catch (IOException var2) {
+         if(write)
+            writeJSONToFile(this.internalString, this.internalMap);
+      } catch (IOException ex) {
       }
    }
    public static void writeJSONToFile(String filename, Map<String, Object> data) throws IOException {

@@ -41,8 +41,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.io.File;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.*;
+
 
 @RestrictReflect(
         fields = {
@@ -184,6 +186,11 @@ public final class OS {
       CommandManager.registerCommand(new SimpleCommand("whoami", "whoami", List.of("me"), PermissionLevel.USER ,(cargs) -> System.out.println(currentUser.getName())));
       CommandManager.registerCommand(new SimpleCommand("lang", "lang", List.of("lang", "language"), PermissionLevel.USER, (cargs) -> System.out.println("Language Pack: " + getLanguage().getName() + " designed for: " + getLanguage().getVersion() + "\n")));
       //
+      CommandManager.registerCommand(new SimpleCommand("llist", "llist", List.of("llist"), PermissionLevel.USER, (cargs) -> {
+         File[] files = Paths.get("LuminaryOS", "langs").toFile().listFiles();
+         System.out.println("Found files: " + Arrays.toString(files));
+         Arrays.stream(files).filter(File::isFile).map(File::getAbsolutePath).map(JSONConfig::new).forEach(j -> System.out.println(j.get("lang")));
+      }));
       CommandManager.registerCommand(new SimpleCommand("screensaver", "Displays a screensaver", List.of("scrnsvr", "srcvr"), PermissionLevel.USER, (cargs) -> {
          Screensaver ss = new Screensaver("donut");
          try { ss.start(); } catch (Exception ignored) {}

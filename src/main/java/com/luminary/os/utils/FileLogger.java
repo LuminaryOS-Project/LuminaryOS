@@ -30,8 +30,7 @@ public class FileLogger {
 
     public static void log(String message) {
         String today = DATE_FORMAT.format(new Date());
-        String logFileName;
-        logFileName = today + ".log";
+        String logFileName = today + ".log";
         String logFilePath = LOG_DIRECTORY + File.separator + logFileName;
 
         File logFile = new File(logFilePath);
@@ -40,6 +39,20 @@ public class FileLogger {
         } catch (IOException e) {
             System.err.println("Error writing to log file: " + e.getMessage());
         }
+    }
+
+    public static FileWriter getWriter() {
+        String today = DATE_FORMAT.format(new Date());
+        String logFileName = today + ".log";
+        String logFilePath = LOG_DIRECTORY + File.separator + logFileName;
+
+        File logFile = new File(logFilePath);
+        try {
+            return new FileWriter(logFile, true);
+        } catch (IOException e) {
+            System.err.println("Error getting log file: " + e.getMessage());
+        }
+        return null;
     }
     //
     public static void init() {

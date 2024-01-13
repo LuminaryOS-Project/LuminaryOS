@@ -125,55 +125,7 @@ public class Start {
                  });
       }
       //
-      File pluginFolder = new File("LuminaryOS/plugins");
-      //
-      File[] files = pluginFolder.listFiles((dir, name) -> name.endsWith(".jar"));
-      ArrayList<URL> urls = new ArrayList<>();
-      ArrayList<String> classes = new ArrayList<>();
-      if (files != null) {
-         for (File file : files) {
-            try (JarFile jarFile = new JarFile(file)) {
-               urls.add(new URL("jar:file:" + file.getAbsolutePath() + "!/"));
-               jarFile.getEntry("plugin.yml");
-               jarFile.stream()
-                       .filter(jarEntry -> jarEntry.getName().endsWith(".class"))
-                       .forEach(jarEntry -> {
-                          Log.info(String.format("Found jar class \"%s\" from file \"%s\"", jarEntry.getName(), file.getAbsolutePath()), false);
-                          classes.add(jarEntry.getName());
-                       });
-            } catch (IOException e) {
-               e.printStackTrace();
-            }
-         }
-         URLClassLoader pluginLoader = URLClassLoader.newInstance(urls.toArray(new URL[0]));
-         classes.forEach(className -> {
-            try {
-               Class<?> clazz = pluginLoader.loadClass(className.replaceAll("/", ".").replace(".class", ""));
-               if (Plugin.class.isAssignableFrom(clazz)) {
-                  Plugin plugin = (Plugin) clazz.getDeclaredConstructor().newInstance();
-                  String pluginName = plugin.getName();
-                  if (OS.isRegistered(plugin.getClass())) {
-                     System.out.println("A plugin by the name " + pluginName + " is already registered!");
-                  } else {
-                     new Thread(() -> {
-                        try {
-                           plugin.onEnable();
-                           System.out.println("Loaded plugin " + clazz.getCanonicalName() + " successfully");
-                           OS.registerPlugin(plugin);
-                        } catch (Exception e) {
-                           plugin.onDisable();
-                           e.printStackTrace();
-                        }
-                     }, "PLUGINLOAD_" + pluginName).start();
-                  }
-               }
-            } catch (Exception e) {
-                  //System.out.println(OS.getLanguage().get("exceptionOccurred"));
-                  e.printStackTrace();
-               }
-            });
-
-      }
+      PluginLoader.load();
       //
       OptionParser parser = new OptionParser();
       parser.allowsUnrecognizedOptions();
