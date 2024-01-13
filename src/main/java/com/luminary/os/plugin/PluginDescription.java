@@ -23,6 +23,15 @@ import lombok.Data;
 public class PluginDescription {
     private final String name;
     private final String version;
-    private final String desciption;
+    private final String description;
     private final String author;
+
+    @Override
+    public String toString() {
+        return "\tPluginDescription" +
+                "\n\t\tname=" + name +
+                "\n\t\tversion=" + version +
+                "\n\t\tdescription=" + description +
+                "\n\t\tauthor=" + author;
+    }
 }

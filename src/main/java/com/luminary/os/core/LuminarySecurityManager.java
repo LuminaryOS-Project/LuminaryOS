@@ -17,11 +17,9 @@
 
 package com.luminary.os.core;
 
-import com.luminary.os.OS;
 import com.luminary.os.utils.FileLogger;
 import com.luminary.os.utils.Log;
 
-import java.util.Map;
 import java.util.Set;
 
 public class LuminarySecurityManager {

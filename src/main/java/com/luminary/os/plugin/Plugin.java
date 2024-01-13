@@ -17,34 +17,39 @@
 
 package com.luminary.os.plugin;
 
-import com.luminary.os.OS;
 import com.luminary.os.utils.JSONConfig;
 import lombok.Getter;
+import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.UUID;
+import java.nio.file.Paths;
 
 public abstract class Plugin {
-   private final PluginDescription description;
-   @NotNull
-   public File getFolder() {
-      File f = new File("plugins/" + getName() + "/");
-      if(!f.exists()) {
-         f.mkdirs();
-         return f;
-      } else {
-         return f;
+   @Getter
+   @Setter
+   private PluginDescription description;
+   public @NotNull File getFolder() {
+      if(description.getName() == null) {
+         throw new NullPointerException("Plugin name is null, please specify a name in the plugin.json");
       }
+      File folder = Paths.get("LuminaryOS","plugins", description.getName(), "/").toFile();
+
+      if (!folder.exists()) {
+         folder.mkdirs();
+      }
+
+      return folder;
    }
    //
-   public Plugin(final PluginDescription description) {
-      this.description = description;
+
+   public Plugin() {
+      this.description = null;
    }
    //
    @NotNull
    public JSONConfig getConfig() {
-      return new JSONConfig(getFolder() + "config.json");
+      return new JSONConfig(Paths.get(getFolder().getAbsolutePath(), "config.json").toString());
    }
 
    public abstract void onEnable();

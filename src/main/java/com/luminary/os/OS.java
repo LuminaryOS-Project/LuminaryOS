@@ -41,7 +41,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.io.File;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.*;
 
@@ -73,8 +72,8 @@ public final class OS {
    private final Thread mainThread;
    @Getter
    private static Optional<Native> NATIVE = Optional.empty();
-   public static final String VERSION = "v1_R2";
-   public static final int BUILD_NUM = 230809;
+   public static final String VERSION = "v1_R3";
+   public static final int BUILD_NUM = 240113;
    @Getter
    private final CommandManager CommandManager = com.luminary.os.commands.CommandManager.getInstance();
    @Getter
@@ -186,10 +185,12 @@ public final class OS {
       CommandManager.registerCommand(new SimpleCommand("whoami", "whoami", List.of("me"), PermissionLevel.USER ,(cargs) -> System.out.println(currentUser.getName())));
       CommandManager.registerCommand(new SimpleCommand("lang", "lang", List.of("lang", "language"), PermissionLevel.USER, (cargs) -> System.out.println("Language Pack: " + getLanguage().getName() + " designed for: " + getLanguage().getVersion() + "\n")));
       //
-      CommandManager.registerCommand(new SimpleCommand("llist", "llist", List.of("llist"), PermissionLevel.USER, (cargs) -> {
-         File[] files = Paths.get("LuminaryOS", "langs").toFile().listFiles();
-         System.out.println("Found files: " + Arrays.toString(files));
-         Arrays.stream(files).filter(File::isFile).map(File::getAbsolutePath).map(JSONConfig::new).forEach(j -> System.out.println(j.get("lang")));
+      CommandManager.registerCommand(new SimpleCommand("plist", "plist", List.of("plist"), PermissionLevel.USER, (cargs) -> {
+         System.out.println("Registered Plugins:");
+         getRegisteredPlugins().forEach(pl -> {
+            System.out.println("\tClass: " + pl.getClass().getCanonicalName());
+            System.out.println(pl.getDescription().toString());
+         });
       }));
       CommandManager.registerCommand(new SimpleCommand("screensaver", "Displays a screensaver", List.of("scrnsvr", "srcvr"), PermissionLevel.USER, (cargs) -> {
          Screensaver ss = new Screensaver("donut");

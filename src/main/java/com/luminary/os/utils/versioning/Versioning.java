@@ -19,9 +19,7 @@ package com.luminary.os.utils.versioning;
 
 import lombok.AllArgsConstructor;
 
-
 import java.util.function.BiPredicate;
-import java.util.function.Predicate;
 
 @AllArgsConstructor
 public enum Versioning {

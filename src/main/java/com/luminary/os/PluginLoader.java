@@ -17,11 +17,11 @@
 
 package com.luminary.os;
 
-import com.luminary.os.OS;
 import com.luminary.os.plugin.Plugin;
 import com.luminary.os.plugin.PluginDescription;
 import com.luminary.os.utils.JSONConfig;
 import com.luminary.os.utils.Utils;
+import com.luminary.os.utils.versioning.Versioning;
 
 import java.io.File;
 import java.io.IOException;
@@ -51,6 +51,12 @@ public class PluginLoader {
 
             JSONConfig conf = new JSONConfig(jar.getInputStream(pluginConf));
             String main = conf.getAs("main");
+            String targets = conf.getAs("luminary.targetsJava");
+            if(targets != null && !targets.isBlank() && !targets.isEmpty()) {
+                if(!Versioning.test(targets)) {
+                    return;
+                }
+            }
 
             try (URLClassLoader pluginLoader = URLClassLoader.newInstance(new URL[]{new URL("jar:file:" + file.getAbsolutePath() + "!/")})) {
                 loadPluginClass(main, conf, pluginLoader);
@@ -66,13 +72,17 @@ public class PluginLoader {
         try {
             Class<?> clz = pluginLoader.loadClass(main);
             if (Plugin.class.isAssignableFrom(clz)) {
-                Plugin plugin = (Plugin) clz.getDeclaredConstructor(PluginDescription.class)
-                        .newInstance(new PluginDescription(
-                                conf.getAs("name"),
-                                conf.getAs("version"),
-                                conf.getAs("description"),
-                                conf.getAs("author")
-                        ));
+                Plugin plugin = (Plugin)
+                        clz
+                        .getDeclaredConstructor()
+                        .newInstance();
+
+                plugin.setDescription(new PluginDescription(
+                        conf.getAs("name"),
+                        conf.getAs("version"),
+                        conf.getAs("description"),
+                        conf.getAs("author")
+                ));
 
                 String pluginName = plugin.getName();
                 if (OS.isRegistered(plugin.getClass())) {
