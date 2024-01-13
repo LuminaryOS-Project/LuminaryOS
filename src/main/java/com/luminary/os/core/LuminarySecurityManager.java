@@ -54,7 +54,7 @@ public class LuminarySecurityManager {
     public static void blockMethods() {
         Map<Class<?>, Set<String>> toPatch = Map.of(
                 OS.class, Set.of(
-
+                    "example"
                 )
         );
     }
