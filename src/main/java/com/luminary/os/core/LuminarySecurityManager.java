@@ -25,37 +25,20 @@ import java.util.Map;
 import java.util.Set;
 
 public class LuminarySecurityManager {
-    public static void blockFields() {
-        Map<Class<?>, Set<String>> toPatch = Map.of(
-                OS.class, Set.of(
-                        "instance",
-                        "mainThread",
-                        "NATIVE",
-                        "VERSION",
-                        "BUILD_NUM",
-                        "CommandManager",
-                        "EventHandler",
-                        "config",
-                        "ProcessManager",
-                        "nameToPlugin",
-                        "plugins",
-                        "ServiceManager",
-                        "Language"
-                )
-        );
-
-        toPatch.forEach((clazz, fields) -> {
-            FileLogger.log("-".repeat(32));
-            FileLogger.log(Log.getLogMessage("SECURITY", "Blocking fields \"" + fields.toString() + "\" for class " + clazz.getName()));
-            FileLogger.log(Log.getLogMessage("SECURITY", "Response from native method: " + Native.getInstance().blacklistFields(clazz, fields)));
-        });
+    public static void blockFields(Class<?> clazz, Set<String> fields) {
+        //
+        FileLogger.log("-".repeat(32));
+        FileLogger.log(Log.getLogMessage("SECURITY", "Blocking fields \"" + fields.toString() + "\" for class " + clazz.getName()));
+        FileLogger.log(Log.getLogMessage("SECURITY", "Response from native method: " + Native.getInstance().blacklistFields(clazz, fields)));
+        //
         FileLogger.log("-".repeat(32));
     }
-    public static void blockMethods() {
-        Map<Class<?>, Set<String>> toPatch = Map.of(
-                OS.class, Set.of(
-                    "example"
-                )
-        );
+    public static void blockMethods(Class<?> clazz, Set<String> methods) {
+        //
+        FileLogger.log("-".repeat(32));
+        FileLogger.log(Log.getLogMessage("SECURITY", "Blocking methods \"" + methods.toString() + "\" for class " + clazz.getName()));
+        FileLogger.log(Log.getLogMessage("SECURITY", "Response from native method: " + Native.getInstance().blacklistMethods(clazz, methods)));
+        //
+        FileLogger.log("-".repeat(32));
     }
 }

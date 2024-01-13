@@ -18,6 +18,7 @@
 package com.luminary.os;
 
 import com.google.common.eventbus.EventBus;
+import com.luminary.annotations.RestrictReflect;
 import com.luminary.os.commands.CommandManager;
 import com.luminary.os.commands.SimpleCommand;
 import com.luminary.os.commands.impl.*;
@@ -43,6 +44,29 @@ import java.io.File;
 import java.util.List;
 import java.util.*;
 
+@RestrictReflect(
+        fields = {
+                "instance",
+                "mainThread",
+                "NATIVE",
+                "VERSION",
+                "BUILD_NUM",
+                "CommandManager",
+                "EventHandler",
+                "config",
+                "ProcessManager",
+                "nameToPlugin",
+                "plugins",
+                "ServiceManager",
+                "Language"
+        },
+        methods = {
+                "example",
+                "initOS",
+                "start",
+                "shutdown"
+        }
+)
 public final class OS {
    private final Thread mainThread;
    @Getter
@@ -109,7 +133,7 @@ public final class OS {
       this.mainThread = Thread.currentThread();
    }
 
-   public static void initOS(String[] args) {
+   static void initOS(String[] args) {
       if(instance == null) {
          new OS().start(args);
       }
@@ -120,7 +144,7 @@ public final class OS {
       System.out.println("Example Invoked");
    }
 
-   public void start(String[] args) {
+   private void start(String[] args) {
       instance = this;
       if (System.getProperty("os.name").toLowerCase().contains("windows")) {
          NATIVE = Optional.of(Native.getInstance());

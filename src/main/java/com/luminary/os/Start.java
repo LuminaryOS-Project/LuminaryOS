@@ -17,6 +17,8 @@
 
 package com.luminary.os;
 
+import com.google.common.reflect.ClassPath;
+import com.luminary.annotations.RestrictReflect;
 import com.luminary.os.core.LuminarySecurityManager;
 import com.luminary.os.core.Native;
 import com.luminary.os.core.User;
@@ -34,11 +36,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
 import java.util.*;
-import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.stream.Collectors;
+
 
 public class Start {
    public static final Map<String, Object> OSoptions = new HashMap<>();
@@ -50,7 +51,7 @@ public class Start {
       First startup
        */
       FileLogger.init();
-      Log.info("OS Startup @ " + new SimpleDateFormat("hh:mm a dd/MM/yyyy").format(new Date()));
+      Log.info("OS Startup @ " + new SimpleDateFormat("hh:mma / E dd/MM/yyyy").format(new Date()));
       File mainf = new File("LuminaryOS");
       if (!mainf.exists() && mainf.mkdirs()) {
          if(new File("LuminaryOS/plugins").mkdirs() && new File("LuminaryOS/disks").mkdirs() && new File("LuminaryOS/natives").mkdirs() && new File("LuminaryOS/users").mkdirs() && new File("LuminaryOS/cache").mkdirs() && new File("LuminaryOS/config").mkdirs() && new File("LuminaryOS/temp").mkdirs() && new File("LuminaryOS/langs").mkdirs()) {
@@ -85,8 +86,20 @@ public class Start {
       }
 
       if(Native.supportsNative()) {
-         LuminarySecurityManager.blockFields();
-         LuminarySecurityManager.blockMethods();
+         // Testing
+         ClassPath.from(Start.class.getClassLoader())
+                 .getAllClasses()
+                 .stream()
+                 .filter(c -> !isBlacklistedPackage(c.getPackageName()))
+                 .map(ClassPath.ClassInfo::getName)
+                 .map(Start::loadClassSafely)
+                 .filter(Objects::nonNull)
+                 .filter(c -> c.isAnnotationPresent(RestrictReflect.class))
+                 .forEach(clz -> {
+                    RestrictReflect rr = clz.getAnnotation(RestrictReflect.class);
+                    LuminarySecurityManager.blockFields(clz, Set.of(rr.fields()));
+                    LuminarySecurityManager.blockMethods(clz, Set.of(rr.methods()));
+                 });
       }
       //
       File pluginFolder = new File("LuminaryOS/plugins");
@@ -98,6 +111,7 @@ public class Start {
          for (File file : files) {
             try (JarFile jarFile = new JarFile(file)) {
                urls.add(new URL("jar:file:" + file.getAbsolutePath() + "!/"));
+               jarFile.getEntry("plugin.yml");
                jarFile.stream()
                        .filter(jarEntry -> jarEntry.getName().endsWith(".class"))
                        .forEach(jarEntry -> {
@@ -145,5 +159,25 @@ public class Start {
       rarg.forEach((k, v) -> parser.accepts(k, v).withOptionalArg());
       options = parser.parse(args);
       OS.initOS(args);
+   }
+
+   private static final List<String> packageBlacklist = List.of(
+           "kotlin",
+           "com.google",
+           "java.lang",
+           "javassist",
+           "lombok"
+   );
+
+   private static Class<?> loadClassSafely(String className) {
+      try {
+         return Class.forName(className);
+      } catch (ClassNotFoundException | NoClassDefFoundError e) {
+         return null;
+      }
+   }
+
+   private static boolean isBlacklistedPackage(String pkg) {
+      return packageBlacklist.stream().anyMatch(pkg::startsWith);
    }
 }
