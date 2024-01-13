@@ -21,7 +21,6 @@ import com.luminary.os.core.Color;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.FileWriter;
-import java.io.IOException;
 import java.time.LocalTime;
 import java.util.Objects;
 
