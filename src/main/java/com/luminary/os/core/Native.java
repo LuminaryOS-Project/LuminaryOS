@@ -27,21 +27,34 @@ public class Native {
 
     @Getter
     private static boolean loaded = false;
-    public static boolean supportsNative() { return System.getProperty("os.name").toLowerCase().contains("windows"); }
+    public static boolean supportsNative() { return isWindows() || isUnix(); }
     public static Native getInstance() {
         if (instance == null) { instance = new Native(); }
         return instance;
     }
 
+    public static boolean isWindows() {
+        return (System.getProperty("os.name").contains("win"));
+    }
+
+    public static boolean isUnix() {
+        String o = System.getProperty("os.name");
+        return (o.contains("nix") || o.contains("nux") || o.indexOf("aix") > 0);
+    }
+
     private Native() {
-        if(!System.getProperty("os.name").toLowerCase().contains("windows")) {
-            throw new UnsupportedOperationException("LuminaryOS Native Optimisation is currently only supported on windows!");
+        if(!supportsNative()) {
+            throw new UnsupportedOperationException("LuminaryOS Native Optimisation is currently only supported on windows/unix!");
         }
         try {
-            System.loadLibrary("LuminaryOS/natives/windows");
+            if(isWindows()) {
+                System.loadLibrary("LuminaryOS/natives/windows");
+            } else if (isUnix()) {
+                System.loadLibrary("LuminaryOS/natives/linux");
+            }
             loaded = true;
         } catch (Exception ignored) {
-            System.out.println("Failed to load Windows Native.");
+            System.out.println("Failed to load Native.");
         }
 
     }
