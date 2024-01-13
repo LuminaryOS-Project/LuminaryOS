@@ -19,6 +19,7 @@ package com.luminary.os.core;
 
 import java.util.function.Consumer;
 
+@FunctionalInterface
 public interface Callback extends Consumer<StatusCode> {
 
 }

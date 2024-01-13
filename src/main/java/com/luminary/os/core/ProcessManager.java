@@ -68,7 +68,7 @@ public class ProcessManager {
         Process proc = runningProcesses.get(id);
         if(proc != null) {
             currID--;
-            proc.stop();
+            proc.stop(StatusCode.TERMINATED);
             runningProcesses.remove(id);
         } else {
             System.out.println("Unknown Process ID...");
@@ -123,7 +123,7 @@ public class ProcessManager {
                             try {
                                 thread.join(process.getTimeoutMillis());
                                 if (thread.isAlive()) {
-                                    thread.interrupt();
+                                    process.stop(StatusCode.TIMEOUT);
                                     OS.getEventHandler().post(new ProcessTimeoutEvent(process, process.getId()));
                                     runningProcesses.remove(process.getId());
                                 } else {
@@ -135,7 +135,7 @@ public class ProcessManager {
                     }
                 }
             }
-        }, 0, 1, TimeUnit.SECONDS);
+        }, 0, 25, TimeUnit.MILLISECONDS);
     }
     private ProcessManager() {}
     public static ProcessManager getProcessManager() {

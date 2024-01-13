@@ -30,20 +30,19 @@ public enum StatusCode {
     FAILURE(101),
     DENIED(102),
     INSUFFICIENT_PERMISSION(103),
-    INVALID_ARGUMENT(104),
+    TERMINATED(104),
     TIMEOUT(105),
-    INVALID_HANDLE(106),
+    SECURITY_VIOLATION(106),
     ACCESS_DENIED(107),
     INTERRUPTED(108),
     OPERATION_UNSUPPORTED(109),
     ILLEGAL(110);
     final int code;
     public static StatusCode of(int toFind) {
-        if(toFind > 110 || toFind < 100) {
-            throw new NoSuchElementException("Tried to fetch invalid status code");
-        }
-
-        return Arrays.stream(StatusCode.values()).filter(code -> code.getCode() == toFind).toList().get(0);
+        return Arrays.stream(StatusCode.values())
+                .filter(code -> code.getCode() == toFind)
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("Tried to fetch invalid status code (Code: " + toFind + ")!"));
     }
 
 }

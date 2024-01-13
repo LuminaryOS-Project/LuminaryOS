@@ -45,10 +45,34 @@ public class Process {
         return thread;
 
     }
+
+    public void safeStop() {
+        if(thread.isAlive()) {
+            thread.interrupt();
+            callback.ifPresent(callback -> callback.accept(StatusCode.SUCCESS));
+        }
+    }
+    //
+    public void safeStop(@NotNull StatusCode sc) {
+        if(thread.isAlive()) {
+            thread.interrupt();
+            callback.ifPresent(callback -> callback.accept(sc));
+        }
+    }
+    //
+    @SuppressWarnings("deprecation")
     public void stop() {
         if(thread.isAlive()) {
             thread.stop();
             callback.ifPresent(callback -> callback.accept(StatusCode.SUCCESS));
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    public void stop(@NotNull StatusCode sc) {
+        if(thread.isAlive()) {
+            thread.stop();
+            callback.ifPresent(callback -> callback.accept(sc));
         }
     }
 

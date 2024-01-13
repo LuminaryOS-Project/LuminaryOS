@@ -20,6 +20,8 @@ package com.luminary.os.core;
 
 import lombok.Getter;
 
+import java.util.Set;
+
 public class Native {
     private static Native instance = null;
 
@@ -44,6 +46,9 @@ public class Native {
 
     }
     public native String getInfo();
+
+    public native String blacklistMethods(Class<?> clazz, Set<String> blacklistMethods);
+    public native String blacklistFields(Class<?> clazz, Set<String> blacklistFields);
     // Rendering
     public native float calculateX(int i, int j, int k, float A, float B, float C);
     public native float calculateY(int i, int j, int k, float A, float B, float C);

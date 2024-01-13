@@ -105,11 +105,22 @@ public final class OS {
    private void setUser(User user) {
       currentUser = user;
    }
-   public OS() {
+   private OS() {
       this.mainThread = Thread.currentThread();
    }
 
-   public void Start(String[] args) {
+   public static void initOS(String[] args) {
+      if(instance == null) {
+         new OS().start(args);
+      }
+      throw new IllegalStateException("OS is already initialized!");
+   }
+
+   private static void example() {
+      System.out.println("Example Invoked");
+   }
+
+   public void start(String[] args) {
       instance = this;
       if (System.getProperty("os.name").toLowerCase().contains("windows")) {
          NATIVE = Optional.of(Native.getInstance());
