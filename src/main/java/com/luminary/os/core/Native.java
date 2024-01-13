@@ -35,14 +35,18 @@ public class Native {
         return instance;
     }
 
-    public static boolean isWindows() {
-        return (System.getProperty("os.name").contains("win"));
-    }
+    public static boolean isMac() {
+      return (System.getProperty("os.name").toLowerCase().contains("mac"));
+   }
 
-    public static boolean isUnix() {
-        String o = System.getProperty("os.name");
-        return (o.contains("nix") || o.contains("nux") || o.indexOf("aix") > 0);
-    }
+   public static boolean isWindows() {
+      return (System.getProperty("os.name").toLowerCase().contains("win"));
+   }
+
+   public static boolean isUnix() {
+      String o = System.getProperty("os.name").toLowerCase();
+      return (o.contains("nix") || o.contains("nux") || o.indexOf("aix") > 0);
+   }
 
     private Native() {
         if(!supportsNative()) {
