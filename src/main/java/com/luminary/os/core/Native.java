@@ -21,8 +21,8 @@ package com.luminary.os.core;
 import lombok.Getter;
 
 import java.io.File;
-import java.nio.file.Paths;
 import java.util.Set;
+import java.nio.file.Paths;
 
 public class Native {
     private static Native instance = null;
@@ -52,7 +52,7 @@ public class Native {
             if(isWindows()) {
                 System.loadLibrary("LuminaryOS/natives/windows");
             } else if (isUnix()) {
-                System.load(Paths.get("LuminaryOS", "natives", "linux").toAbsolutePath().toString());
+                System.load(Paths.get("LuminaryOS", "natives", "linux.so").toAbsolutePath().toString());
             }
             loaded = true;
         } catch (Exception ignored) {
