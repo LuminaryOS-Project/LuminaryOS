@@ -24,17 +24,21 @@ import java.util.Set;
 
 public class LuminarySecurityManager {
     public static void blockFields(Class<?> clazz, Set<String> fields) {
+        if(fields.isEmpty())
+            return;
         //
         FileLogger.log("-".repeat(32));
-        FileLogger.log(Log.getLogMessage("SECURITY", "Blocking fields \"" + fields.toString() + "\" for class " + clazz.getName()));
+        FileLogger.log(Log.getLogMessage("SECURITY", "Blocking fields \"" + fields + "\" for class " + clazz.getName()));
         FileLogger.log(Log.getLogMessage("SECURITY", "Response from native method: " + Native.getInstance().blacklistFields(clazz, fields)));
         //
         FileLogger.log("-".repeat(32));
     }
     public static void blockMethods(Class<?> clazz, Set<String> methods) {
+        if(methods.isEmpty())
+            return;
         //
         FileLogger.log("-".repeat(32));
-        FileLogger.log(Log.getLogMessage("SECURITY", "Blocking methods \"" + methods.toString() + "\" for class " + clazz.getName()));
+        FileLogger.log(Log.getLogMessage("SECURITY", "Blocking methods \"" + methods + "\" for class " + clazz.getName()));
         FileLogger.log(Log.getLogMessage("SECURITY", "Response from native method: " + Native.getInstance().blacklistMethods(clazz, methods)));
         //
         FileLogger.log("-".repeat(32));

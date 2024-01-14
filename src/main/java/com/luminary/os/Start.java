@@ -22,6 +22,7 @@ import com.luminary.annotations.RestrictReflect;
 import com.luminary.os.core.LuminarySecurityManager;
 import com.luminary.os.core.Native;
 import com.luminary.os.core.User;
+import com.luminary.os.plugin.PluginLoader;
 import com.luminary.os.utils.FileLogger;
 import com.luminary.os.utils.Log;
 import com.luminary.os.utils.Utils;

@@ -30,6 +30,13 @@ public class CommandManager {
    public void registerCommand(Command command) {
       this.commands.put(command.getName(), command);
    }
+
+   public void registerCommands(Command... commands) {
+      for(Command command : commands) {
+         registerCommand(command);
+      }
+   }
+
    private CommandManager() {}
    public static CommandManager getInstance() {
       if(cmdmgr == null) {

@@ -22,16 +22,14 @@ import com.luminary.annotations.RestrictReflect;
 import com.luminary.os.commands.CommandManager;
 import com.luminary.os.commands.SimpleCommand;
 import com.luminary.os.commands.impl.*;
-import com.luminary.os.core.Language;
-import com.luminary.os.core.Native;
-import com.luminary.os.core.Screensaver;
-import com.luminary.os.core.User;
+import com.luminary.os.core.*;
 import com.luminary.os.core.exceptions.InvalidLanguageException;
 import com.luminary.os.core.services.ServiceManager;
 import com.luminary.os.events.AfterShellEvent;
 import com.luminary.os.events.BeforeCommandRegisterEvent;
 import com.luminary.os.permissions.PermissionLevel;
 import com.luminary.os.plugin.Plugin;
+import com.luminary.os.plugin.PluginManager;
 import com.luminary.os.utils.JSONConfig;
 import com.luminary.os.utils.Prompts;
 import com.luminary.os.utils.Utils;
@@ -71,20 +69,20 @@ import java.util.*;
 public final class OS {
    private final Thread mainThread;
    @Getter
-   private static Optional<Native> NATIVE = Optional.empty();
+   private static Optional<Native> NativeInstance = Optional.empty();
    public static final String VERSION = "v1_R3";
    public static final int BUILD_NUM = 240113;
    @Getter
-   private final CommandManager CommandManager = com.luminary.os.commands.CommandManager.getInstance();
+   private final CommandManager commandManager = CommandManager.getInstance();
    @Getter
    private static String Locale;
    @Getter
    private static com.luminary.os.core.Language Language;
-   private final ServiceManager ServiceManager = com.luminary.os.core.services.ServiceManager.getServiceManager();
+   private final ServiceManager serviceManager = ServiceManager.getServiceManager();
    private static final Map<String, Plugin> nameToPlugin = new HashMap<>();
    private static final Map<Class<? extends Plugin>, Plugin> plugins = new HashMap<>();
    @Getter
-   private static final com.luminary.os.core.ProcessManager ProcessManager = com.luminary.os.core.ProcessManager.getProcessManager();
+   private static final ProcessManager processManager = ProcessManager.getProcessManager();
    private static final JSONConfig config = new JSONConfig("os.json");
    @Getter
    private static OS instance;
@@ -95,37 +93,6 @@ public final class OS {
    @Getter
    private static User currentUser;
    // Plugin related
-   public static List<Plugin> getRegisteredPlugins() {
-      return new ArrayList<>(plugins.values());
-   }
-
-   public static void registerPlugin(Plugin plugin) {
-      plugins.put(plugin.getClass(), plugin);
-      nameToPlugin.put(plugin.getName(), plugin);
-   }
-   public static void registerPlugin(Class<? extends Plugin> plugin) {
-      try {
-         Plugin p = plugin.getDeclaredConstructor().newInstance();
-         plugins.put(plugin, p);
-         nameToPlugin.put(p.getName(), p);
-      } catch (Exception ignored) {}
-   }
-   public static boolean isRegistered(@NotNull Class<? extends Plugin> plugin) {
-      return plugins.get(plugin) != null;
-   }
-   public static @Nullable Plugin getPlugin(@NotNull String plugin) {
-      return nameToPlugin.getOrDefault(plugin, null);
-   }
-   public static @Nullable Plugin getPlugin(@NotNull Class<? extends Plugin> plugin) {
-      return plugins.getOrDefault(plugin, null);
-   }
-   public static @Nullable Class<?> getPluginClass(@NotNull Plugin plugin) {
-      Optional<Class<? extends Plugin>> o = plugins.keySet().stream().filter(clazz -> clazz == plugin.getClass()).findFirst();
-      return o.orElse(null);
-   }
-   public static @Nullable Class<?> getPluginClass(String plugin) {
-      return Utils.or(nameToPlugin.get(plugin).getClass(), null);
-   }
    // End of plugin stuff
    private void setUser(User user) {
       currentUser = user;
@@ -147,9 +114,11 @@ public final class OS {
 
    private void start(String[] args) {
       instance = this;
-      if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-         NATIVE = Optional.of(Native.getInstance());
-         Taskbar.getTaskbar();
+      if (Native.supportsNative()) {
+         NativeInstance = Optional.of(Native.getInstance());
+      }
+      if(Native.isWindows()) {
+         programBar = Taskbar.getTaskbar();
       }
       //
       try {
@@ -168,31 +137,34 @@ public final class OS {
       System.out.println(getLanguage().get("initialising") + " LuminaryOS (Java)\n");
       // JVM Things
       Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
-      ProcessManager.start();
+      processManager.start();
 
       getEventHandler().post(new BeforeCommandRegisterEvent());
       // Commands
-      CommandManager.registerCommand(new HelpCommand());
-      CommandManager.registerCommand(new InstallCommand());
-      CommandManager.registerCommand(new LsCommand());
-      CommandManager.registerCommand(new RmCommand());
-      CommandManager.registerCommand(new CDCommand());
-      CommandManager.registerCommand(new ExitCommand());
-      CommandManager.registerCommand(new UnameCommand());
-      CommandManager.registerCommand(new VerCommand());
-      CommandManager.registerCommand(new PWDCommand());
-      CommandManager.registerCommand(new KillCommand());
-      CommandManager.registerCommand(new SimpleCommand("whoami", "whoami", List.of("me"), PermissionLevel.USER ,(cargs) -> System.out.println(currentUser.getName())));
-      CommandManager.registerCommand(new SimpleCommand("lang", "lang", List.of("lang", "language"), PermissionLevel.USER, (cargs) -> System.out.println("Language Pack: " + getLanguage().getName() + " designed for: " + getLanguage().getVersion() + "\n")));
+      commandManager.registerCommands(
+              new HelpCommand(),
+              new InstallCommand(),
+              new LsCommand(),
+              new RmCommand(),
+              new CDCommand(),
+              new ExitCommand(),
+              new UnameCommand(),
+              new VerCommand(),
+              new PWDCommand(),
+              new KillCommand()
+      );
       //
-      CommandManager.registerCommand(new SimpleCommand("plist", "plist", List.of("plist"), PermissionLevel.USER, (cargs) -> {
+      commandManager.registerCommand(new SimpleCommand("whoami", "whoami", List.of("me"), PermissionLevel.USER ,(cargs) -> System.out.println(currentUser.getName())));
+      commandManager.registerCommand(new SimpleCommand("lang", "lang", List.of("lang", "language"), PermissionLevel.USER, (cargs) -> System.out.println("Language Pack: " + getLanguage().getName() + " designed for: " + getLanguage().getVersion() + "\n")));
+      //
+      commandManager.registerCommand(new SimpleCommand("plist", "plist", List.of("plist"), PermissionLevel.USER, (cargs) -> {
          System.out.println("Registered Plugins:");
-         getRegisteredPlugins().forEach(pl -> {
+         PluginManager.getRegisteredPlugins().forEach(pl -> {
             System.out.println("\tClass: " + pl.getClass().getCanonicalName());
             System.out.println(pl.getDescription().toString());
          });
       }));
-      CommandManager.registerCommand(new SimpleCommand("screensaver", "Displays a screensaver", List.of("scrnsvr", "srcvr"), PermissionLevel.USER, (cargs) -> {
+      commandManager.registerCommand(new SimpleCommand("screensaver", "Displays a screensaver", List.of("scrnsvr", "srcvr"), PermissionLevel.USER, (cargs) -> {
          Screensaver ss = new Screensaver("donut");
          try { ss.start(); } catch (Exception ignored) {}
       }));
@@ -244,9 +216,10 @@ public final class OS {
             if(!Objects.equals(command, "")){
                String[] arg = new String[splitInput.length - 1];
                System.arraycopy(splitInput, 1, arg, 0, splitInput.length - 1);
-               this.CommandManager.executeCommand(command, List.of(arg));
+               this.commandManager.executeCommand(command, List.of(arg));
             }
-         } catch (NoSuchElementException e) {
+         } catch (Exception e) {
+
             System.exit(0);
          }
       }
@@ -258,10 +231,7 @@ public final class OS {
       config.setPref("locale", getLocale());
       config.setMisc("shutdown", System.currentTimeMillis());
       OS.getProcessManager().shutdown();
-      nameToPlugin.forEach((k, v) -> v.onDisable());
+      nameToPlugin.values().forEach(Plugin::onDisable);
       config.close();
-   }
-   public void registerSubscriber(Object o) {
-      getEventHandler().register(o);
    }
 }

@@ -35,8 +35,8 @@ public class VerCommand extends Command {
 
       System.out.println("---------------------------");
       System.out.println("LuminaryOS: " + OS.getLanguage().get("version") + " " + OS.VERSION + " (Build: " + OS.BUILD_NUM + ")");
-      if(Native.supportsNative() && OS.getNATIVE().isPresent()) {
-         System.out.println("Native: " + OS.getNATIVE().get().getInfo());
+      if(Native.supportsNative() && OS.getNativeInstance().isPresent()) {
+         System.out.println("Native: " + OS.getNativeInstance().get().getInfo());
       }
       System.out.println("Running on: " + System.getProperty("os.name"));
       System.out.println("Language Pack: " + OS.getLanguage().getName() + " designed for: " + OS.getLanguage().getVersion());

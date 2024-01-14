@@ -15,8 +15,10 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.luminary.os;
+package com.luminary.os.plugin;
 
+import com.luminary.annotations.RestrictReflect;
+import com.luminary.os.OS;
 import com.luminary.os.plugin.Plugin;
 import com.luminary.os.plugin.PluginDescription;
 import com.luminary.os.utils.JSONConfig;
@@ -30,6 +32,12 @@ import java.net.URLClassLoader;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+
+@RestrictReflect(
+        methods = {
+                "loadPluginClass",
+        }
+)
 public class PluginLoader {
     public static void load() {
         File pluginFolder = new File("LuminaryOS/plugins");
@@ -41,7 +49,7 @@ public class PluginLoader {
         }
     }
 
-    private static void loadPlugin(File file) {
+    public static void loadPlugin(File file) {
         try (JarFile jar = new JarFile(file)) {
             JarEntry pluginConf = jar.getJarEntry("plugin.json");
             if (pluginConf == null) {
@@ -77,22 +85,23 @@ public class PluginLoader {
                         .getDeclaredConstructor()
                         .newInstance();
 
+                String pluginName = conf.getAs("name");
+
                 plugin.setDescription(new PluginDescription(
-                        conf.getAs("name"),
+                        pluginName,
                         conf.getAs("version"),
                         conf.getAs("description"),
                         conf.getAs("author")
                 ));
 
-                String pluginName = plugin.getName();
-                if (OS.isRegistered(plugin.getClass())) {
+                if (PluginManager.isRegistered(plugin.getClass())) {
                     System.out.println("A plugin by the name " + pluginName + " is already registered!");
                 } else {
                     new Thread(() -> {
                         try {
                             plugin.onEnable();
                             System.out.println("Loaded plugin " + clz.getCanonicalName() + " successfully");
-                            OS.registerPlugin(plugin);
+                            PluginManager.registerPlugin(plugin);
                         } catch (Exception e) {
                             plugin.onDisable();
                             Utils.logErrToFile(e);
